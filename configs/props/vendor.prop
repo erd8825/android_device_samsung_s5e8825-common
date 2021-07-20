@@ -31,6 +31,7 @@ bluetooth.profile.sap.server.enabled=1
 # Graphics
 debug.renderengine.backend=skiavkthreaded
 debug.sf.latch_unsignaled=1
+debug.sf.layer_caching_active_layer_timeout_ms=1000
 debug.sf.predict_hwc_composition_strategy=0
 ro.hardware.egl=mali
 ro.hardware.vulkan=mali
