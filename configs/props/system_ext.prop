@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# OverlayFS
+fs_mgr.overlayfs.prefer_cache_backing_storage=1
