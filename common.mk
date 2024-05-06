@@ -53,6 +53,7 @@ PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
 
 # Properties
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
+TARGET_SYSTEM_EXT_PROP += device/samsung/s5e8825-common/configs/props/system_ext.prop
 TARGET_VENDOR_PROP += device/samsung/s5e8825-common/configs/props/vendor.prop
 
 # Recovery - Init
