@@ -3,9 +3,34 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
+genrule {
+    name: "gen_fstab_s5e8825.recovery",
+    srcs: ["fstab.s5e8825.in"],
+    cmd: `grep -Ev 'efs|product|keystorage|harx|system_|vbmeta|vendor' $(in) |
+          sed -E 's/,?\w*mount,?|,fileencryption.*|recoveryonly,//g' |
+          sed 's/,inlinecrypt/            /' |
+          sed 's/recoveryonly/defaults/g' > $(out)`,
+    out: ["recovery.fstab"],
+}
+
+genrule {
+    name: "gen_fstab_s5e8825.vendor",
+    srcs: ["fstab.s5e8825.in"],
+    cmd: "grep -Ev ' first_stage_mount|recoveryonly' $(in) > $(out)",
+    out: ["fstab.s5e8825"],
+}
+
+genrule {
+    name: "gen_fstab_s5e8825.vendor_ramdisk",
+    srcs: ["fstab.s5e8825.in"],
+    cmd: "grep -E '#|first_stage_mount' $(in) > $(out)",
+    out: ["fstab.s5e8825"],
+}
+
 prebuilt_etc {
-    name: "fstab.s5e8825",
-    src: "fstab.s5e8825",
+    name: "fstab.s5e8825.vendor",
+    src: ":gen_fstab_s5e8825.vendor",
+    filename: "fstab.s5e8825",
     vendor: true,
 }
 
@@ -18,8 +43,8 @@ prebuilt_etc {
 
 prebuilt_root {
     name: "fstab.s5e8825.vendor_ramdisk",
-    src: "fstab.s5e8825",
-    filename_from_src: true,
+    src: ":gen_fstab_s5e8825.vendor_ramdisk",
+    filename: "fstab.s5e8825",
     vendor_ramdisk: true,
     install_in_root: true,
 }

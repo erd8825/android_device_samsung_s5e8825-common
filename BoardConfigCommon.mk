@@ -75,7 +75,7 @@ TARGET_SOC := s5e8825
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_RECOVERY_MKBOOTIMG_ARGS := --header_version 2
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/configs/init/fstab.s5e8825
+TARGET_RECOVERY_FSTAB_GENRULE := gen_fstab_s5e8825.recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 
 # Releasetools - Extension
