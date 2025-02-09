@@ -67,7 +67,7 @@ BOARD_RAMDISK_USE_LZ4 := true
 # Partitions - Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_RECOVERY_MKBOOTIMG_ARGS := --header_version 2
-TARGET_RECOVERY_FSTAB := device/samsung/s5e8825-common/configs/init/fstab.s5e8825
+TARGET_RECOVERY_FSTAB_GENRULE := gen_fstab_s5e8825.recovery
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 
 # Partitions - Size
