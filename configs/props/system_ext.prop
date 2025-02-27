@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Display
+sys.brightness.disable_gamma_conversion=1
