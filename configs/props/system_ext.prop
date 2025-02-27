@@ -3,5 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Display
+sys.brightness.disable_gamma_conversion=1
+
 # OverlayFS
 fs_mgr.overlayfs.prefer_cache_backing_storage=1
