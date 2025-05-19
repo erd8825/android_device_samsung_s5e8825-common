@@ -148,6 +148,9 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set,cbd,protocol,sipc)
 
+# RIL - Configuration
+PRODUCT_PACKAGES += sehradiomanager.conf
+
 # Security - Gatekeeper
 PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
