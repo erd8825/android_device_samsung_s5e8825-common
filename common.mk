@@ -35,7 +35,7 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth.audio-impl \
     audio.bluetooth.default \
     audio.r_submix.default \
-    audio.usb.default
+    audio.usbv2.default
 
 # Audio - Configuration
 PRODUCT_PACKAGES += \
@@ -45,7 +45,7 @@ PRODUCT_PACKAGES += \
     audio_effects.xml \
     audio_policy_configuration.xml \
     bluetooth_audio_policy_configuration_7_0.xml \
-    usb_audio_policy_configuration.xml
+    usbv2_audio_policy_configuration.xml
 
 $(call soong_config_set_bool,frameworks_av,use_aosp_audio_policy_volumes,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_default_volume_tables,true)
