@@ -31,7 +31,7 @@ PRODUCT_PACKAGES += \
     audio.bluetooth.default \
     audio.primary.erd8825 \
     audio.r_submix.default \
-    audio.usb.default
+    audio.usbv2.default
 
 $(call soong_config_set,exynos_audio,proxy_header,//device/samsung/s5e8825-common:audio_proxy_headers)
 $(call soong_config_set,exynos_audio,sec_resampler_library,//vendor/samsung/s5e8825-common:libSamsungPostProcessConvertor)
@@ -50,7 +50,7 @@ PRODUCT_PACKAGES += \
     audio_effects.xml \
     audio_policy_configuration.xml \
     bluetooth_audio_policy_configuration_7_0.xml \
-    usb_audio_policy_configuration.xml
+    usbv2_audio_policy_configuration.xml
 
 $(call soong_config_set_bool,frameworks_av,use_aosp_audio_policy_volumes,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_default_volume_tables,true)
