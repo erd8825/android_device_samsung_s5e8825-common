@@ -892,6 +892,16 @@ on boot
     chown system radio /sys/class/sensors/grip_sensor_wifi/useful_filt
     chown system radio /sys/class/sensors/grip_sensor_wifi/vendor
 
+    # GPU interactive governor
+    chown system system /sys/devices/platform/10300000.mali/highspeed_clock
+    chown system system /sys/devices/platform/10300000.mali/highspeed_load
+    chmod 0664 /sys/devices/platform/10300000.mali/highspeed_clock
+    chmod 0664 /sys/devices/platform/10300000.mali/highspeed_load
+
+    # GPU governor settings
+    write /sys/devices/platform/10300000.mali/highspeed_clock 702000
+    write /sys/devices/platform/10300000.mali/highspeed_load 80
+
     # usb usb_data_enabled
     chown root system /sys/class/usb_notify/usb_control/usb_data_enabled
     chmod 0664 /sys/class/usb_notify/usb_control/usb_data_enabled
