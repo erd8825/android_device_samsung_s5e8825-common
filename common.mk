@@ -43,7 +43,9 @@ PRODUCT_PACKAGES += fastbootd
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e8825.vendor \
-    fstab.s5e8825.vendor_ramdisk
+    fstab.s5e8825.vendor_ramdisk \
+    init.s5e8825.rc \
+    ueventd.s5e8825.rc
 
 # Kernel
 PRODUCT_ENABLE_UFFD_GC := true
