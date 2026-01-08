@@ -40,6 +40,9 @@ TARGET_SCREEN_DENSITY := 450
 # Fastboot
 PRODUCT_PACKAGES += fastbootd
 
+# GMS
+PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
+
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e8825.vendor \

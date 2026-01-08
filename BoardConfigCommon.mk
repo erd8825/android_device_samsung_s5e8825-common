@@ -48,6 +48,9 @@ TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
+# Partitions - GMS
+-include vendor/lineage/config/BoardConfigReservedSize.mk
+
 # Partitions - Kernel
 BOARD_BOOTCONFIG := buildtime_bootconfig=enable
 BOARD_BOOT_HEADER_VERSION := 4
