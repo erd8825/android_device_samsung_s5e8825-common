@@ -27,6 +27,9 @@ $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
 COMMON_PATH := device/samsung/s5e8825-common
 
+# Characteristics
+PRODUCT_CHARACTERISTICS := phone
+
 # Permissions
 PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
 
