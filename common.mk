@@ -49,6 +49,7 @@ PRODUCT_PACKAGES += \
 
 # Kernel
 PRODUCT_ENABLE_UFFD_GC := true
+PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
 
 # Kernel - Modules
 PRODUCT_PACKAGES += toolbox.vendor_ramdisk
