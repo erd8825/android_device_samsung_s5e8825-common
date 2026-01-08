@@ -29,5 +29,8 @@ PRODUCT_MANUFACTURER := samsung
 # Permissions
 PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
 
+# Shipping level
+BOARD_SHIPPING_API_LEVEL := 31
+
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += device/samsung/s5e8825-common
