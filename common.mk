@@ -27,6 +27,10 @@ $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
 COMMON_PATH := device/samsung/s5e8825-common
 
+# Branding
+PRODUCT_BRAND := samsung
+PRODUCT_MANUFACTURER := samsung
+
 # Characteristics
 PRODUCT_CHARACTERISTICS := phone
 
