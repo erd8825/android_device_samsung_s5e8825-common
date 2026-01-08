@@ -37,5 +37,8 @@ PRODUCT_CHARACTERISTICS := phone
 # Permissions
 PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
 
+# Shipping level
+BOARD_SHIPPING_API_LEVEL := 31
+
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += $(COMMON_PATH)
