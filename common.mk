@@ -43,6 +43,11 @@ PRODUCT_PACKAGES += fastbootd
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
+# Health - Samsung
+PRODUCT_PACKAGES += \
+    android.hardware.health-service.samsung \
+    android.hardware.health-service.samsung-recovery
+
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e8825.vendor \
@@ -78,4 +83,5 @@ BOARD_SHIPPING_API_LEVEL := 31
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
-    bootable/deprecated-ota
+    bootable/deprecated-ota \
+    hardware/samsung
