@@ -9,9 +9,14 @@ from extract_utils.main import (
     ExtractUtilsModule,
 )
 
+
 module = ExtractUtilsModule(
     's5e8825-common',
     'samsung',
+    lib_fixups={
+        # Security - TEEGRIS
+        'libuuid': lambda lib, *_: f'{lib}.vendor'
+    },
 )
 
 if __name__ == '__main__':
