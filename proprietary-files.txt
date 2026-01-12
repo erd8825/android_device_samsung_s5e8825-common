@@ -22,6 +22,13 @@ vendor/firmware/secure_configuration.flm.cfg.bin
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
 vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
 
+# Security - TEEgris
+vendor/bin/tzdaemon
+vendor/bin/tzts_daemon
+vendor/etc/init/teegris_v4.rc
+vendor/lib64/libteecl.so
+vendor/lib64/libuuid.so;MODULE_SUFFIX=.samsung
+
 # Wi-Fi - Firmware - from a53x - A536BXXSHFYI1
 vendor/firmware/wifi/mx140.bin|a2296e70ff2652ef1f02a5838a8708a60e9845f7
 vendor/firmware/wifi/mx140_t.bin|cd583f241fb0126f86b7bba05fd565801a117b47

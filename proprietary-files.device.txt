@@ -37,6 +37,9 @@ vendor/firmware/txse2.bin
 # Firmware
 vendor/firmware/dual_cal_wide_sub.bin
 
+# Security - TEEgris - Firmware
+vendor/tee/tui/resolution_common/ID00000100
+
 # Wi-Fi - Firmware
 vendor/firmware/wifi/mx140_common.hcf
 vendor/firmware/wifi/mx140_wlan.hcf
