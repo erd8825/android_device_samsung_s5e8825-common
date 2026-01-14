@@ -22,6 +22,9 @@ vendor/firmware/secure_configuration.flm.cfg.bin
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
 vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
 
+# Security - Gatekeeper
+vendor/lib64/hw/gatekeeper.s5e8825.so
+
 # Security - TEEgris
 vendor/bin/tzdaemon
 vendor/bin/tzts_daemon
