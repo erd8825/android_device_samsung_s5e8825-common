@@ -90,6 +90,7 @@ TARGET_SOC := s5e8825
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
 
 # VINTF
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
 DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml
 
 # Wi-Fi

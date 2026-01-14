@@ -9,6 +9,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_system.mk)
 
 # All components inherited here go to system_ext image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_system_ext.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_system_ext.mk)
 
 # All components inherited here go to product image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_product.mk)
@@ -120,6 +121,7 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi.passpoint.prebuilt.xml \
     android.hardware.wifi.prebuilt.xml \
     android.software.ipsec_tunnels.prebuilt.xml \
+    android.software.sip.voip.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
 
 PRODUCT_COPY_FILES += \
