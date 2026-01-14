@@ -9,6 +9,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_system.mk)
 
 # All components inherited here go to system_ext image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_system_ext.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_system_ext.mk)
 
 # All components inherited here go to product image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_product.mk)
@@ -122,12 +123,14 @@ AB_OTA_UPDATER := false
 # Permissions
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
+    android.hardware.telephony.gsm.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
     android.hardware.wifi.direct.prebuilt.xml \
     android.hardware.wifi.passpoint.prebuilt.xml \
     android.hardware.wifi.prebuilt.xml \
     android.software.ipsec_tunnels.prebuilt.xml \
+    android.software.sip.voip.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
 
 PRODUCT_COPY_FILES += \
@@ -136,6 +139,14 @@ PRODUCT_COPY_FILES += \
 
 # Recovery - Init
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
+
+# RIL
+PRODUCT_PACKAGES += \
+    cbd \
+    secril_config_svc \
+    sehradiomanager
+
+$(call soong_config_set,cbd,protocol,sipc)
 
 # Security - Gatekeeper
 PRODUCT_PACKAGES += \
@@ -150,7 +161,8 @@ PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
     bootable/deprecated-ota \
     hardware/samsung \
-    hardware/samsung_slsi/libbt
+    hardware/samsung_slsi/libbt \
+    hardware/samsung_slsi-linaro/exynos/cpboot_v3
 
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung

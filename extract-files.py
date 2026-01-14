@@ -22,6 +22,8 @@ def lib_fixup_suffix(lib: str, *_):
     return f'{lib}.samsung'
 
 
+namespace_imports = ['hardware/samsung']
+
 blob_fixups: blob_fixups_user_type = {
     # Audio (- Dependecies)
     (
@@ -39,6 +41,7 @@ lib_fixups: lib_fixups_user_type = {'libuuid': lib_fixup_suffix}
 module = ExtractUtilsModule(
     's5e8825-common',
     'samsung',
+    namespace_imports=namespace_imports,
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
 )

@@ -28,5 +28,11 @@ bluetooth.profile.pan.panu.enabled=1
 bluetooth.profile.pbap.server.enabled=1
 bluetooth.profile.sap.server.enabled=1
 
+# RIL
+ro.carrier=unknown
+ro.radio.noril=no
+vendor.rild.libpath=/vendor/lib64/libsec-ril.so
+vendor.sec.rild.libpath=/vendor/lib64/libsec-ril.so
+
 # Wi-Fi
 ro.boot.wificountrycode=00

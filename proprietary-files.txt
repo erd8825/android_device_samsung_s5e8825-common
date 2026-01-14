@@ -17,7 +17,7 @@ vendor/etc/mixer_usb_white.xml
 # Audio - Dependencies - from a14x - A146BXXSDDZE1
 vendor/lib64/libaboxpcmdump.so|214eea47d5e95351b5321ace79baad6742b9f002|1649a53dd14362dca16c181c34e5e4c082e9c62e
 vendor/lib64/libalsautils_sec.so|631072998b07d31fd5c1604f763c429b0d677b64
-vendor/lib64/libaudio-ril.so;DISABLE_DEPS|53ed0f4cb9c63731cd73d0d22614260a53fbe2ee
+vendor/lib64/libaudio-ril.so|53ed0f4cb9c63731cd73d0d22614260a53fbe2ee
 vendor/lib64/libaudioparamupdate.so|a3183216bec09f49d8ea425dadf25b75e023430b|11550409c94137222cd3e3306a5b8f223163a02e
 vendor/lib64/libaudioproxy2.so|ba99c39accaddc8949a2666f96c7e814bc8076ed|d189daababb1510734230739d8036095742ae947
 vendor/lib64/libdatamod.so|f09c8b88fc5239d03c143bfe6cbc51bd757a622d
@@ -68,6 +68,39 @@ vendor/lib64/libsecnativefeature.so
 # Neural Networks - Firmware
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
 vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
+
+# RIL - from a55x - A556BXXSABYI1
+vendor/bin/hw/rild|e00d12047f9a3ce9eb75f38c6f43fa82564827f3
+vendor/etc/vintf/manifest/vendor.samsung.hardware.radio_manifest_2_34.xml|8a78a095378827de038b13e0470f6b43d60cf71a
+vendor/etc/vintf/manifest/vendor.samsung.hardware.sehradio_manifest_2_34.xml|ebbe359a9b2d78cb88debe79d9183c039afb7c01
+vendor/lib64/libVendorSemDataProps.so|68dae919cb8e4a36246fe6c3548fe7faf398bfcb
+vendor/lib64/libVendorSemTelephonyProps.so|684afb42daeec36fbb37987b06afb236df394a22
+vendor/lib64/libril_sem.so|489bdbfd9701e3b1979b8cc05133c733cc7f586b
+vendor/lib64/libsec-ril.so|b36460670b23a2d385123d5bb6b103691211d007
+vendor/lib64/libsecril-client.so|08be69e0a57e034f6b0b653aaff201509d7dfc5b
+vendor/lib64/libsemnativecarrierfeature.so|3a8102145028c96e7120ca5cb49b56b0f4b91f32
+vendor/lib64/vendor.samsung.hardware.radio-V1-ndk.so|05642682fee7b774b674bee8d5389e42919e2691
+vendor/lib64/vendor.samsung.hardware.radio.bridge-V1-ndk.so|7cea75e71274826e54c9ca5a3664e93d9ce42900
+vendor/lib64/vendor.samsung.hardware.radio.channel-V1-ndk.so|0c8caafffe1de898809ff33e5c3ef84a9149588d
+vendor/lib64/vendor.samsung.hardware.radio.data-V1-ndk.so|de741fe8c442fbf555020cbf01c5cdff2d93c58f
+vendor/lib64/vendor.samsung.hardware.radio.messaging-V1-ndk.so|253e1ee51bba7e8a61e93abc198c48cdfa21cf28
+vendor/lib64/vendor.samsung.hardware.radio.sim-V1-ndk.so|a2f0be5b802aa317d05f388b44a8b1917b02cfd7
+
+# RIL - Dependencies
+vendor/lib64/libengmode_client.so
+vendor/lib64/libvkmanager_vendor.so
+
+# RIL - Init
+vendor/etc/init/init.baseband.rc
+vendor/etc/init/init.vendor.rilcommon.rc
+vendor/etc/init/vendor.samsung.rild.rc
+
+# RIL - Miscellaneous
+vendor/etc/plmn_delta.bin
+vendor/etc/plmn_delta_chn.bin
+vendor/etc/plmn_delta_hktw.bin
+vendor/etc/plmn_delta_ltn.bin
+vendor/etc/plmn_se13_prebuilt.bin
 
 # Security - Gatekeeper
 vendor/lib64/hw/gatekeeper.s5e8825.so
