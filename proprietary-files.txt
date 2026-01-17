@@ -32,6 +32,14 @@ vendor/etc/init/teegris_v4.rc
 vendor/lib64/libteecl.so
 vendor/lib64/libuuid.so;MODULE_SUFFIX=.samsung
 
+# Wi-Fi - Configuration
+vendor/etc/wifi/p2p_supplicant_overlay.conf
+vendor/etc/wifi/wpa_supplicant_overlay.conf
+
 # Wi-Fi - Firmware - from a53x - A536BXXSHFYI1
 vendor/firmware/wifi/mx140.bin|a2296e70ff2652ef1f02a5838a8708a60e9845f7
 vendor/firmware/wifi/mx140_t.bin|cd583f241fb0126f86b7bba05fd565801a117b47
+
+# Wi-Fi - Init
+vendor/etc/init/wifi.rc
+vendor/etc/init/wifi_slsi.rc
