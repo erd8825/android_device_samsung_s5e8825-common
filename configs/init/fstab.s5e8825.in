@@ -23,3 +23,4 @@ vendor_dlkm                       /vendor_dlkm       erofs  ro                  
 /dev/block/zram0                  none               swap   defaults                                                                                                        zramsize=40%
 
 /devices/platform/100e0000.dwmmc2/mmc_host*    auto   auto      default                   voldmanaged=sdcard:auto
+/devices/platform/13200000.usb*                auto   vfat      default                   voldmanaged=usb:auto
