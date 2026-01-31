@@ -11,6 +11,9 @@ TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := cortex-a76
 
+# Bluetooth
+BOARD_HAVE_BLUETOOTH_SLSI := true
+
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_KERNEL_CONFIG := s5e8825_defconfig $(TARGET_DEVICE).config

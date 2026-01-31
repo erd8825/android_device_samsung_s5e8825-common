@@ -27,6 +27,17 @@ $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
 COMMON_PATH := device/samsung/s5e8825-common
 
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl \
+    android.hardware.bluetooth@1.0-service \
+    libbt-vendor
+
+# Bluetooth - Configuration
+PRODUCT_COPY_FILES += \
+    hardware/samsung_slsi/libbt/conf/bt_did.conf:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth/bt_did.conf \
+    hardware/samsung_slsi/libbt/conf/bt_vendor.conf:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth/bt_vendor.conf
+
 # Branding
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
@@ -80,6 +91,7 @@ AB_OTA_UPDATER := false
 
 # Permissions
 PRODUCT_PACKAGES += \
+    android.hardware.bluetooth.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
     android.hardware.wifi.direct.prebuilt.xml \
@@ -103,7 +115,8 @@ BOARD_SHIPPING_API_LEVEL := 31
 PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
     bootable/deprecated-ota \
-    hardware/samsung
+    hardware/samsung \
+    hardware/samsung_slsi/libbt
 
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung
