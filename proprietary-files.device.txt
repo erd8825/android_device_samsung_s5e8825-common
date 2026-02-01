@@ -37,6 +37,9 @@ vendor/firmware/txse2.bin
 # Firmware
 vendor/firmware/dual_cal_wide_sub.bin
 
+# Miscellaneous - Dependencies
+vendor/etc/floating_feature.xml
+
 # Security - TEEgris - Firmware
 vendor/tee/tui/resolution_common/ID00000100
 

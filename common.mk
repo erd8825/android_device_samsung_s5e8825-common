@@ -27,6 +27,29 @@ $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
 COMMON_PATH := device/samsung/s5e8825-common
 
+# Audio
+PRODUCT_PACKAGES += \
+    android.hardware.audio@7.0-impl \
+    android.hardware.audio.effect@7.0-impl \
+    android.hardware.audio.service \
+    android.hardware.bluetooth.audio-impl \
+    audio.bluetooth.default \
+    audio.r_submix.default \
+    audio.usb.default
+
+# Audio - Configuration
+PRODUCT_PACKAGES += \
+    audio_effects.xml \
+    audio_policy_configuration.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
+
+# Audio - FX
+TARGET_EXCLUDES_AUDIOFX := true
+
 # Bluetooth
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
@@ -99,6 +122,10 @@ PRODUCT_PACKAGES += \
     android.hardware.wifi.prebuilt.xml \
     android.software.ipsec_tunnels.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
+    frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
 # Recovery - Init
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
