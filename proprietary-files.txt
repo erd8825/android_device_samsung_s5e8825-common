@@ -5,6 +5,23 @@
 
 # Common proprietary files - from A266MUBU9CZEA, unless pinned
 
+# Audio - Configuration
+vendor/etc/audio_board_info.xml
+vendor/etc/mixer_usb_default.xml
+vendor/etc/mixer_usb_gray.xml
+vendor/etc/mixer_usb_white.xml
+
+# Audio - Effects
+vendor/lib64/libprofileparamstorage.so
+vendor/lib64/libsecaudiocoreutils.so
+vendor/lib64/libsecaudioinfo.so
+
+# Audio - Effects - from a54x - A546BXXUJFZE9
+vendor/lib64/libSamsungPostProcessConvertor.so|2c1a5325c85a15e3c27d6b985ae37dc809d01a13
+vendor/lib64/lib_SamsungRec_07010.so|48fb941f1ab8f1ec4c7e19ab39449555e2a6d902
+vendor/lib64/lib_SoundAlive_SRC384_ver330.so|b5c51bc10e235e0b1ab460c5c5ea7e216f1b66c7
+vendor/lib64/lib_soundaliveresampler.so|05aa14149b410204d40f755394081b388eff072b
+
 # Audio - Firmware
 vendor/firmware/APSV_AUDIO_SLSI.bin
 vendor/firmware/avsyncmix.bin
@@ -20,6 +37,10 @@ vendor/etc/bluetooth/bt_did.conf
 # Camera - Firmware - Configuration
 vendor/firmware/default_configuration.flm.cfg.bin
 vendor/firmware/secure_configuration.flm.cfg.bin
+
+# Miscellaneous - Dependencies
+vendor/lib64/libfloatingfeature.so
+vendor/lib64/libsecnativefeature.so
 
 # Neural Networks - Firmware
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc

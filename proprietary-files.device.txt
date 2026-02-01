@@ -37,6 +37,9 @@ vendor/firmware/txse2.bin
 # Firmware
 vendor/firmware/dual_cal_wide_sub.bin
 
+# Miscellaneous - Dependencies
+vendor/etc/floating_feature.xml
+
 # Wi-Fi - Firmware
 vendor/firmware/wifi/mx140_common.hcf
 vendor/firmware/wifi/mx140_wlan.hcf
