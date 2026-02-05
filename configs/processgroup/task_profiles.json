@@ -410,7 +410,7 @@
           "Params":
           {
             "Controller": "blkio",
-            "Path": "background"
+            "Path": "low"
           }
         }
       ]
@@ -423,7 +423,7 @@
           "Params":
           {
             "Controller": "blkio",
-            "Path": ""
+            "Path": "normal"
           }
         }
       ]
@@ -436,7 +436,7 @@
           "Params":
           {
             "Controller": "blkio",
-            "Path": ""
+            "Path": "high"
           }
         }
       ]
@@ -449,7 +449,7 @@
           "Params":
           {
             "Controller": "blkio",
-            "Path": ""
+            "Path": "top"
           }
         }
       ]
