@@ -275,6 +275,9 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi-linaro/exynos/cpboot_v3
 
+# Task Profiles
+PRODUCT_PACKAGES += task_profiles.json.s5e8825
+
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung
 
