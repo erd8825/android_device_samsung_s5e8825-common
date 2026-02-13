@@ -51,6 +51,9 @@ $(call soong_config_set_bool,frameworks_av,use_aosp_audio_policy_volumes,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_default_volume_tables,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_r_submix_audio_policy_configuration,true)
 
+# Audio - Effects - Dolby
+PRODUCT_PACKAGES += SamsungDAP
+
 # Audio - FX
 TARGET_EXCLUDES_AUDIOFX := true
 

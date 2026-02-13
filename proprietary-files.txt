@@ -35,6 +35,12 @@ vendor/lib64/libsecaudiocoreutils.so
 vendor/lib64/libsecaudioinfo.so
 vendor/lib64/soundfx/libaudioeffectoffload.so
 
+# Audio - Effects - Dolby - Configuration
+vendor/etc/dolby/dax-default.xml
+
+# Audio - Effects - Dolby - Dependencies
+vendor/lib64/libspatializerparamstorage.so
+
 # Audio - Effects - from a54x - A546BXXUJFZE9
 vendor/lib64/libSamsungPostProcessConvertor.so|2c1a5325c85a15e3c27d6b985ae37dc809d01a13
 vendor/lib64/lib_SamsungRec_07010.so|48fb941f1ab8f1ec4c7e19ab39449555e2a6d902
