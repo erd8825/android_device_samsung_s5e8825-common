@@ -5,6 +5,9 @@
 
 # Device proprietary files - from the release mentioned in device's proprietary-files.txt
 
+# Audio - Effects - Dolby - Dependencies
+vendor/lib64/soundfx/libswdap.so
+
 # Audio - Effects - SoundBooster - Firmware
 vendor/firmware/SoundBoosterParam.bin
 
