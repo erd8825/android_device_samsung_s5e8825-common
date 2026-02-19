@@ -61,6 +61,10 @@ vendor/firmware/volumemonitor.bin
 vendor/firmware/default_configuration.flm.cfg.bin
 vendor/firmware/secure_configuration.flm.cfg.bin
 
+# Graphics - from a54x - A546BXXUJFZE9
+vendor/lib64/egl/libGLES_mali.so;SYMLINK=vendor/lib64/libOpenCL.so,vendor/lib64/libOpenCL.so.1,vendor/lib64/libOpenCL.so.1.1|668906da1c05740cbedf3cf4476ee550ace4c955
+vendor/lib64/hw/vulkan.mali.so|8d5c6634ec83b9d1940eb8327e2d84a2c3c6da56
+
 # Miscellaneous - Dependencies
 vendor/lib64/libfloatingfeature.so
 vendor/lib64/libsecnativefeature.so

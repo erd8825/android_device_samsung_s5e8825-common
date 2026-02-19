@@ -28,6 +28,17 @@ bluetooth.profile.pan.panu.enabled=1
 bluetooth.profile.pbap.server.enabled=1
 bluetooth.profile.sap.server.enabled=1
 
+# Graphics
+debug.renderengine.backend=skiavkthreaded
+debug.sf.latch_unsignaled=1
+debug.sf.predict_hwc_composition_strategy=0
+ro.hardware.egl=mali
+ro.hardware.vulkan=mali
+ro.opengles.version=196610
+ro.surface_flinger.clear_slots_with_set_layer_buffer=1
+ro.surface_flinger.supports_background_blur=1
+ro.vendor.ddk.set.afbc=1
+
 # RIL
 ro.carrier=unknown
 ro.radio.noril=no

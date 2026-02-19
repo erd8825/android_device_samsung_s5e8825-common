@@ -14,6 +14,9 @@ TARGET_CPU_VARIANT := cortex-a76
 # Bluetooth
 BOARD_HAVE_BLUETOOTH_SLSI := true
 
+# Graphics
+TARGET_USES_VULKAN := true
+
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_KERNEL_CONFIG := s5e8825_defconfig $(TARGET_DEVICE).config
@@ -77,6 +80,9 @@ BOARD_VENDOR := samsung
 TARGET_BOARD_PLATFORM := erd8825
 TARGET_BOOTLOADER_BOARD_NAME := s5e8825
 TARGET_SOC := s5e8825
+
+# Platform - Linaro
+include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
 
 # Properties
 TARGET_VENDOR_PROP += $(COMMON_PATH)/configs/props/vendor.prop

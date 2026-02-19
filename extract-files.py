@@ -32,6 +32,7 @@ def lib_fixup_suffix(lib: str, *_):
 namespace_imports = [
     'device/samsung/s5e8825-common',
     'hardware/samsung',
+    'hardware/samsung_slsi-linaro/graphics',
 ]
 
 
