@@ -141,6 +141,9 @@ PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 # Security - Gatekeeper
 PRODUCT_PACKAGES += android.hardware.gatekeeper-service.teegris
 
+# Security - Keymint
+PRODUCT_PACKAGES += android.hardware.security.keymint-service.samsung
+
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
