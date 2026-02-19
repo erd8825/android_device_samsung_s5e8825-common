@@ -76,6 +76,16 @@ PRODUCT_MANUFACTURER := samsung
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
+# Graphics
+PRODUCT_PACKAGES += \
+    android.hardware.composer.hwc3-service.slsi \
+    android.hardware.graphics.allocator@4.0-service \
+    android.hardware.graphics.mapper@4.0-impl \
+    android.hardware.memtrack-service.samsung-mali
+
+# Graphics - Linker
+PRODUCT_PACKAGES += public.libraries.txt
+
 # Health - Samsung
 PRODUCT_PACKAGES += \
     android.hardware.health-service.samsung \
@@ -98,7 +108,9 @@ PRODUCT_PACKAGES += toolbox.vendor_ramdisk
 # Overlays
 PRODUCT_PACKAGES += \
     FrameworkResOverlayCommon \
+    Launcher3QuickstepOverlayCommon \
     LineageSDKOverlayCommon \
+    SystemUIOverlayCommon \
     WiFiOverlayCommon
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
@@ -117,15 +129,21 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
+    android.hardware.vulkan.compute-0.prebuilt.xml \
+    android.hardware.vulkan.level-1.prebuilt.xml \
+    android.hardware.vulkan.version-1_3.prebuilt.xml \
     android.hardware.wifi.direct.prebuilt.xml \
     android.hardware.wifi.passpoint.prebuilt.xml \
     android.hardware.wifi.prebuilt.xml \
     android.software.ipsec_tunnels.prebuilt.xml \
+    android.software.opengles.deqp.level-2022-03-01.prebuilt.xml \
     android.software.sip.voip.prebuilt.xml \
+    android.software.vulkan.deqp.level-2022-03-01.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
+    frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
 # Properties
@@ -155,6 +173,8 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \
     hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1/proxy
+
+$(call inherit-product, hardware/samsung_slsi-linaro/config/config.mk)
 
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung

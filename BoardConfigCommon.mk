@@ -9,6 +9,9 @@ TARGET_ARCH_VARIANT := armv8-2a-dotprod
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_VARIANT := cortex-a76
 
+# Graphics
+TARGET_USES_VULKAN := true
+
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image
 TARGET_KERNEL_CONFIG := s5e8825_defconfig $(TARGET_DEVICE).config
@@ -85,6 +88,9 @@ BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 33554432
 TARGET_BOARD_PLATFORM := erd8825
 TARGET_BOOTLOADER_BOARD_NAME := s5e8825
 TARGET_SOC := s5e8825
+
+# Platform - Linaro
+include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
 
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
