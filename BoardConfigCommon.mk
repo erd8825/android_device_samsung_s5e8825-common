@@ -14,6 +14,16 @@ TARGET_CPU_VARIANT := cortex-a76
 # Bluetooth
 BOARD_HAVE_BLUETOOTH_SLSI := true
 
+# Display
+BOARD_USES_DISPLAY_COLOR_INTERFACE := true
+BOARD_USES_VIRTUAL_DISPLAY := true
+HWC_SUPPORT_COLOR_TRANSFORM := true
+TARGET_USES_DISPLAY_RENDER_INTENTS := true
+
+# Display - HDR
+BOARD_LIBHDR_PLUGIN := //vendor/samsung/s5e8825-common:libhdr_plugin_exynos8825
+BOARD_LIBHDR10P_META_PLUGIN := //vendor/samsung/s5e8825-common:libhdr10p_meta_plugin_default
+
 # Graphics
 TARGET_USES_VULKAN := true
 

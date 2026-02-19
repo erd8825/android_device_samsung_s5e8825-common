@@ -61,6 +61,22 @@ vendor/firmware/volumemonitor.bin
 vendor/firmware/default_configuration.flm.cfg.bin
 vendor/firmware/secure_configuration.flm.cfg.bin
 
+# Display - DQE
+vendor/etc/dqe/DQE_coef_data.xml
+vendor/etc/dqe/calib_data_atc.xml
+vendor/etc/dqe/calib_data_bypass.xml
+vendor/etc/dqe/calib_data_colormode0.xml
+vendor/etc/dqe/calib_data_colortemp.xml
+vendor/etc/dqe/calib_data_eyetemp.xml
+vendor/etc/dqe/calib_data_rgbgain.xml
+vendor/etc/dqe/calib_data_skincolor.xml
+vendor/etc/dqe/calib_data_whitepoint.xml
+
+# Display - HDR
+vendor/lib64/libdpuhdr10p_8825.so
+vendor/lib64/libhdr10p_meta_plugin_default.so
+vendor/lib64/libhdr_plugin_exynos8825.so
+
 # Graphics - from a54x - A546BXXUJFZE9
 vendor/lib64/egl/libGLES_mali.so;SYMLINK=vendor/lib64/libOpenCL.so,vendor/lib64/libOpenCL.so.1,vendor/lib64/libOpenCL.so.1.1|668906da1c05740cbedf3cf4476ee550ace4c955
 vendor/lib64/hw/vulkan.mali.so|8d5c6634ec83b9d1940eb8327e2d84a2c3c6da56
