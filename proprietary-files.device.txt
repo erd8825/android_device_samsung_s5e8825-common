@@ -4,3 +4,43 @@
 #
 
 # Device proprietary files - from the release mentioned in device's proprietary-files.txt
+
+# Audio - Effects - SoundBooster - Firmware
+vendor/firmware/SoundBoosterParam.bin
+
+# Audio - Firmware
+vendor/firmware/APBargeIn_AUDIO_SLSI.bin
+vendor/firmware/APBiBF_AUDIO_SLSI.bin
+vendor/firmware/a2dpcom.bin
+vendor/firmware/abox_tplg.bin
+vendor/firmware/abox_tplg.conf
+vendor/firmware/calliope_dram.bin
+vendor/firmware/rxse.bin
+vendor/firmware/sb_music.bin
+vendor/firmware/sb_others.bin
+vendor/firmware/sectiongraph_tplg.bin
+
+# Audio - Firmware - Configuration
+vendor/firmware/sectiongraph_tplg.conf
+
+# Bluetooth - Firmware
+vendor/firmware/wifi/mx140_bt.hcf
+
+# Camera - Firmware
+vendor/firmware/SetMultiCalInfo.bin
+vendor/firmware/is_fw_mcu.bin
+vendor/firmware/is_lib.bin
+vendor/firmware/is_rta.bin
+vendor/firmware/txse1.bin
+vendor/firmware/txse2.bin
+
+# Firmware
+vendor/firmware/dual_cal_wide_sub.bin
+
+# Wi-Fi - Firmware
+vendor/firmware/wifi/mx140_common.hcf
+vendor/firmware/wifi/mx140_wlan.hcf
+vendor/firmware/wifi/mx140_wlan_sw.hcf
+vendor/firmware/wifi/mx140_wlan_t.hcf
+vendor/firmware/wifi/mx140_wlan_t_sw.hcf
+vendor/firmware/wifi/slsi_reg_database.bin
