@@ -88,6 +88,9 @@ PRODUCT_PACKAGES += \
 # Display - Touch - Lineage
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
+# DRM - Clearkey
+PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
+
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
