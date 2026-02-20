@@ -73,6 +73,18 @@ PRODUCT_PACKAGES += \
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# Codec2
+PRODUCT_PACKAGES += samsung.hardware.media.c2-service
+
+# Codec2 - Codecs
+PRODUCT_PACKAGES += \
+    libExynosC2H264Dec \
+    libExynosC2H264Enc \
+    libExynosC2HevcDec \
+    libExynosC2HevcEnc \
+    libExynosC2Vp8Dec \
+    libExynosC2Vp8Enc
+
 # Display - Touch - Lineage
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
