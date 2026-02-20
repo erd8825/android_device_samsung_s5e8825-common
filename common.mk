@@ -159,6 +159,7 @@ AB_OTA_UPDATER := false
 # Permissions
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
+    android.hardware.location.gps.prebuilt.xml \
     android.hardware.telephony.gsm.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \

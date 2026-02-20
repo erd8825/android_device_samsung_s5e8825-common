@@ -88,6 +88,20 @@ vendor/etc/vintf/manifest/manifest_android.hardware.drm-service.widevine.xml|7e1
 vendor/lib64/liboemcrypto.so|0f23089c54ce5ca89d1cd0ff3356c1debc28968e
 vendor/lib64/libwvaidl.so|c736b77f5d065cc03de9e5bbb20c26b6cced8710|0291814fb9f571e615a83d019846e2c4b26e07e4
 
+# GPS
+vendor/bin/hw/gps.sh
+vendor/bin/hw/gpsd
+vendor/bin/hw/vendor.samsung.hardware.gnss@2.1-service
+vendor/etc/gnss/ca.pem
+vendor/etc/gnss/gps.cfg
+vendor/etc/init/init.gps.rc
+vendor/etc/init/vendor.samsung.hardware.gnss@2.1-service.rc
+vendor/lib64/hw/android.hardware.gnss@2.1-impl.so;FIX_SONAME
+vendor/lib64/hw/vendor.samsung.hardware.gnss@2.1-impl.so;FIX_SONAME
+vendor/lib64/libwrappergps.so
+vendor/lib64/vendor.samsung.hardware.gnss@2.0.so
+vendor/lib64/vendor.samsung.hardware.gnss@2.1.so
+
 # Graphics - from a54x - A546BXXUJFZE9
 vendor/lib64/egl/libGLES_mali.so;SYMLINK=vendor/lib64/libOpenCL.so,vendor/lib64/libOpenCL.so.1,vendor/lib64/libOpenCL.so.1.1|668906da1c05740cbedf3cf4476ee550ace4c955
 vendor/lib64/hw/vulkan.mali.so|8d5c6634ec83b9d1940eb8327e2d84a2c3c6da56
