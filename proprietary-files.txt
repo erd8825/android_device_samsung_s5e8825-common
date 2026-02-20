@@ -69,6 +69,15 @@ vendor/lib64/libhdr_plugin_exynos8825.so
 vendor/apex/com.google.android.widevine.nonupdatable.apex|e1760a5b5063cc4cec93721b518022ed8ad87511
 vendor/lib64/liboemcrypto.so|96ba911212e491f32c8c627b97ba3fbcc76f6017
 
+# GPS
+vendor/bin/hw/gps.sh
+vendor/bin/hw/gpsd
+vendor/etc/gnss/ca.pem
+vendor/etc/gnss/gps.cfg
+vendor/etc/init/init.gps.rc
+vendor/lib64/hw/android.hardware.gnss@2.1-impl.so;FIX_SONAME
+vendor/lib64/libwrappergps.so
+
 # Graphics - from a54x - A546BXXUJFZE9
 vendor/lib64/egl/libGLES_mali.so;SYMLINK=vendor/lib64/libOpenCL.so,vendor/lib64/libOpenCL.so.1,vendor/lib64/libOpenCL.so.1.1|668906da1c05740cbedf3cf4476ee550ace4c955
 vendor/lib64/hw/vulkan.mali.so|8d5c6634ec83b9d1940eb8327e2d84a2c3c6da56

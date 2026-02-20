@@ -94,6 +94,9 @@ PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
+# GPS
+PRODUCT_PACKAGES += android.hardware.gnss@2.1-service.samsung
+
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.slsi \
@@ -146,6 +149,7 @@ AB_OTA_UPDATER := false
 # Permissions
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
+    android.hardware.location.gps.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
     android.hardware.vulkan.compute-0.prebuilt.xml \
