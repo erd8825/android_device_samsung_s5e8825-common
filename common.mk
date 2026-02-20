@@ -97,6 +97,9 @@ TARGET_SCREEN_DENSITY := 450
 # Display - Touch - Lineage
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
+# DRM - Clearkey
+PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
+
 # Fastboot
 PRODUCT_PACKAGES += fastbootd
 

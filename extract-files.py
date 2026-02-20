@@ -67,6 +67,8 @@ blob_fixups: blob_fixups_user_type = {
     ): blob_fixup()
     .replace_needed('libaudioroute.so', 'libaudioroute.samsung.so')
     .replace_needed('libtinyalsa.so', 'libtinyalsa.samsung.so'),
+    # DRM - Widevine
+    'vendor/lib64/libwvaidl.so': blob_fixup().replace_needed('libprotobuf-cpp-lite-3.9.1.so', 'libprotobuf-cpp-full-3.9.1.so'),
     # RIL
     'vendor/lib64/libsec-ril-impl.so': blob_fixup()
         # Always emit uiccApplicationsEnablementChanged
@@ -108,7 +110,10 @@ blob_fixups: blob_fixups_user_type = {
         .call(rename_dynamic_symbol, 'OPENSSL_sk_value', 'sk_value'),
 }  # fmt: skip
 
-lib_fixups: lib_fixups_user_type = {'libuuid': lib_fixup_suffix}
+lib_fixups: lib_fixups_user_type = {
+    **lib_fixups,
+    'libuuid': lib_fixup_suffix,
+}
 
 module = ExtractUtilsModule(
     's5e8825-common',

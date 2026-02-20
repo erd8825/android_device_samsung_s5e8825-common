@@ -81,6 +81,13 @@ vendor/lib64/libdpuhdr10p_8825.so
 vendor/lib64/libhdr10p_meta_plugin_default.so
 vendor/lib64/libhdr_plugin_exynos8825.so
 
+# DRM - Widevine - from a54x - A546BXXUJFZE9
+vendor/bin/hw/android.hardware.drm-service.widevine|8067253631a71e2ad01abb33cbc9257eda611ad2
+vendor/etc/init/android.hardware.drm-service.widevine.rc|54c79ef531c9c135fa234a8515b3d37f0e1ccc4d
+vendor/etc/vintf/manifest/manifest_android.hardware.drm-service.widevine.xml|7e13b6628572b1cdd76351b744e2805d4e6f2dd9
+vendor/lib64/liboemcrypto.so|0f23089c54ce5ca89d1cd0ff3356c1debc28968e
+vendor/lib64/libwvaidl.so|c736b77f5d065cc03de9e5bbb20c26b6cced8710|0291814fb9f571e615a83d019846e2c4b26e07e4
+
 # Graphics - from a54x - A546BXXUJFZE9
 vendor/lib64/egl/libGLES_mali.so;SYMLINK=vendor/lib64/libOpenCL.so,vendor/lib64/libOpenCL.so.1,vendor/lib64/libOpenCL.so.1.1|668906da1c05740cbedf3cf4476ee550ace4c955
 vendor/lib64/hw/vulkan.mali.so|8d5c6634ec83b9d1940eb8327e2d84a2c3c6da56
