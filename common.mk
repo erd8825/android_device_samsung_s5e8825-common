@@ -102,6 +102,9 @@ TARGET_SCREEN_DENSITY := 450
 # Display - Touch - Lineage
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
+# Doze
+PRODUCT_PACKAGES += SamsungDoze
+
 # DRM - Clearkey
 PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
 
