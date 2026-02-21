@@ -50,6 +50,23 @@ def rename_dynamic_symbol(
 
 
 blob_fixups: blob_fixups_user_type = {
+    # Neural Networks
+    'vendor/lib64/libeden_ud_gpu.so': blob_fixup()
+        .add_needed('libeden_ud_cpu.so')
+        .replace_needed('libOpenCL.so', 'libGLES_mali.so'),
+    'vendor/lib64/libgraphgen_ann_import_s.so': blob_fixup()
+         .clear_symbol_version('AHardwareBuffer_describe')
+         .clear_symbol_version('AHardwareBuffer_lock')
+         .clear_symbol_version('AHardwareBuffer_unlock'),
+    'vendor/lib64/libnpuc_backend.so': blob_fixup().add_needed('libnpuc_cmdq.so'),
+    'vendor/lib64/libnpuc_graph.so': blob_fixup().add_needed('libnpuc_common.so'),
+    (
+        'vendor/lib64/libnpuc_backend.so',
+        'vendor/lib64/libnpuc_common.so',
+        'vendor/lib64/libnpuc_controller.so',
+        'vendor/lib64/libnpuc_frontend.so',
+        'vendor/lib64/libnpuc_template.so'
+    ): blob_fixup().add_needed('liblog.so'),
     # RIL
     'vendor/etc/init/init.baseband.rc': blob_fixup().regex_replace('\n.*\n.*\n.*nic\n', ''),
     'vendor/etc/init/init.vendor.rilcommon.rc': blob_fixup().regex_replace('\n.*\n.*n}\n', ''),
