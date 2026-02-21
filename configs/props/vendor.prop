@@ -58,6 +58,14 @@ ro.surface_flinger.enable_layer_caching=true
 ro.surface_flinger.supports_background_blur=1
 ro.vendor.ddk.set.afbc=1
 
+# Neural Networks
+log.tag.EDEN=I
+ro.vendor.eden.core_mask=112
+ro.vendor.eden.devices=CPU1_GPU1_NPU1
+ro.vendor.eden.npu.version.path=/sys/devices/platform/npu_exynos/version
+ro.vendor.eden.mnonm=32
+ro.vendor.eden.mrs=16
+
 # Power
 vendor.powerhal.disp.idle_support=0
 
