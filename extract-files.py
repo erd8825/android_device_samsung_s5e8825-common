@@ -32,6 +32,7 @@ def lib_fixup_suffix(lib: str, *_):
 namespace_imports = [
     'device/samsung/s5e8825-common',
     'hardware/samsung',
+    'hardware/samsung_slsi-linaro/exynos',
     'hardware/samsung_slsi-linaro/graphics',
 ]
 
@@ -67,6 +68,8 @@ blob_fixups: blob_fixups_user_type = {
     ): blob_fixup()
     .replace_needed('libaudioroute.so', 'libaudioroute.samsung.so')
     .replace_needed('libtinyalsa.so', 'libtinyalsa.samsung.so'),
+    # Camera - Dependecies
+    'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libshim_sensorndkbridge.so'),
     # DRM - Widevine
     'vendor/lib64/libwvaidl.so': blob_fixup().replace_needed('libprotobuf-cpp-lite-3.9.1.so', 'libprotobuf-cpp-full-3.9.1.so'),
     # Neural Networks - Dependecies
