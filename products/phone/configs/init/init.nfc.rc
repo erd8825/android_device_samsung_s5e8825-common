@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+on late-init
+    write /sys/class/nfc_sec/pvdd "1"
+
+on post-fs-data
+    write /sys/class/nfc_sec/pvdd "2"
+    mkdir /data/vendor/nfc 0770 nfc nfc
+
+on early-boot
+    write /sys/class/nfc_sec/pvdd "3"
