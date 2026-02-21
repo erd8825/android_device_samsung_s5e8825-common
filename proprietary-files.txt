@@ -163,6 +163,17 @@ vendor/etc/init/teegris_v4.rc
 vendor/lib64/libteecl.so
 vendor/lib64/libuuid.so;MODULE_SUFFIX=.samsung
 
+# Sensors
+vendor/lib64/sensors.grip.so
+vendor/lib64/sensors.inputvirtual.so
+vendor/lib64/sensors.sensorhub.so
+
+# Sensors - Configuration
+vendor/etc/sensors/hals.conf
+
+# Sensors - Init
+vendor/etc/init/init.sensorhub.rc
+
 # Thermal - from a55x - A556BXXSGDZG2
 vendor/bin/hw/vendor.samsung.hardware.thermal-service|54b4e45fffd78c6105a9df129d98ee2f8189db41
 vendor/etc/init/vendor.samsung.hardware.thermal-default.rc|6be0232a24c97da0287aa407af9cbd2c9d9200a8

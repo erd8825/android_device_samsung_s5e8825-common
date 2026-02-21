@@ -172,6 +172,11 @@ AB_OTA_UPDATER := false
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
     android.hardware.location.gps.prebuilt.xml \
+    android.hardware.sensor.accelerometer.prebuilt.xml \
+    android.hardware.sensor.gyroscope.prebuilt.xml \
+    android.hardware.sensor.light.prebuilt.xml \
+    android.hardware.sensor.stepcounter.prebuilt.xml \
+    android.hardware.sensor.stepdetector.prebuilt.xml \
     android.hardware.telephony.gsm.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
@@ -221,6 +226,9 @@ PRODUCT_PACKAGES += \
 
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
+
+# Sensors
+PRODUCT_PACKAGES += android.hardware.sensors-service.samsung-multihal
 
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += \

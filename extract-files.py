@@ -108,6 +108,15 @@ blob_fixups: blob_fixups_user_type = {
         .call(rename_dynamic_symbol, 'OPENSSL_sk_num', 'sk_num')
         .call(rename_dynamic_symbol, 'OPENSSL_sk_push', 'sk_push')
         .call(rename_dynamic_symbol, 'OPENSSL_sk_value', 'sk_value'),
+    # Sensors - Dependecies
+    (
+        'vendor/lib64/sensors.grip.so',
+        'vendor/lib64/sensors.inputvirtual.so',
+        'vendor/lib64/sensors.sensorhub.so',
+    ): blob_fixup()
+        .add_needed('libutils-v32.so')
+        .binary_regex_replace(b'_ZN7android6Thread3runEPKcim', b'_ZN7utils326Thread3runEPKcim')
+        .remove_needed('libhidltransport.so'),
 }  # fmt: skip
 
 lib_fixups: lib_fixups_user_type = {
