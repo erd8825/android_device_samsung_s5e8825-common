@@ -73,6 +73,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# Camera - Provider
+PRODUCT_PACKAGES += android.hardware.camera.provider-service.samsung
+
+$(call soong_config_set_bool,samsungCameraVars,usage_64bit,true)
+
 # Codec2
 PRODUCT_PACKAGES += samsung.hardware.media.c2-service
 
@@ -145,6 +150,7 @@ PRODUCT_PACKAGES += \
 
 # Overlays
 PRODUCT_PACKAGES += \
+    ApertureOverlayCommon \
     FrameworkResOverlayCommon \
     Launcher3QuickstepOverlayCommon \
     LineageSDKOverlayCommon \
@@ -166,6 +172,10 @@ AB_OTA_UPDATER := false
 # Permissions
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.prebuilt.xml \
+    android.hardware.camera.flash-autofocus.prebuilt.xml \
+    android.hardware.camera.front.prebuilt.xml \
+    android.hardware.camera.full.prebuilt.xml \
+    android.hardware.camera.raw.prebuilt.xml \
     android.hardware.location.gps.prebuilt.xml \
     android.hardware.sensor.accelerometer.prebuilt.xml \
     android.hardware.sensor.gyroscope.prebuilt.xml \
@@ -188,6 +198,7 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
+    frameworks/native/data/etc/android.hardware.camera.ar.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.ar.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
