@@ -16,6 +16,10 @@ on init
     symlink /dev/block/by-name/persistent /dev/block/persistent
     symlink /dev/block/by-name/param /dev/block/param
 
+    # Permissions for Fastcharge
+    chown system radio /sys/class/sec/switch/afc_disable
+    chown system system /sys/class/power_supply/battery/charging_enabled
+
     # GFX
     chown system system /sys/kernel/asv/power_model_0
     chown system system /sys/kernel/asv/power_model_1
