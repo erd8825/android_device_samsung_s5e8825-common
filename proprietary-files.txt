@@ -107,6 +107,17 @@ vendor/etc/init/teegris_v4.rc
 vendor/lib64/libteecl.so
 vendor/lib64/libuuid.so;MODULE_SUFFIX=.vendor
 
+# Sensors
+vendor/lib64/sensors.grip.so
+vendor/lib64/sensors.inputvirtual.so
+vendor/lib64/sensors.sensorhub.so
+
+# Sensors - Configuration
+vendor/etc/sensors/hals.conf
+
+# Sensors - Init
+vendor/etc/init/init.sensorhub.rc
+
 # Wi-Fi - Configuration
 vendor/etc/wifi/p2p_supplicant_overlay.conf
 vendor/etc/wifi/wpa_supplicant_overlay.conf

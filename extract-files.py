@@ -79,6 +79,15 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so', 'android.hardware.security.secureclock-V1-ndk.so')
         .replace_needed('android.hardware.security.sharedsecret-V1-ndk_platform.so', 'android.hardware.security.sharedsecret-V1-ndk.so')
         .replace_needed('libcrypto.so', 'libcrypto-v33.so'),
+    # Sensors - Dependecies
+    (
+        'vendor/lib64/sensors.grip.so',
+        'vendor/lib64/sensors.inputvirtual.so',
+        'vendor/lib64/sensors.sensorhub.so',
+    ): blob_fixup()
+        .add_needed('libutils-v32.so')
+        .binary_regex_replace(b'_ZN7android6Thread3runEPKcim', b'_ZN7utils326Thread3runEPKcim')
+        .remove_needed('libhidltransport.so'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
