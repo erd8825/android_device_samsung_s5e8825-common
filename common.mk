@@ -276,6 +276,9 @@ $(call soong_config_set,samsungUsbGadgetVars,gadget_name,13200000.dwc3)
 # USB - Gadget - Init
 PRODUCT_PACKAGES += init.s5e8825.usb.rc
 
+# Vibrator
+PRODUCT_PACKAGES += android.hardware.vibrator-service.samsung
+
 # Wi-Fi
 PRODUCT_PACKAGES += \
     android.hardware.wifi-service \
