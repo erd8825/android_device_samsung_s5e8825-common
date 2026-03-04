@@ -122,6 +122,10 @@ module = ExtractUtilsModule(
 )
 
 module.add_proprietary_file(
+    'products/phone/proprietary-files.txt'
+).add_copy_files_guard('PRODUCT_CHARACTERISTICS', 'phone')
+
+module.add_proprietary_file(
     'products/ril/proprietary-files.txt'
 ).add_copy_files_guard('TARGET_HAS_RIL', 'true')
 
