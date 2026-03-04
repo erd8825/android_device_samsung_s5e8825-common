@@ -111,6 +111,9 @@ PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
 # Fastboot
 PRODUCT_PACKAGES += fastbootd
 
+# Fingerprint
+PRODUCT_PACKAGES += android.hardware.biometrics.fingerprint-service.samsung
+
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
@@ -190,6 +193,7 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.front.prebuilt.xml \
     android.hardware.camera.full.prebuilt.xml \
     android.hardware.camera.raw.prebuilt.xml \
+    android.hardware.fingerprint.prebuilt.xml \
     android.hardware.location.gps.prebuilt.xml \
     android.hardware.nfc.prebuilt.xml \
     android.hardware.nfc.hce.prebuilt.xml \

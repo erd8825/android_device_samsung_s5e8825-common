@@ -104,6 +104,10 @@ vendor/etc/vintf/manifest/manifest_android.hardware.drm-service.widevine.xml|7e1
 vendor/lib64/liboemcrypto.so|0f23089c54ce5ca89d1cd0ff3356c1debc28968e
 vendor/lib64/libwvaidl.so|c736b77f5d065cc03de9e5bbb20c26b6cced8710|0291814fb9f571e615a83d019846e2c4b26e07e4
 
+# Fingerprint - Dependencies
+vendor/lib64/libqfp_sensortest.so
+vendor/lib64/libsynaFpSensorTestNwd.so
+
 # GPS
 vendor/bin/hw/gps.sh
 vendor/bin/hw/gpsd

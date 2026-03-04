@@ -794,6 +794,24 @@ on boot
 
     write /sys/class/nfc_sec/pvdd "3"
 
+    chown system radio /sys/class/fingerprint/fingerprint/type_check
+    chown system radio /sys/class/fingerprint/fingerprint/name
+    chown system radio /sys/class/fingerprint/fingerprint/vendor
+    chown system radio /sys/class/fingerprint/fingerprint/adm
+    chown system radio /sys/class/fingerprint/fingerprint/bfs_values
+    chown system radio /sys/class/fingerprint/fingerprint/position
+    chown system radio /sys/class/fingerprint/fingerprint/cbgecnt
+    chown system radio /sys/class/fingerprint/fingerprint/intcnt
+    chown system radio /sys/class/fingerprint/fingerprint/resetcnt
+    chown system radio /sys/class/fingerprint/fingerprint/wuhbtest
+    chown system radio /sys/class/fingerprint/fingerprint/rb
+
+    mkdir /data/vendor/misc 0770 system system
+    mkdir /data/vendor/biometrics 0770 system system
+    mkdir /data/vendor/fpSnrTest 0770 system system
+    mkdir /efs/biometrics 0770 system system
+    mkdir /efs/biometrics/meta 0770 system system
+
 on early-fs
     write /sys/devices/platform/fmp/fmp-fips/fmp_fips_run 1
 
