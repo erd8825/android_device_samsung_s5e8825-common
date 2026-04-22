@@ -171,6 +171,7 @@ PRODUCT_PACKAGES += \
     ApertureOverlayCommon \
     FrameworkResOverlayCommon \
     Launcher3QuickstepOverlayCommon \
+    LineageSDKOverlayCommon \
     SettingsOverlayCommon \
     SystemUIOverlayCommon \
     WiFiOverlayCommon
