@@ -5,29 +5,11 @@
 
 # Common proprietary files - from A266MUBU9CZEA, unless pinned
 
-# Audio - from a14x - A146BXXSDDZE1
-vendor/lib64/hw/audio.primary.s5e8825.so;FIX_SONAME|a1f545044aada7e41872ba1a821ef04ae0387a51|568f75f8d95cfac8a27786624b089ae5c267958d
-
 # Audio - Configuration
 vendor/etc/audio_board_info.xml
 vendor/etc/mixer_usb_default.xml
 vendor/etc/mixer_usb_gray.xml
 vendor/etc/mixer_usb_white.xml
-
-# Audio - Dependencies - from a14x - A146BXXSDDZE1
-vendor/lib64/libaboxpcmdump.so|214eea47d5e95351b5321ace79baad6742b9f002|1649a53dd14362dca16c181c34e5e4c082e9c62e
-vendor/lib64/libalsautils_sec.so|631072998b07d31fd5c1604f763c429b0d677b64
-vendor/lib64/libaudio-ril.so|53ed0f4cb9c63731cd73d0d22614260a53fbe2ee
-vendor/lib64/libaudioparamupdate.so|a3183216bec09f49d8ea425dadf25b75e023430b|11550409c94137222cd3e3306a5b8f223163a02e
-vendor/lib64/libaudioproxy2.so|ba99c39accaddc8949a2666f96c7e814bc8076ed|d189daababb1510734230739d8036095742ae947
-vendor/lib64/libdatamod.so|f09c8b88fc5239d03c143bfe6cbc51bd757a622d
-vendor/lib64/liblastaboxmsg.so|feffcde6adf20418135792b73f4fe05bd0c846e4
-vendor/lib64/libsecaudiolevel.so|1080b0c8b417ba2ebe930d3ad72d9ffb56b1dbd1
-vendor/lib64/libsehbluetooth_audio_session_aidl.so|c4f51fd336c32e4e35d2e3edf2d5c886195936e3
-vendor/lib64/libspeakercalibration.so|2e2364dd880a61d6311334879203955f899107a5
-vendor/lib64/vendor.samsung.hardware.bluetooth.audio-V1-ndk.so|e860ba5f7fe9ddcfef71dc7ec21f3cfc35a1c266
-vendor/lib64/vndk/libaudioroute.so:vendor/lib64/libaudioroute.samsung.so;FIX_SONAME|12c8e7298e1e87c1f01e644574cb9e604c46ec02|df3a29ef022eb52b965d4bf6e99fc76e475ff3d4
-vendor/lib64/vndk/libtinyalsa.so:vendor/lib64/libtinyalsa.samsung.so;FIX_SONAME|cc65dec7d0a17c806a9b5e535da0cd7448781f59|f71d8cff1d4ada9c80723c0be6e9df3a23346134
 
 # Audio - Effects
 vendor/lib64/libprofileparamstorage.so

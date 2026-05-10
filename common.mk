@@ -33,11 +33,12 @@ COMMON_PATH := device/samsung/s5e8825-common
 
 # Audio
 PRODUCT_PACKAGES += \
-    android.hardware.audio@7.0-impl \
+    android.hardware.audio@7.1-impl \
     android.hardware.audio.effect@7.0-impl \
     android.hardware.audio.service \
     android.hardware.bluetooth.audio-impl \
     audio.bluetooth.default \
+    audio.primary.erd8825 \
     audio.r_submix.default \
     audio.usbv2.default
 
@@ -51,6 +52,14 @@ PRODUCT_PACKAGES += \
     bluetooth_audio_policy_configuration_7_0.xml \
     usbv2_audio_policy_configuration.xml
 
+$(call soong_config_set,exynos_audio,proxy_header,//$(COMMON_PATH):audio_proxy_headers)
+$(call soong_config_set,exynos_audio,sec_resampler_library,//vendor/samsung/s5e8825-common:libSamsungPostProcessConvertor)
+$(call soong_config_set_bool,exynos_audio,support_direct_multi_channel_stream,true)
+$(call soong_config_set_bool,exynos_audio,use_offload_effect_library,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_dynamic_nrec,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_samsungrecord,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_support_gamechat_spk_aec,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_support_listenback_dspeffect,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_audio_policy_volumes,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_default_volume_tables,true)
 $(call soong_config_set_bool,frameworks_av,use_aosp_r_submix_audio_policy_configuration,true)
@@ -273,7 +282,9 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/pixel \
     hardware/samsung \
     hardware/samsung_slsi/libbt \
-    hardware/samsung_slsi-linaro/exynos/cpboot_v3
+    hardware/samsung_slsi-linaro/exynos/cpboot_v3 \
+    hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \
+    hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1/proxy
 
 # Task Profiles
 PRODUCT_PACKAGES += task_profiles.json.s5e8825

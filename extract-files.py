@@ -59,15 +59,6 @@ def rename_dynamic_symbol(
 
 
 blob_fixups: blob_fixups_user_type = {
-    # Audio (- Dependecies)
-    (
-        'vendor/lib64/libaboxpcmdump.so',
-        'vendor/lib64/libaudioparamupdate.so',
-        'vendor/lib64/libaudioproxy2.so',
-        'vendor/lib64/hw/audio.primary.s5e8825.so',
-    ): blob_fixup()
-    .replace_needed('libaudioroute.so', 'libaudioroute.samsung.so')
-    .replace_needed('libtinyalsa.so', 'libtinyalsa.samsung.so'),
     # Camera - Dependecies
     'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libsensorndkbridge_shim.samsung.so'),
     # DRM - Widevine
