@@ -95,6 +95,7 @@ TARGET_SOC := s5e8825
 include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
 
 # Properties
+TARGET_PRODUCT_PROP += $(COMMON_PATH)/configs/props/product.prop
 TARGET_VENDOR_PROP += $(COMMON_PATH)/configs/props/vendor.prop
 
 # Recovery
@@ -107,6 +108,9 @@ TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 
 # SELinux
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += \
+    $(COMMON_PATH)/sepolicy/system_ext/private \
+    packages/modules/ImsMedia/sepolicy/system_ext/private # !TEMP!
 BOARD_SEPOLICY_TEE_FLAVOR := teegris
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
 include device/lineage/sepolicy/libperfmgr/sepolicy.mk
