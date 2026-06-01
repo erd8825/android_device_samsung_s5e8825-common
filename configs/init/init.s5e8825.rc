@@ -152,18 +152,11 @@ on init
     # EPIC interfaces
     chown system system /dev/bus_throughput
     chown system system /dev/bus_throughput_max
-    chown system system /dev/cluster0_freq_max
-    chown system system /dev/cluster0_freq_min
-    chown system system /dev/cluster1_freq_max
-    chown system system /dev/cluster1_freq_min
-    chown system system /dev/cpu_dma_latency
     chown system system /dev/cpu_online_max
     chown system system /dev/cpu_online_min
     chown system system /dev/device_throughput
     chown system system /dev/device_throughput_max
     chown system system /dev/exynos-migov
-    chown system system /dev/gpu_freq_max
-    chown system system /dev/gpu_freq_min
     chown system system /dev/mfc_throughput
     chown system system /dev/mfc_throughput_max
     chown system system /dev/mode
@@ -189,6 +182,34 @@ on init
 
     # Clear sched_util_clamp_min_rt_default
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
+
+    # Permissions for Power HAL
+    chown system system /dev/cluster0_freq_max
+    chown system system /dev/cluster0_freq_min
+    chown system system /dev/cluster1_freq_max
+    chown system system /dev/cluster1_freq_min
+    chown system system /dev/cpu_dma_latency
+    chown system system /dev/cpuctl/dex2oat/cpu.shares
+    chown system system /dev/cpuctl/foreground/cpu.shares
+    chown system system /dev/cpuctl/system/cpu.shares
+    chown system system /dev/cpuctl/top-app/cpu.shares
+    chown system system /dev/gpu_freq_max
+    chown system system /dev/gpu_freq_min
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control_level
+    chmod 0664 /dev/cluster0_freq_max
+    chmod 0664 /dev/cluster0_freq_min
+    chmod 0664 /dev/cluster1_freq_max
+    chmod 0664 /dev/cluster1_freq_min
+    chmod 0664 /dev/cpu_dma_latency
+    chmod 0664 /dev/cpuctl/dex2oat/cpu.shares
+    chmod 0664 /dev/cpuctl/foreground/cpu.shares
+    chmod 0664 /dev/cpuctl/system/cpu.shares
+    chmod 0664 /dev/cpuctl/top-app/cpu.shares
+    chmod 0664 /dev/gpu_freq_max
+    chmod 0664 /dev/gpu_freq_min
+    chmod 0664 /sys/devices/platform/exynos-ufcc/ucc/cstate_control
+    chmod 0664 /sys/devices/platform/exynos-ufcc/ucc/cstate_control_level
 
     # Start watchdog
     start watchdogd
@@ -601,9 +622,15 @@ on post-fs-data
     mkdir /data/vendor/eden 0771 system system
     mkdir /data/vendor/eden/gpu 0771 system system
 
+    # Permissions for Power HAL
+    chown system system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max
+    chown system system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min
+    chmod 0666 /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max
+    chmod 0666 /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min
+
 on boot
     # Permissions for Touchscreen
-    chown system radio /sys/class/sec/tsp/cmd
+    chown system system /sys/class/sec/tsp/cmd
     chown system system /sys/class/sec/tsp/enabled
     chown system system /sys/class/sec/tsp/prox_power_off
     chown system system /sys/class/sec/tsp/sensitivity_mode
@@ -966,6 +993,12 @@ on boot
     # GPU governor settings
     write /sys/devices/platform/10300000.mali/highspeed_clock 702000
     write /sys/devices/platform/10300000.mali/highspeed_load 80
+
+    # Permissions for Power HAL
+    chown system system /sys/class/power_supply/battery/lcd
+    chown system system /sys/kernel/mm/vmscan/am_app_launch
+    chmod 0664 /sys/class/power_supply/battery/lcd
+    chmod 0664 /sys/kernel/mm/vmscan/am_app_launch
 
     # usb usb_data_enabled
     chown root system /sys/class/usb_notify/usb_control/usb_data_enabled

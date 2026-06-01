@@ -105,6 +105,12 @@ include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
 
+# SELinux
+BOARD_SEPOLICY_TEE_FLAVOR := teegris
+BOARD_VENDOR_SEPOLICY_DIRS += device/samsung/s5e8825-common/sepolicy/vendor
+include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+include device/samsung_slsi/sepolicy/sepolicy.mk
+
 # VINTF
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
 DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml

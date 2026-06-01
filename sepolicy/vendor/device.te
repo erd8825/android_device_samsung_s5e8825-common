@@ -1,0 +1,16 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# DMA
+type vendor_bufcon_device, dev_type;
+
+# DRM - Widevine
+type vendor_secmem_device, dev_type;
+
+# GPS
+type gps_device, dev_type;
+
+# Partitions - Kernel
+type vendor_boot_block_device, dev_type;
