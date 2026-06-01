@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow hal_graphics_composer_default log_vendor_data_file:dir { add_name write search };
+allow hal_graphics_composer_default log_vendor_data_file:file { append create getattr open };
+allow hal_graphics_composer_default gpu_device:chr_file rw_file_perms;
+allow hal_graphics_composer_default self:netlink_kobject_uevent_socket { bind create read };
+allow hal_graphics_composer_default sysfs:file { open read };
+allow hal_graphics_composer_default sysfs_backlight_writable:file { getattr open read write };
+hal_client_domain(hal_graphics_composer_default, hal_graphics_allocator)
+set_prop(hal_graphics_composer_default, vendor_hwc_prop)
+vndbinder_use(hal_graphics_composer_default)

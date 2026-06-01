@@ -159,22 +159,17 @@ on init
     chown system system /sys/devices/platform/exynos-migov/control/fragutil_thr
     chown system system /sys/devices/platform/exynos-migov/migov/running
     chown system system /dev/cpu_dma_latency
-    chown system system /dev/cluster0_freq_min
-    chown system system /dev/cluster1_freq_min
-    chown system system /dev/cluster0_freq_max
-    chown system system /dev/cluster1_freq_max
     chown system system /dev/cpu_online_min
     chown system system /dev/cpu_online_max
     chown system system /dev/bus_throughput
     chown system system /dev/bus_throughput_max
     chown system system /dev/mfc_throughput
     chown system system /dev/mfc_throughput_max
-    chown system system /dev/gpu_freq_min
-    chown system system /dev/gpu_freq_max
     chown system system /dev/npu_throughput
     chown system system /dev/npu_throughput_max
     chown system system /dev/device_throughput
     chown system system /dev/device_throughput_max
+    chmod 0664 /dev/cpu_dma_latency
 
     # Apply network parameters for high data performance.
     write /proc/sys/net/core/rmem_default 327680
@@ -190,6 +185,32 @@ on init
 
     # Clear sched_util_clamp_min_rt_default
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
+
+    # Permissions for Power HAL
+    chown system system /dev/cluster0_freq_min
+    chown system system /dev/cluster0_freq_max
+    chown system system /dev/cluster1_freq_min
+    chown system system /dev/cluster1_freq_max
+    chown system system /dev/cpuctl/dex2oat/cpu.shares
+    chown system system /dev/cpuctl/foreground/cpu.shares
+    chown system system /dev/cpuctl/system/cpu.shares
+    chown system system /dev/cpuctl/top-app/cpu.shares
+    chown system system /dev/gpu_freq_max
+    chown system system /dev/gpu_freq_min
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control
+    chown system system /sys/devices/platform/exynos-ufcc/ucc/cstate_control_level
+    chmod 0664 /dev/cluster0_freq_min
+    chmod 0664 /dev/cluster0_freq_max
+    chmod 0664 /dev/cluster1_freq_min
+    chmod 0664 /dev/cluster1_freq_max
+    chmod 0664 /dev/cpuctl/dex2oat/cpu.shares
+    chmod 0664 /dev/cpuctl/foreground/cpu.shares
+    chmod 0664 /dev/cpuctl/system/cpu.shares
+    chmod 0664 /dev/cpuctl/top-app/cpu.shares
+    chmod 0664 /dev/gpu_freq_max
+    chmod 0664 /dev/gpu_freq_min
+    chmod 0664 /sys/devices/platform/exynos-ufcc/ucc/cstate_control
+    chmod 0664 /sys/devices/platform/exynos-ufcc/ucc/cstate_control_level
 
    start watchdogd
 
@@ -406,6 +427,12 @@ on post-fs-data
     # Epic data
     mkdir /data/vendor/epic 0771 system system
 
+    # Permissions for Power HAL
+    chown system system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min
+    chown system system /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max
+    chmod 0666 /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min
+    chmod 0666 /sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max
+
     write /sys/class/nfc_sec/pvdd "2"
     mkdir /data/vendor/nfc 0770 nfc nfc
 
@@ -415,7 +442,7 @@ on early-boot
 
 on boot
     # Permissions for Touchscreen
-    chown system radio /sys/class/sec/tsp/cmd
+    chown system system /sys/class/sec/tsp/cmd
     chown system system /sys/class/sec/tsp/enabled
     chown system system /sys/class/sec/tsp/prox_power_off
     chown system system /sys/class/sec/tsp/sensitivity_mode
@@ -442,6 +469,12 @@ on boot
     chown system system /dev/cpuset/moderate/cpus
     chmod 0664 /dev/cpuset/moderate/tasks
     chmod 0664 /dev/cpuset/moderate/cpus
+
+    # Permissions for Power HAL
+    chown system system /sys/class/power_supply/battery/lcd
+    chown system system /sys/kernel/mm/vmscan/am_app_launch
+    chmod 0664 /sys/class/power_supply/battery/lcd
+    chmod 0664 /sys/kernel/mm/vmscan/am_app_launch
 
     # SCSC do not enable autorecovery in dev builds
     write /sys/module/scsc_mx/parameters/disable_recovery_handling 2

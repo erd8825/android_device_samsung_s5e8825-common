@@ -1,0 +1,67 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Battery
+genfscon sysfs /devices/platform/13860000.hsi2c/i2c-1/1-0063/power_supply/sm5451-charger/type                                               u:object_r:sysfs_battery:s0
+genfscon sysfs /devices/platform/13860000.hsi2c/i2c-1/1-0049/sm5714-charger/power_supply/sm5714-charger/type                                u:object_r:sysfs_battery:s0
+genfscon sysfs /devices/platform/13860000.hsi2c/i2c-1/1-0049/sm5714-charger/power_supply/sm5714-otg/type                                    u:object_r:sysfs_battery:s0
+genfscon sysfs /devices/platform/13860000.hsi2c/i2c-1/1-0049/sm5714-fuelgauge/power_supply/sm5714-fuelgauge/type                            u:object_r:sysfs_battery:s0
+genfscon sysfs /devices/platform/samsung_mobile_device/samsung_mobile_device:sec-direct-charger/power_supply/sec-direct-charger/type        u:object_r:sysfs_battery:s0
+
+# Block
+genfscon sysfs /devices/platform/100e0000.dwmmc2/mmc_host/mmc0/mmc0:5048/block/mmcblk0/mmcblk0p1                                            u:object_r:sysfs_block_writable:s0
+genfscon sysfs /devices/platform/13500000.ufs/host0/target0:0:0/0:0:0:0/block/sda/queue/discard_max_bytes                                   u:object_r:sysfs_block_writable:s0
+
+# Camera
+genfscon sysfs /devices/virtual/camera/ois/ois_exif                                                                                         u:object_r:sysfs_camera:s0
+genfscon sysfs /devices/virtual/camera/rear/rear_mtf_exif                                                                                   u:object_r:sysfs_camera:s0
+genfscon sysfs /devices/virtual/camera/rear/rear_sensorid_exif                                                                              u:object_r:sysfs_camera:s0
+genfscon sysfs /devices/virtual/camera/rear/rear2_sensorid_exif                                                                             u:object_r:sysfs_camera:s0
+genfscon sysfs /devices/virtual/camera/rear/rear3_sensorid_exif                                                                             u:object_r:sysfs_camera:s0
+genfscon sysfs /devices/virtual/camera/rear/rear_camfw                                                                                      u:object_r:sysfs_camera:s0
+
+# Camera - Writeable
+genfscon sysfs /devices/virtual/camera/flash/rear_flash                                                                                     u:object_r:sysfs_camera_writable:s0
+genfscon sysfs /devices/virtual/camera/rear/fw_update                                                                                       u:object_r:sysfs_camera_writable:s0
+genfscon sysfs /devices/virtual/camera/rear/ssrm_camera_info                                                                                u:object_r:sysfs_camera_writable:s0
+genfscon sysfs /kernel/mm/vmscan/mem_boost_mode                                                                                             u:object_r:sysfs_camera_writable:s0
+
+# GPS
+genfscon sysfs /devices/soc0/machine                                                                                                        u:object_r:sysfs_sec_gps:s0
+genfscon sysfs /devices/soc0/revision                                                                                                       u:object_r:sysfs_sec_gps:s0
+
+# Power
+genfscon sysfs /devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max                                      u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min                                      u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ucc/cstate_control                                                                             u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ucc/cstate_control_level                                                                       u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ufc/cpufreq_max_limit                                                                          u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ufc/cpufreq_min_limit                                                                          u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ufc/little_max_limit                                                                           u:object_r:sysfs_power_writable:s0
+genfscon sysfs /devices/platform/exynos-ufcc/ufc/little_min_limit                                                                           u:object_r:sysfs_power_writable:s0
+genfscon sysfs /kernel/gpu/gpu_max_clock                                                                                                    u:object_r:sysfs_power_writable:s0
+genfscon sysfs /kernel/mm/vmscan/am_app_launch                                                                                              u:object_r:sysfs_power_writable:s0
+
+# Sensors
+genfscon sysfs /devices/virtual/sensors/flip_cover_detector_sensor/nfc_cover_status                                                         u:object_r:sysfs_sensors_writable:s0
+genfscon sysfs /devices/virtual/sensors/light_sensor/hall_ic                                                                                u:object_r:sysfs_sensors_writable:s0
+
+# Swappiness
+genfscon proc /sys/vm/swappiness                                                                                                            u:object_r:proc_swappiness:s0
+
+# Thermal
+genfscon sysfs /devices/platform/samsung_mobile_device/samsung_mobile_device:battery/power_supply/battery/temp                              u:object_r:sysfs_thermal:s0
+genfscon sysfs /devices/virtual/sec/sec-ap-thermistor/temperature                                                                           u:object_r:sysfs_thermal:s0
+genfscon sysfs /devices/virtual/sec/sec-lte-thermistor/temperature                                                                          u:object_r:sysfs_thermal:s0
+genfscon sysfs /devices/virtual/sec/sec-wf-thermistor/temperature                                                                           u:object_r:sysfs_thermal:s0
+genfscon sysfs /devices/virtual/switch/uart3/state                                                                                          u:object_r:sysfs_thermal:s0
+
+# Video4Linux
+genfscon sysfs /devices/platform/15090000.exynos_is/video4linux/video0/name                                                                 u:object_r:sysfs_v4l:s0
+genfscon sysfs /devices/platform/15090000.exynos_is/video4linux/video1/name                                                                 u:object_r:sysfs_v4l:s0
+genfscon sysfs /devices/platform/mfc/video4linux/video6/name                                                                                u:object_r:sysfs_v4l:s0
+genfscon sysfs /devices/platform/mfc/video4linux/video7/name                                                                                u:object_r:sysfs_v4l:s0
+genfscon sysfs /devices/platform/mfc/video4linux/video8/name                                                                                u:object_r:sysfs_v4l:s0
+genfscon sysfs /devices/platform/mfc/video4linux/video9/name                                                                                u:object_r:sysfs_v4l:s0

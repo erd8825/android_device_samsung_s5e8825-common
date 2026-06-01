@@ -1,0 +1,8 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow hal_thermal_default { sysfs_battery sysfs_uart }:dir search;
+allow hal_thermal_default { sysfs_battery sysfs_uart }:file { getattr open read };
+allow hal_thermal_default sysfs_switch:dir search;

@@ -1,0 +1,9 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+recovery_only(`
+allow watchdogd rootfs:dir read;
+allow watchdogd rootfs:file { entrypoint execute r_file_perms };
+');

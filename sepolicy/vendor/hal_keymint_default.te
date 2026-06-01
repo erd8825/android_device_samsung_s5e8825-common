@@ -1,0 +1,6 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow hal_keymint_default prov_efs_file:dir { add_name create rw_file_perms };

@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+type hal_drm_widevine_service, service_manager_type;
+
+allow hal_drm_widevine dmabuf_system_heap_device:chr_file { open read };
+allow hal_drm_widevine dmabuf_crypto_heap_device:chr_file { ioctl open read };
+allow hal_drm_widevine hal_drm_widevine_service:service_manager add;
+allow hal_drm_widevine mediadrm_vendor_data_file:dir create_dir_perms;
+allow hal_drm_widevine mediadrm_vendor_data_file:file create_file_perms;
+allow hal_drm_widevine vendor_secmem_device:chr_file { ioctl open read write };
+allow hal_drm_widevine tz_user_device:chr_file rw_file_perms;

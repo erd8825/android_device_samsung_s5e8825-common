@@ -1,0 +1,6 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+vendor_restricted_prop(vendor_camera_prop)

@@ -1,0 +1,11 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow hal_fingerprint_default biometrics_efs_file:file read;
+allow hal_fingerprint_default biometrics_efs_file:dir search;
+allow hal_fingerprint_default sec_efs_file:dir search;
+allow hal_fingerprint_default sec_efs_file:file { getattr open read };
+allow hal_fingerprint_default sysfs_lcd_writable:dir search;
+r_dir_file(hal_fingerprint_default, efs_file)

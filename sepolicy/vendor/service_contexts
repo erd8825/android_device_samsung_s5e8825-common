@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# DRM - Widevine
+android.hardware.drm.IDrmFactory/widevine  u:object_r:hal_drm_widevine_service:s0

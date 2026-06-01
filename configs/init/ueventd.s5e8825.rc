@@ -274,3 +274,9 @@
 /dev/input/event*				0660	system	input
 /sys/devices/virtual/input/input*   enable      0660	system	input
 /sys/devices/virtual/input/input*   poll_delay  0660	system	input
+
+# Permissions for Power HAL
+/dev/cluster0_freq_min 0664 system system
+/dev/cluster0_freq_max 0664 system system
+/dev/cluster1_freq_min 0664 system system
+/dev/cluster1_freq_max 0664 system system

@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow hal_sensors_default sysfs:file { getattr open read write };
+unix_socket_connect(hal_sensors_default, property, init)

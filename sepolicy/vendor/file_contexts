@@ -1,0 +1,49 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Bluetooth
+/dev/scsc_h4_0                                                        u:object_r:bt_device:s0
+
+# Camera
+/dev/dma_heap/camera                                                  u:object_r:dmabuf_camera_heap_device:s0
+/dev/dma_heap/camera-uncached                                         u:object_r:dmabuf_camera_heap_device:s0
+
+# DMA
+/dev/dmabuf_container                                                 u:object_r:vendor_bufcon_device:s0
+
+# DRM - Widevine
+/data/vendor/mediadrm(/.*)?                                           u:object_r:mediadrm_vendor_data_file:s0
+/dev/dma_heap/crypto                                                  u:object_r:dmabuf_crypto_heap_device:s0
+/dev/dma_heap/crypto-uncached                                         u:object_r:dmabuf_crypto_heap_device:s0
+/dev/s5p-smem                                                         u:object_r:vendor_secmem_device:s0
+/vendor/bin/hw/android\.hardware\.drm-service\.widevine               u:object_r:hal_drm_widevine_exec:s0
+
+# EFS
+/efs/biometrics(/.*)?                                                 u:object_r:biometrics_efs_file:s0
+/efs/FactoryApp(/.*)?                                                 u:object_r:app_efs_file:s0
+/efs/gatekeeper(/.*)?                                                 u:object_r:gatekeeper_efs_file:s0
+/efs/lpm(/.*)?                                                        u:object_r:sec_efs_file:s0
+/efs/pdp_bkup(/.*)?                                                   u:object_r:pdp_efs_file:s0
+/efs/recovery(/.*)?                                                   u:object_r:sec_efs_file:s0
+/efs/sec_efs(/.*)?                                                    u:object_r:sec_efs_file:s0
+/efs/sec_efs/kpm(/.*)?                                                u:object_r:kpm_efs_file:s0
+
+# GPS
+/dev/gnss_ipc                                                         u:object_r:gps_device:s0
+/vendor/bin/hw/gps.sh                                                 u:object_r:gpsd_exec:s0
+
+# Graphics
+/dev/mali0                                                            u:object_r:gpu_device:s0
+
+# Partitions - Kernel
+/dev/block/by-name/boot                                               u:object_r:boot_block_device:s0
+/dev/block/by-name/vendor_boot                                        u:object_r:vendor_boot_block_device:s0
+
+# Thermal
+/vendor/bin/hw/vendor\.samsung\.hardware\.thermal-service             u:object_r:hal_thermal_default_exec:s0
+
+# Wakeup
+/sys/devices/platform/(.*)/wakeup[0-9]*(/.*)?                         u:object_r:sysfs_wakeup:s0
+/sys/devices/virtual/sec/tsp/wakeup9[7-8](/.*)?                       u:object_r:sysfs_wakeup:s0

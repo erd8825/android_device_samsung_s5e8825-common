@@ -1,0 +1,10 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow vendor_init cgroup:file getattr;
+allow vendor_init proc_sched:file write;
+allow vendor_init proc_swappiness: file write;
+get_prop(vendor_init, vendor_radio_prop)
+set_prop(vendor_init, vendor_thermal_prop)

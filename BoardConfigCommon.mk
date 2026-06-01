@@ -106,6 +106,12 @@ TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 
+# SELinux
+BOARD_SEPOLICY_TEE_FLAVOR := teegris
+BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
+include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+include device/samsung_slsi/sepolicy/sepolicy.mk
+
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS := --flags 3

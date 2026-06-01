@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# GPS
+vendor.samsung.hardware.gnss::ISehGnss  u:object_r:hal_gnss_hwservice:s0
