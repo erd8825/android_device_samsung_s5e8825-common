@@ -6,3 +6,94 @@
 soong_namespace {
     imports: ["vendor/samsung/s5e8825-common"],
 }
+
+genrule {
+    name: "placeholders",
+    out: [
+        "APDV_AUDIO_SLSI.bin",
+        "AP_AUDIO_SLSI.bin",
+        "calliope_sram.bin",
+        "mfc_fw.bin",
+        "NPU.bin",
+        "os.checked.bin",
+        "vts.bin",
+    ],
+    cmd: "touch $(out)",
+}
+
+prebuilt_firmware {
+    name: "AP_AUDIO_SLSI.bin_placeholder",
+    src: ":placeholders{AP_AUDIO_SLSI.bin}",
+    filename: "AP_AUDIO_SLSI.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "APDV_AUDIO_SLSI.bin_placeholder",
+    src: ":placeholders{APDV_AUDIO_SLSI.bin}",
+    filename: "APDV_AUDIO_SLSI.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "calliope_sram.bin_placeholder",
+    src: ":placeholders{calliope_sram.bin}",
+    filename: "calliope_sram.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "mfc_fw.bin_placeholder",
+    src: ":placeholders{mfc_fw.bin}",
+    filename: "mfc_fw.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "NPU.bin_placeholder",
+    src: ":placeholders{NPU.bin}",
+    filename: "NPU.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "os.checked.bin_placeholder",
+    src: ":placeholders{os.checked.bin}",
+    filename: "os.checked.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}
+
+prebuilt_firmware {
+    name: "vts.bin_placeholder",
+    src: ":placeholders{vts.bin}",
+    filename: "vts.bin",
+    vendor: true,
+    enabled: select(soong_config_variable("s5e8825", "firmware_placeholders"), {
+        true: true,
+        default: false,
+    }),
+}

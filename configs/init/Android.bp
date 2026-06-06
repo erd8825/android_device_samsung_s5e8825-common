@@ -56,6 +56,13 @@ prebuilt_etc {
 }
 
 prebuilt_etc {
+    name: "init.s5e8825.unify.rc",
+    src: "init.s5e8825.unify.rc",
+    sub_dir: "init",
+    vendor: true,
+}
+
+prebuilt_etc {
     name: "ueventd.s5e8825.rc",
     src: "ueventd.s5e8825.rc",
     filename: "ueventd.rc",
