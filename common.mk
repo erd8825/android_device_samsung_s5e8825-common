@@ -34,11 +34,42 @@ PRODUCT_MANUFACTURER := samsung
 # Characteristics
 PRODUCT_CHARACTERISTICS := phone
 
+# Display
+TARGET_SCREEN_DENSITY := 450
+
+# Fastboot
+PRODUCT_PACKAGES += fastbootd
+
+# Init
+PRODUCT_PACKAGES += \
+    fstab.s5e8825 \
+    fstab.s5e8825.vendor_ramdisk
+
+# Kernel
+PRODUCT_ENABLE_UFFD_GC := true
+
+# Kernel - Modules
+PRODUCT_PACKAGES += toolbox.vendor_ramdisk
+
+# Partitions
+$(call inherit-product, $(SRC_TARGET_DIR)/product/non_ab_device.mk)
+
+# Partitions - Dynamic
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
+# Partitions - Updater
+AB_OTA_UPDATER := false
+
 # Permissions
 PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
+
+# Recovery - Init
+PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
 # Soong - Namespaces
-PRODUCT_SOONG_NAMESPACES += $(COMMON_PATH)
+PRODUCT_SOONG_NAMESPACES += \
+    $(COMMON_PATH) \
+    bootable/deprecated-ota

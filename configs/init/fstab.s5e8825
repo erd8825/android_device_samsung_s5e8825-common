@@ -1,0 +1,24 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+#<src>                            <mnt_point>        <type> <mnt_flags and options>                                                                                         <fs_mgr_flags>
+system                            /system            ext4   ro                                                                                                              logical,first_stage_mount
+system_ext                        /system_ext        ext4   ro                                                                                                              logical,first_stage_mount
+product                           /product           ext4   ro                                                                                                              logical,first_stage_mount
+vendor                            /vendor            erofs  ro                                                                                                              logical,first_stage_mount
+vendor_dlkm                       /vendor_dlkm       erofs  ro                                                                                                              logical,first_stage_mount
+/dev/block/by-name/boot           /boot              emmc   defaults                                                                                                        recoveryonly
+/dev/block/by-name/recovery       /recovery          emmc   defaults                                                                                                        recoveryonly
+/dev/block/by-name/misc           /misc              emmc   defaults                                                                                                        defaults
+/dev/block/by-name/vbmeta         /vbmeta            emmc   defaults                                                                                                        first_stage_mount
+/dev/block/by-name/keystorage     /keystorage        emmc   defaults                                                                                                        first_stage_mount
+/dev/block/by-name/harx           /harx              emmc   defaults                                                                                                        first_stage_mount
+/dev/block/by-name/cache          /cache             ext4   noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic                         formattable,check
+/dev/block/by-name/efs            /mnt/vendor/efs    ext4   noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic                         first_stage_mount,wait,formattable,check
+/dev/block/by-name/cpefs          /mnt/vendor/cpefs  ext4   noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic                         first_stage_mount,wait,check,nofail
+/dev/block/by-name/metadata       /metadata          ext4   noatime,nosuid,nodev,noauto_da_alloc,discard,journal_checksum,data=ordered,errors=panic,sync                    first_stage_mount,check
+/dev/block/by-name/userdata       /data              f2fs   noatime,nosuid,nodev,discard,usrquota,grpquota,fsync_mode=nobarrier,reserve_root=32768,resgid=5678              formattable,latemount,check,quota,checkpoint=fs,reservedsize=128M,fscompress
+
+/devices/platform/100e0000.dwmmc2/mmc_host*    auto   auto      default                   voldmanaged=sdcard:auto
