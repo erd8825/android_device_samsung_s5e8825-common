@@ -8,3 +8,6 @@ $(call inherit-product, vendor/lineage/config/common_full_tablet.mk)
 
 # Characteristics
 PRODUCT_CHARACTERISTICS := tablet
+
+# Display
+TARGET_SCREEN_DENSITY := 240
