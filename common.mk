@@ -241,7 +241,7 @@ PRODUCT_SOONG_NAMESPACES += \
     bootable/deprecated-ota \
     device/samsung/s5e8825-common \
     hardware/google/interfaces \
-    hardware/google/pixel \
+    hardware/google/pixel/power-libperfmgr \
     hardware/samsung \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \
