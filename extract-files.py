@@ -4,13 +4,20 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import tempfile
+
 from extract_utils.fixups_blob import (
     blob_fixup,
     blob_fixups_user_type,
+    run_cmd,
 )
 from extract_utils.main import (
     ExtractUtils,
     ExtractUtilsModule,
+)
+from extract_utils.tools import (
+    DEFAULT_PATCHELF_VERSION,
+    patchelf_version_path_map,
 )
 
 
@@ -18,6 +25,28 @@ namespace_imports = [
     'device/samsung/s5e8825-common',
     'hardware/samsung',
 ]
+
+
+def rename_dynamic_symbol(
+    _ctx: BlobFixupCtx,
+    _file: File,
+    file_path: str,
+    old_name: str,
+    new_name: str,
+    **_kwargs,
+):
+    with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8') as tmp:
+        tmp.write(f'{old_name} {new_name}')
+        tmp.flush()
+        run_cmd(
+            [
+                patchelf_version_path_map[DEFAULT_PATCHELF_VERSION],
+                '--rename-dynamic-symbols',
+                tmp.name,
+                file_path,
+            ]
+        )
+
 
 blob_fixups: blob_fixups_user_type = {
     # RIL
@@ -41,7 +70,10 @@ blob_fixups: blob_fixups_user_type = {
     ): blob_fixup()
         .add_needed('android.hardware.security.rkp-V1-ndk.so')
         .add_needed('libbase_shim.so')
-        .add_needed('libshim_crypto.so')
+        .call(rename_dynamic_symbol, 'OPENSSL_sk_new_null', 'sk_new_null')
+        .call(rename_dynamic_symbol, 'OPENSSL_sk_num', 'sk_num')
+        .call(rename_dynamic_symbol, 'OPENSSL_sk_push', 'sk_push')
+        .call(rename_dynamic_symbol, 'OPENSSL_sk_value', 'sk_value')
         .replace_needed('android.hardware.security.keymint-V1-ndk_platform.so', 'android.hardware.security.keymint-V1-ndk.so')
         .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so', 'android.hardware.security.secureclock-V1-ndk.so')
         .replace_needed('android.hardware.security.sharedsecret-V1-ndk_platform.so', 'android.hardware.security.sharedsecret-V1-ndk.so')
