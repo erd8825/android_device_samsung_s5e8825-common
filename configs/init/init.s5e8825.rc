@@ -139,6 +139,17 @@ on init
     copy /dev/cpuset/mems /dev/cpuset/foreground-boost/mems
     write /dev/cpuset/foreground-boost/cpus 0-7
 
+    mkdir /dev/cpuset/android.hardware.composer.hwc3-service.slsi
+    write /dev/cpuset/android.hardware.composer.hwc3-service.slsi/cpus 6-7
+    write /dev/cpuset/android.hardware.composer.hwc3-service.slsi/mems 0
+    chown system system /dev/cpuset/android.hardware.composer.hwc3-service.slsi
+    chown system system /dev/cpuset/android.hardware.composer.hwc3-service.slsi/tasks
+    chown system system /dev/cpuset/android.hardware.composer.hwc3-service.slsi/cgroup.procs
+    # set android.hardware.composer.hwc3-service.slsi to 0775 so SurfaceFlinger can touch it
+    chmod 0775 /dev/cpuset/android.hardware.composer.hwc3-service.slsi
+    chmod 0664 /dev/cpuset/android.hardware.composer.hwc3-service.slsi/tasks
+    chmod 0664 /dev/cpuset/android.hardware.composer.hwc3-service.slsi/cgroup.procs
+
     # EPIC interfaces
     chmod 660 /dev/stune/top-app/schedtune.boost
     chown system system /dev/mode
