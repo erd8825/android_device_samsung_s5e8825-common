@@ -218,9 +218,6 @@ PRODUCT_PACKAGES += powerhint.json
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
 TARGET_VENDOR_PROP += device/samsung/s5e8825-common/configs/props/vendor.prop
 
-# Recovery - Fastboot
-PRODUCT_PACKAGES += fastbootd
-
 # Recovery - Init
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 
