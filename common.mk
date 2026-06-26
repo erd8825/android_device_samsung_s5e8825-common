@@ -122,9 +122,6 @@ PRODUCT_PACKAGES += SamsungDoze
 # DRM - Clearkey
 PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
 
-# Fastboot
-PRODUCT_PACKAGES += fastbootd
-
 # Fingerprint
 PRODUCT_PACKAGES += android.hardware.biometrics.fingerprint-service.samsung
 
