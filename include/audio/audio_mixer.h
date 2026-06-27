@@ -81,7 +81,7 @@ typedef enum {
 #define OFFLOAD_UPSCALE_CONTROL_NAME "ABOX ComprTx0 Format"
 
 // AEC_Control
-#define ABOX_DNN_CONTROL_NAME "ABOX DNN PROCESS"  // 1 : off / 0 : on
+#define ABOX_DNN_CONTROL_NAME "ABOX OEM PROCESS"  // 1 : off / 0 : on
 #define ABOX_DVTX_CONTROL_NAME "ABOX DVTx PROCESS"
 #define MIXER_CTL_ABOX_NREC_CONTROL_PARAMS_CNT 1
 
@@ -136,7 +136,7 @@ typedef enum {
 #define MIXER_CTL_ABOX_CATPURE_VPCMDAI_INSRC "ABOX VPCMIN_DAI0_A"
 
 // MMAP Playback Volume
-#define MIXER_CTL_ABOX_MMAP_OUT_VOLUME_CONTROL "ABOX RDMA2 Vol Factor"
+#define MIXER_CTL_ABOX_MMAP_OUT_VOLUME_CONTROL "ABOX RDMA VOL FACTOR2"
 #define MMAP_PLAYBACK_VOLUME_MAX 0xFFFFFF  // Decimal value : 16777215
 
 // Mixer control for BT A2DP offload (MCD Specific)
