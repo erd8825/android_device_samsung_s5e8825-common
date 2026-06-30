@@ -33,6 +33,7 @@ vendor/lib64/vndk/libtinyalsa.so:vendor/lib64/libtinyalsa.samsung.so;FIX_SONAME|
 vendor/lib64/libprofileparamstorage.so
 vendor/lib64/libsecaudiocoreutils.so
 vendor/lib64/libsecaudioinfo.so
+vendor/lib64/soundfx/libaudioeffectoffload.so
 
 # Audio - Effects - from a54x - A546BXXUJFZE9
 vendor/lib64/libSamsungPostProcessConvertor.so|2c1a5325c85a15e3c27d6b985ae37dc809d01a13
