@@ -53,7 +53,7 @@ vendor/lib64/libsecnativefeature.so
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
 vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
 
-# RIL - from a55x - A556BXXSABYI1
+# RIL - from a55x - A556BXXSHDZH6
 vendor/lib64/libsecril-client.so|08be69e0a57e034f6b0b653aaff201509d7dfc5b
 
 # RIL - Init
