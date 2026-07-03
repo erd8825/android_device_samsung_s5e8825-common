@@ -160,16 +160,16 @@ vendor/etc/eden/enn_preset.json
 vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
 vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
 
-# RIL - from a55x - A556BXXSABYI1
+# RIL - from a55x - A556BXXSGDZG2
 vendor/bin/hw/rild|e00d12047f9a3ce9eb75f38c6f43fa82564827f3
 vendor/etc/vintf/manifest/vendor.samsung.hardware.radio_manifest_2_34.xml|8a78a095378827de038b13e0470f6b43d60cf71a
 vendor/etc/vintf/manifest/vendor.samsung.hardware.sehradio_manifest_2_34.xml|ebbe359a9b2d78cb88debe79d9183c039afb7c01
 vendor/lib64/libVendorSemDataProps.so|68dae919cb8e4a36246fe6c3548fe7faf398bfcb
-vendor/lib64/libVendorSemTelephonyProps.so|684afb42daeec36fbb37987b06afb236df394a22
-vendor/lib64/libril_sem.so|489bdbfd9701e3b1979b8cc05133c733cc7f586b
-vendor/lib64/libsec-ril-impl.so;FIX_SONAME|b36460670b23a2d385123d5bb6b103691211d007|600583de2bb6f10995d04e5015a22a6b5b9a9dac
+vendor/lib64/libVendorSemTelephonyProps.so|7909b36a4887f710b5c9f51a44f2348393056cf8
+vendor/lib64/libril_sem.so|61dbf94ff0a49c842483e46b4067ffd721cec136
+vendor/lib64/libsec-ril-impl.so;FIX_SONAME|ff7e71f8a59764d0f43eadb8424466318dddfb54|bdc020d760b223cfc2da4a862ebfb82c707f0d78
 vendor/lib64/libsecril-client.so|08be69e0a57e034f6b0b653aaff201509d7dfc5b
-vendor/lib64/libsemnativecarrierfeature.so|3a8102145028c96e7120ca5cb49b56b0f4b91f32
+vendor/lib64/libsemnativecarrierfeature.so|d78c2d7950e8bb5e156df40c71d5e974d2d09c45
 vendor/lib64/vendor.samsung.hardware.radio-V1-ndk.so|05642682fee7b774b674bee8d5389e42919e2691
 vendor/lib64/vendor.samsung.hardware.radio.bridge-V1-ndk.so|7cea75e71274826e54c9ca5a3664e93d9ce42900
 vendor/lib64/vendor.samsung.hardware.radio.channel-V1-ndk.so|0c8caafffe1de898809ff33e5c3ef84a9149588d
