@@ -73,6 +73,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# Display - Touch - Lineage
+PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
+
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
