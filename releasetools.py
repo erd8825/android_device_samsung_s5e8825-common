@@ -30,6 +30,22 @@ def OTA_InstallEnd(info):
     AddImage(info, 'vbmeta.img', '/dev/block/by-name/vbmeta')
     AddImage(info, 'vendor_boot.img', '/dev/block/by-name/vendor_boot')
 
+    android_info = info.input_zip.read('OTA/android-info-extra.txt')
+    firmwares = re.search(
+        r'skip\s+modem-flash-on-firmware\s*=\s*(\S+)',
+        android_info.decode('utf-8'),
+    )
+
+    if firmwares:
+        raw = firmwares.group(1)
+        if '|' in raw:
+            parts = [p.strip() for p in raw.split('|') if p.strip()]
+            conds = [f'getprop("ro.boot.bootloader") != "{p}"' for p in parts]
+            info.script.AppendExtra('if ' + ' && '.join(conds) + ' then')
+        else:
+            fw = raw.strip()
+            info.script.AppendExtra(f'if getprop("ro.boot.bootloader") != "{fw}" then')  # fmt: skip
+
     for e in info.input_zip.namelist():
         match = re.match(r'^RADIO/modem\.bin(?:_(.+))?$', e)
         if not match:
@@ -44,3 +60,6 @@ def OTA_InstallEnd(info):
             AddImage(info, f'modem.bin_{model}', '/dev/block/by-name/radio', 'RADIO')
             # fmt: on
             info.script.AppendExtra('endif;')
+
+    if firmwares:
+        info.script.AppendExtra('endif;')
