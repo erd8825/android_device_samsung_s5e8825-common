@@ -82,6 +82,9 @@ PRODUCT_CHARACTERISTICS := phone
 # Display
 TARGET_SCREEN_DENSITY := 450
 
+# Display - Touch - Lineage
+PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
+
 # Fastboot
 PRODUCT_PACKAGES += fastbootd
 
