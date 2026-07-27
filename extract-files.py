@@ -34,6 +34,18 @@ blob_fixups: blob_fixups_user_type = {
     ): blob_fixup()
     .replace_needed('libaudioroute.so', 'libaudioroute.samsung.so')
     .replace_needed('libtinyalsa.so', 'libtinyalsa.samsung.so'),
+    # RIL
+    'vendor/lib64/libsec-ril.so': blob_fixup()
+        # Always emit uiccApplicationsEnablementChanged
+        # Before: [b.gt 0x00382398]
+        # After: [nop]
+        .sig_replace('1f 00 08 6b 0c 01 00 54', '1f 00 08 6b 1f 20 03 d5')
+        # Before: [b.lt 0x00379464]
+        # After: [nop]
+        .sig_replace('1f 00 08 6b ab 01 00 54', '1f 00 08 6b 1f 20 03 d5')
+        # Before: [b.lt 0x00382144]
+        # After: [nop]
+        .sig_replace('bf 02 08 6b ab 01 00 54', 'bf 02 08 6b 1f 20 03 d5'),
 }  # fmt: skip
 
 lib_fixups: lib_fixups_user_type = {'libuuid': lib_fixup_suffix}
