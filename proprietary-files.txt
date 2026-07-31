@@ -86,9 +86,6 @@ vendor/lib64/vendor.samsung.hardware.radio.data-V1-ndk.so|de741fe8c442fbf555020c
 vendor/lib64/vendor.samsung.hardware.radio.messaging-V1-ndk.so|253e1ee51bba7e8a61e93abc198c48cdfa21cf28
 vendor/lib64/vendor.samsung.hardware.radio.sim-V1-ndk.so|a2f0be5b802aa317d05f388b44a8b1917b02cfd7
 
-# RIL - Dependencies
-vendor/lib64/libvkmanager_vendor.so
-
 # RIL - Init
 vendor/etc/init/init.baseband.rc
 vendor/etc/init/init.vendor.rilcommon.rc
