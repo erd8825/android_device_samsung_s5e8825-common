@@ -87,7 +87,6 @@ vendor/lib64/vendor.samsung.hardware.radio.messaging-V1-ndk.so|253e1ee51bba7e8a6
 vendor/lib64/vendor.samsung.hardware.radio.sim-V1-ndk.so|a2f0be5b802aa317d05f388b44a8b1917b02cfd7
 
 # RIL - Dependencies
-vendor/lib64/libengmode_client.so
 vendor/lib64/libvkmanager_vendor.so
 
 # RIL - Init
