@@ -14,3 +14,15 @@ prebuilt_etc {
     src: "audio_policy_configuration.xml",
     vendor: true,
 }
+
+prebuilt_etc {
+    name: "bluetooth_audio_policy_configuration_7_0.xml",
+    src: "//frameworks/av/services/audiopolicy/config:bluetooth_audio_policy_configuration_7_0",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "usb_audio_policy_configuration.xml",
+    src: "//frameworks/av/services/audiopolicy/config:usb_audio_policy_configuration",
+    vendor: true,
+}
