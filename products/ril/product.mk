@@ -15,6 +15,7 @@ PRODUCT_VENDOR_PROPERTIES += ro.vendor.epdg.support=1
 # RIL
 PRODUCT_PACKAGES += \
     cbd \
+    libsec-ril \
     secril_config_svc \
     sehradiomanager
 
