@@ -20,7 +20,7 @@ blob_fixups: blob_fixups_user_type = {
     # RIL
     'vendor/etc/init/init.baseband.rc': blob_fixup().regex_replace('\n.*\n.*\n.*nic\n', ''),
     'vendor/etc/init/init.vendor.rilcommon.rc': blob_fixup().regex_replace('\n.*\n.*n}\n', ''),
-    'vendor/lib64/libsec-ril.so': blob_fixup()
+    'vendor/lib64/libsec-ril-impl.so': blob_fixup()
         # Always emit uiccApplicationsEnablementChanged
         # Before: [b.lt 0x00379464]
         # After: [nop]
