@@ -12,6 +12,7 @@ PRODUCT_PACKAGES += android.hardware.telephony.gsm.prebuilt.xml
 # RIL
 PRODUCT_PACKAGES += \
     cbd \
+    libsec-ril \
     secril_config_svc \
     sehradiomanager
 
