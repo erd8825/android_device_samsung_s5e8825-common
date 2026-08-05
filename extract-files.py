@@ -35,7 +35,7 @@ blob_fixups: blob_fixups_user_type = {
     .replace_needed('libaudioroute.so', 'libaudioroute.samsung.so')
     .replace_needed('libtinyalsa.so', 'libtinyalsa.samsung.so'),
     # RIL
-    'vendor/lib64/libsec-ril.so': blob_fixup()
+    'vendor/lib64/libsec-ril-impl.so': blob_fixup()
         # Always emit uiccApplicationsEnablementChanged
         # Before: [b.gt 0x00382398]
         # After: [nop]

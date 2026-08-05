@@ -143,6 +143,7 @@ PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 # RIL
 PRODUCT_PACKAGES += \
     cbd \
+    libsec-ril \
     secril_config_svc \
     sehradiomanager
 
