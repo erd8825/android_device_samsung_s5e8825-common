@@ -177,6 +177,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+# Power
+PRODUCT_PACKAGES += android.hardware.power-service.pixel-libperfmgr
+
+# Power - Configuration
+PRODUCT_PACKAGES += powerhint.json
+
 # Recovery - Init
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 
@@ -204,6 +210,8 @@ BOARD_SHIPPING_API_LEVEL := 31
 PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
     bootable/deprecated-ota \
+    hardware/google/interfaces \
+    hardware/google/pixel \
     hardware/samsung \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi-linaro/exynos/cpboot_v3

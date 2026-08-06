@@ -1,0 +1,824 @@
+{
+    "Nodes": [
+        {
+            "Name": "CPUBigMinFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq_limit/cpufreq_min_limit",
+            "Values": [
+                "2400000",
+                "2288000",
+                "2208000",
+                "2112000",
+                "2016000",
+                "1920000",
+                "1824000",
+                "1728000",
+                "1632000",
+                "1536000",
+                "1440000",
+                "1344000",
+                "1248000",
+                "1152000",
+                "1056000",
+                "960000",
+                "864000",
+                "768000",
+                "672000",
+                "533000",
+                "0"
+            ],
+            "DefaultIndex": 20,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "CPUBigMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq_limit/cpufreq_max_limit",
+            "Values": [
+                "2400000",
+                "2288000",
+                "2208000",
+                "2112000",
+                "2016000",
+                "1920000",
+                "1824000",
+                "1728000",
+                "1632000",
+                "1536000",
+                "1440000",
+                "1344000",
+                "1248000",
+                "1152000",
+                "1056000",
+                "960000",
+                "864000",
+                "768000",
+                "672000",
+                "533000",
+                "-1"
+            ],
+            "DefaultIndex": 20,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "CPULittleMaxFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq_limit/little_max_limit",
+            "Values": [
+                "2002000",
+                "1920000",
+                "1824000",
+                "1728000",
+                "1632000",
+                "1536000",
+                "1440000",
+                "1344000",
+                "1248000",
+                "1152000",
+                "1056000",
+                "960000",
+                "864000",
+                "768000",
+                "672000",
+                "533000",
+                "0"
+            ],
+            "DefaultIndex": 16,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "CPULittleMinFreq",
+            "Path": "/sys/devices/system/cpu/cpufreq_limit/little_min_limit",
+            "Values": [
+                "2002000",
+                "1920000",
+                "1824000",
+                "1728000",
+                "1632000",
+                "1536000",
+                "1440000",
+                "1344000",
+                "1248000",
+                "1152000",
+                "1056000",
+                "960000",
+                "864000",
+                "768000",
+                "672000",
+                "533000",
+                "0"
+            ],
+            "DefaultIndex": 16,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "GPUMinFreq",
+            "Path": "/sys/kernel/gpu/gpu_min_clock",
+            "Values": [
+                "897000",
+                "806000",
+                "702000",
+                "611000",
+                "507000",
+                "403000",
+                "312000",
+                "208000",
+                "104000",
+                "0"
+            ],
+            "DefaultIndex": 9,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "GPUMaxFreq",
+            "Path": "/sys/kernel/gpu/gpu_max_clock",
+            "Values": [
+                "897000",
+                "806000",
+                "702000",
+                "611000",
+                "507000",
+                "403000",
+                "312000",
+                "208000",
+                "104000",
+                "0"
+            ],
+            "DefaultIndex": 9,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "MIFMinFreq",
+            "Path": "/sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_min",
+            "Values": [
+                "2093000",
+                "1794000",
+                "1539000",
+                "1352000",
+                "1014000",
+                "845000",
+                "676000",
+                "546000",
+                "421000"
+            ],
+            "DefaultIndex": 8,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "MIFMaxFreq",
+            "Path": "/sys/devices/platform/17000010.devfreq_mif/devfreq/17000010.devfreq_mif/scaling_devfreq_max",
+            "Values": [
+                "2093000",
+                "1794000",
+                "1539000",
+                "1352000",
+                "1014000",
+                "845000",
+                "676000",
+                "546000",
+                "421000"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "TABoost",
+            "Path": "/dev/cpuctl/top-app/cpu.uclamp.min",
+            "Values": [
+                "100",
+                "80",
+                "70",
+                "50",
+                "30",
+                "5"
+            ],
+            "DefaultIndex": 5,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "LPMDisable",
+            "Path": "/sys/devices/platform/exynos-ufcc/ucc/cstate_control",
+            "Values": [
+                "1",
+                "0"
+            ],
+            "DefaultIndex": 1,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "LPMDisableLevel",
+            "Path": "/sys/devices/platform/exynos-ufcc/ucc/cstate_control_level",
+            "Values": [
+                "1",
+                "0"
+            ],
+            "DefaultIndex": 1,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "KernelAppStartNotify",
+            "Path": "/sys/kernel/mm/vmscan/am_app_launch",
+            "Values": [
+                "1",
+                "0"
+            ],
+            "DefaultIndex": 1,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "TopAppShare",
+            "Path": "/dev/cpuctl/top-app/cpu.shares",
+            "Values": [
+                "4096",
+                "2048",
+                "1024"
+            ],
+            "DefaultIndex": 2,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "ForegroundShare",
+            "Path": "/dev/cpuctl/foreground/cpu.shares",
+            "Values": [
+                "4096",
+                "2048",
+                "1024"
+            ],
+            "DefaultIndex": 2,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "SystemShare",
+            "Path": "/dev/cpuctl/system/cpu.shares",
+            "Values": [
+                "4096",
+                "2048",
+                "1024"
+            ],
+            "DefaultIndex": 2,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "Dex2oatShare",
+            "Path": "/dev/cpuctl/dex2oat/cpu.shares",
+            "Values": [
+                "4096",
+                "2048",
+                "1024"
+            ],
+            "DefaultIndex": 2,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "TouchscreenEnable",
+            "Path": "/sys/class/sec/tsp/enabled",
+            "Values": [
+                "2,1",
+                "1,0"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "LCDEnable",
+            "Path": "/sys/class/power_supply/battery/lcd",
+            "Values": [
+                "1",
+                "0"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": true
+        },
+        {
+            "Name": "DoubleTapToWakeEnable",
+            "Path": "/sys/class/sec/tsp/cmd",
+            "Values": [
+                "aot_enable,0",
+                "aot_enable,1"
+            ],
+            "DefaultIndex": 0,
+            "ResetOnInit": false
+        }
+    ],
+    "Actions": [
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "TABoost",
+            "Duration": 0,
+            "Value": "30"
+        },
+        {
+            "PowerHint": "DISPLAY_UPDATE_IMMINENT",
+            "Node": "GPUMinFreq",
+            "Duration": 100,
+            "Value": "611000"
+        },
+        {
+            "PowerHint": "DISPLAY_UPDATE_IMMINENT",
+            "Node": "MIFMinFreq",
+            "Duration": 100,
+            "Value": "845000"
+        },
+        {
+            "PowerHint": "ML_ACC",
+            "Node": "CPUBigMinFreq",
+            "Duration": 1000,
+            "Value": "1728000"
+        },
+        {
+            "PowerHint": "AUDIO_LAUNCH",
+            "Node": "CPUBigMinFreq",
+            "Duration": 3000,
+            "Value": "1344000"
+        },
+        {
+            "PowerHint": "AUDIO_LAUNCH",
+            "Node": "ForegroundShare",
+            "Duration": 3000,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "CPUBigMinFreq",
+            "Duration": 5000,
+            "Value": "2016000"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "GPUMinFreq",
+            "Duration": 5000,
+            "Value": "806000"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "LPMDisable",
+            "Duration": 5000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "KernelAppStartNotify",
+            "Duration": 5000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "TopAppShare",
+            "Duration": 5000,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "CAMERA_LAUNCH",
+            "Node": "SystemShare",
+            "Duration": 5000,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "CAMERA_SHOT",
+            "Node": "CPUBigMinFreq",
+            "Duration": 2000,
+            "Value": "1920000"
+        },
+        {
+            "PowerHint": "CAMERA_SHOT",
+            "Node": "GPUMinFreq",
+            "Duration": 2000,
+            "Value": "702000"
+        },
+        {
+            "PowerHint": "CAMERA_SHOT",
+            "Node": "MIFMinFreq",
+            "Duration": 2000,
+            "Value": "1352000"
+        },
+        {
+            "PowerHint": "CAMERA_SHOT",
+            "Node": "LPMDisable",
+            "Duration": 2000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "DOUBLE_TAP_TO_WAKE",
+            "Node": "DoubleTapToWakeEnable",
+            "Duration": 0,
+            "Value": "aot_enable,1"
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "CPUBigMaxFreq",
+            "Duration": 0,
+            "Value": "1824000"
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "CPULittleMaxFreq",
+            "Duration": 0,
+            "Value": "1536000"
+        },
+        {
+            "PowerHint": "LOW_POWER",
+            "Node": "GPUMaxFreq",
+            "Duration": 0,
+            "Value": "702000"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "CPUBigMaxFreq",
+            "Duration": 0,
+            "Value": "2016000"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "CPULittleMaxFreq",
+            "Duration": 0,
+            "Value": "1824000"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "GPUMaxFreq",
+            "Duration": 0,
+            "Value": "507000"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "LPMDisableLevel",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "SUSTAINED_PERFORMANCE",
+            "Node": "SystemShare",
+            "Duration": 0,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1440000"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "CPUBigMaxFreq",
+            "Duration": 0,
+            "Value": "1440000"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "CPULittleMaxFreq",
+            "Duration": 0,
+            "Value": "2002000"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "403000"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "GPUMaxFreq",
+            "Duration": 0,
+            "Value": "403000"
+        },
+        {
+            "PowerHint": "FIXED_PERFORMANCE",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "VR",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "702000"
+        },
+        {
+            "PowerHint": "VR",
+            "Node": "CPULittleMaxFreq",
+            "Duration": 0,
+            "Value": "2002000"
+        },
+        {
+            "PowerHint": "VR",
+            "Node": "LPMDisableLevel",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "VR",
+            "Node": "MIFMinFreq",
+            "Duration": 0,
+            "Value": "1352000"
+        },
+        {
+            "PowerHint": "VR",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "VR_SUSTAINED_PERFORMANCE",
+            "Node": "CPUBigMaxFreq",
+            "Duration": 0,
+            "Value": "1824000"
+        },
+        {
+            "PowerHint": "VR_SUSTAINED_PERFORMANCE",
+            "Node": "CPULittleMaxFreq",
+            "Duration": 0,
+            "Value": "1824000"
+        },
+        {
+            "PowerHint": "VR_SUSTAINED_PERFORMANCE",
+            "Node": "GPUMaxFreq",
+            "Duration": 0,
+            "Value": "611000"
+        },
+        {
+            "PowerHint": "VR_SUSTAINED_PERFORMANCE",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "CPUBigMinFreq",
+            "Duration": 2000,
+            "Value": "2016000"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "CPULittleMinFreq",
+            "Duration": 2000,
+            "Value": "1536000"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "MIFMinFreq",
+            "Duration": 2000,
+            "Value": "845000"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "GPUMinFreq",
+            "Duration": 2000,
+            "Value": "806000"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "LPMDisable",
+            "Duration": 2000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "TABoost",
+            "Duration": 2000,
+            "Value": "70"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "KernelAppStartNotify",
+            "Duration": 2000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "TopAppShare",
+            "Duration": 2000,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "LAUNCH",
+            "Node": "ForegroundShare",
+            "Duration": 2000,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "806000"
+        },
+        {
+            "PowerHint": "EXPENSIVE_RENDERING",
+            "Node": "MIFMinFreq",
+            "Duration": 0,
+            "Value": "1014000"
+        },
+        {
+            "PowerHint": "INTERACTIVE",
+            "Node": "TouchscreenEnable",
+            "Duration": 0,
+            "Value": "2,1"
+        },
+        {
+            "PowerHint": "INTERACTIVE",
+            "Node": "LCDEnable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "INTERACTIVE",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "507000"
+        },
+        {
+            "PowerHint": "INTERACTION",
+            "Node": "GPUMinFreq",
+            "Duration": 1500,
+            "Value": "806000"
+        },
+        {
+            "PowerHint": "INTERACTIVE",
+            "Node": "MIFMinFreq",
+            "Duration": 0,
+            "Value": "546000"
+        },
+        {
+            "PowerHint": "DEVICE_IDLE",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "DEVICE_IDLE",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "104000"
+        },
+        {
+            "PowerHint": "DEVICE_IDLE",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "TouchscreenEnable",
+            "Duration": 0,
+            "Value": "1,0"
+        },
+        {
+            "PowerHint": "DISPLAY_INACTIVE",
+            "Node": "LCDEnable",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "AUDIO_STREAMING_LOW_LATENCY",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1536000"
+        },
+        {
+            "PowerHint": "AUDIO_STREAMING_LOW_LATENCY",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "403000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1920000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "507000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_SECURE",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1728000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_LOW",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "403000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1824000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_MID",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "507000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "2016000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "611000"
+        },
+        {
+            "PowerHint": "CAMERA_STREAMING_HIGH",
+            "Node": "MIFMinFreq",
+            "Duration": 0,
+            "Value": "1014000"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "CPUBigMinFreq",
+            "Duration": 0,
+            "Value": "1920000"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "CPULittleMinFreq",
+            "Duration": 0,
+            "Value": "1440000"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "GPUMinFreq",
+            "Duration": 0,
+            "Value": "702000"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "MIFMinFreq",
+            "Duration": 0,
+            "Value": "845000"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "LPMDisable",
+            "Duration": 0,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "LPMDisableLevel",
+            "Duration": 0,
+            "Value": "0"
+        },
+        {
+            "PowerHint": "GAME",
+            "Node": "TopAppShare",
+            "Duration": 0,
+            "Value": "2048"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "CPUBigMinFreq",
+            "Duration": 2000,
+            "Value": "2016000"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "GPUMinFreq",
+            "Duration": 2000,
+            "Value": "507000"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "TABoost",
+            "Duration": 2000,
+            "Value": "100"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "KernelAppStartNotify",
+            "Duration": 2000,
+            "Value": "1"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "TopAppShare",
+            "Duration": 2000,
+            "Value": "4096"
+        },
+        {
+            "PowerHint": "GAME_LOADING",
+            "Node": "ForegroundShare",
+            "Duration": 2000,
+            "Value": "4096"
+        }
+    ]
+}
