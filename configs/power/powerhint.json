@@ -2,7 +2,7 @@
     "Nodes": [
         {
             "Name": "CPUBigMinFreq",
-            "Path": "/sys/devices/system/cpu/cpufreq_limit/cpufreq_min_limit",
+            "Path": "/dev/cluster1_freq_min",
             "Values": [
                 "2400000",
                 "2288000",
@@ -27,11 +27,12 @@
                 "0"
             ],
             "DefaultIndex": 20,
+            "HoldFd": true,
             "ResetOnInit": true
         },
         {
             "Name": "CPUBigMaxFreq",
-            "Path": "/sys/devices/system/cpu/cpufreq_limit/cpufreq_max_limit",
+            "Path": "/dev/cluster1_freq_max",
             "Values": [
                 "2400000",
                 "2288000",
@@ -56,11 +57,12 @@
                 "-1"
             ],
             "DefaultIndex": 20,
+            "HoldFd": true,
             "ResetOnInit": true
         },
         {
             "Name": "CPULittleMaxFreq",
-            "Path": "/sys/devices/system/cpu/cpufreq_limit/little_max_limit",
+            "Path": "/dev/cluster0_freq_max",
             "Values": [
                 "2002000",
                 "1920000",
@@ -81,11 +83,12 @@
                 "0"
             ],
             "DefaultIndex": 16,
+            "HoldFd": true,
             "ResetOnInit": true
         },
         {
             "Name": "CPULittleMinFreq",
-            "Path": "/sys/devices/system/cpu/cpufreq_limit/little_min_limit",
+            "Path": "/dev/cluster0_freq_min",
             "Values": [
                 "2002000",
                 "1920000",
@@ -106,6 +109,7 @@
                 "0"
             ],
             "DefaultIndex": 16,
+            "HoldFd": true,
             "ResetOnInit": true
         },
         {
