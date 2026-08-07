@@ -8,9 +8,6 @@
 #define __EXYNOS_AUDIOPROXY_MIXER_H__
 
 #include <audio_route/audio_route.h>
-#ifdef SEC_PRODUCT_FEATURE_AUDIO_COMMON
-#include <audio_route/audio_route_exynos.h>
-#endif
 
 /* Mixer Card Definition */
 #define MIXER_CARD0 0
@@ -78,6 +75,13 @@ typedef enum {
 #define ABOX_DNN_CONTROL_NAME "ABOX DNN PROCESS"  // 1 : off / 0 : on
 #define ABOX_DVTX_CONTROL_NAME "ABOX DVTx PROCESS"
 #define MIXER_CTL_ABOX_NREC_CONTROL_PARAMS_CNT 1
+
+// Call volume
+#define CALL_VOLUME_CONTROL_NAME "ABOX Speech Volume"
+#define CALL_PLAYBACK_VOLUME_MAX 7
+
+#define CALL_RX_MUTE_CONTROL_NAME "ABOX Speech Rx Mute"
+#define CALL_TX_MUTE_CONTROL_NAME "ABOX DVTx Tx Mute"
 
 typedef enum {
     UPSCALE_NONE = 0,
