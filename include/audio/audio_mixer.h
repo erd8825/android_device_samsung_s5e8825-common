@@ -18,9 +18,6 @@
 #define __EXYNOS_AUDIOPROXY_MIXER_H__
 
 #include <audio_route/audio_route.h>
-#ifdef SEC_PRODUCT_FEATURE_AUDIO_COMMON
-#include <audio_route/audio_route_exynos.h>
-#endif
 
 /* Mixer Card Definition */
 #define MIXER_CARD0 0
@@ -45,10 +42,6 @@
 // Mixer Control for set USB Mode
 #define ABOX_USBMODE_CONTROL_NAME "ABOX ERAP info USB On"
 
-// Mixer Control for set MUTE Control
-#define ABOX_MUTE_CONTROL_NAME "ABOX ERAP info Mute Primary"
-#define ABOX_MUTE_CNT_FOR_PATH_CHANGE 15
-
 // Mixer Control for set A-Box Early WakeUp Control
 #define ABOX_TICKLE_CONTROL_NAME "ABOX Tickle"
 #define ABOX_TICKLE_ON 1
@@ -65,6 +58,19 @@
 #define ABOX_CHANNELS_WDMA3_NAME "ABOX WDMA3 Channel"
 #define ABOX_BIT_WIDTH_WDMA3_NAME "ABOX WDMA3 Width"
 #define ABOX_PERIOD_SIZE_WDMA3_NAME "ABOX WDMA3 Period"
+// UDMA RD0 config controls
+#define ABOX_SAMPLE_RATE_UDMA_RD0_NAME "ABOX UDMA RD0 Rate"
+#define ABOX_CHANNELS_UDMA_RD0_NAME "ABOX UDMA RD0 Channel"
+#define ABOX_BIT_WIDTH_UDMA_RD0_NAME "ABOX UDMA RD0 Width"
+#define ABOX_PERIOD_SIZE_UDMA_RD0_NAME "ABOX UDMA RD0 Period"
+#define ABOX_PACKED_UDMA_RD0_NAME "ABOX UDMA RD0 Packed"
+#define ABOX_EXPAND_UDMA_RD0_NAME "ABOX UDMA RD0 Expand"
+// UDMA WR0 config controls
+#define ABOX_SAMPLE_RATE_UDMA_WR0_NAME "ABOX UDMA WR0 Rate"
+#define ABOX_CHANNELS_UDMA_WR0_NAME "ABOX UDMA WR0 Channel"
+#define ABOX_BIT_WIDTH_UDMA_WR0_NAME "ABOX UDMA WR0 Width"
+#define ABOX_PERIOD_SIZE_UDMA_WR0_NAME "ABOX UDMA WR0 Period"
+#define ABOX_PACKED_UDMA_WR0_NAME "ABOX UDMA WR0 Packed"
 
 typedef enum {
     USBMODE = 0,
@@ -85,9 +91,16 @@ typedef enum {
 #define OFFLOAD_UPSCALE_CONTROL_NAME "ABOX ComprTx0 Format"
 
 // AEC_Control
-#define ABOX_DNN_CONTROL_NAME "ABOX DNN PROCESS"  // 1 : off / 0 : on
+#define ABOX_DNN_CONTROL_NAME "ABOX OEM PROCESS"  // 1 : off / 0 : on
 #define ABOX_DVTX_CONTROL_NAME "ABOX DVTx PROCESS"
 #define MIXER_CTL_ABOX_NREC_CONTROL_PARAMS_CNT 1
+
+// Call volume
+#define CALL_VOLUME_CONTROL_NAME "ABOX Speech Volume"
+#define CALL_PLAYBACK_VOLUME_MAX 7
+
+#define CALL_RX_MUTE_CONTROL_NAME "ABOX Speech Rx Mute"
+#define CALL_TX_MUTE_CONTROL_NAME "ABOX DVTx Tx Mute"
 
 typedef enum {
     UPSCALE_NONE = 0,
@@ -125,7 +138,9 @@ typedef enum {
 #define MIXER_OFF 0
 
 // USB Clock Source inforamtion mixer control
-#define MIXER_CTL_ABOX_USB_CLOCKSOURCE "ABOX PCM ext USB SCDS"
+#define MIXER_CTL_ABOX_USB_CLOCKSOURCE "ABOX USB SCDS"
+#define MIXER_CTL_ABOX_USB_OUT_ASYNC "ABOX USBOUT ASyncDevice"
+#define MIXER_CTL_ABOX_USB_IN_ASYNC "ABOX USBIN ASyncDevice"
 
 // Capture VirtualPCM DAI input source mixer control
 #define MIXER_CTL_ABOX_CATPURE_VPCMDAI_INSRC "ABOX VPCMIN_DAI0_A"
@@ -159,7 +174,7 @@ typedef enum {
  ** A-Box firmware debug-level setting control and
  ** system property definition for checking current debug level information
  **/
-#define MIXER_CTL_ABOX_DEBUG_LEVEL "ABOX Debug Level Low"
+#define MIXER_CTL_ABOX_DEBUG_LEVEL "ABOX Debug Level"
 #define DEBUG_LEVEL_SYSTEM_PROPERTY "ro.vendor.boot.debug_level"
 
 /* System debug level and corresponding A-Box firmware debug level defintions */
