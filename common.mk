@@ -268,6 +268,9 @@ PRODUCT_PACKAGES += \
     android.hardware.gatekeeper@1.0-impl \
     android.hardware.gatekeeper@1.0-service
 
+# Security - Keymint
+PRODUCT_PACKAGES += android.hardware.security.keymint-service.samsung
+
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
