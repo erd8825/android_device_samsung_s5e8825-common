@@ -62,7 +62,6 @@ vendor/etc/init/init.baseband.rc
 # Security - Keymint
 vendor/lib64/libskeymint10device.so
 vendor/lib64/libskeymint_cli.so
-vendor/lib64/vendor.samsung.hardware.keymint-V1-ndk_platform.so
 
 # Security - TEEGRIS
 vendor/bin/tzdaemon
