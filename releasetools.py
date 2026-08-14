@@ -8,6 +8,16 @@ import common
 import re
 
 
+def _append_model_assertion(info, models):
+    cond = ' || '.join(
+        [f'getprop("ro.boot.em.model") == "{model}"' for model in models]
+    )
+    info.script.AppendExtra(
+        f'{cond} || abort("E3004: This package does not support your model; '
+        f'you have \\"" + getprop("ro.boot.em.model") + "\\".");'
+    )
+
+
 def _append_firmware_assertion(info, model, firmwares):
     cond = _firmware_check_condition(firmwares)
     abort_msg = (
@@ -47,6 +57,7 @@ def _parse_android_info(android_info):
         android_info = android_info.decode('utf-8')
 
     firmware_skips = []
+    required_models = []
     required_firmwares = []
 
     for line in android_info.splitlines():
@@ -59,11 +70,20 @@ def _parse_android_info(android_info):
             firmware_skips.append(match.group(1))
             continue
 
+        match = re.match(r'^require\s+model\s*=\s*(\S+)$', line)
+        if match:
+            for model in [
+                p.strip() for p in match.group(1).split('|') if p.strip()
+            ]:
+                if model not in required_models:
+                    required_models.append(model)
+            continue
+
         match = re.match(r'^require\s+firmware(?:\.(.+?))?\s*=\s*(\S+)$', line)
         if match:
             required_firmwares.append((match.group(1), match.group(2)))
 
-    return firmware_skips, required_firmwares
+    return firmware_skips, required_models, required_firmwares
 
 
 def FullOTA_Assertions(info):
@@ -93,7 +113,10 @@ def AddImage(info, basename, dest, dir='IMAGES'):
 
 def OTA_Assertions(info, input_zip):
     android_info = input_zip.read('OTA/android-info-extra.txt')
-    _, required_firmwares = _parse_android_info(android_info)
+    _, required_models, required_firmwares = _parse_android_info(android_info)
+
+    if required_models:
+        _append_model_assertion(info, required_models)
 
     for model, firmware in required_firmwares:
         _append_firmware_assertion(info, model, firmware.split('|'))
@@ -105,7 +128,7 @@ def OTA_InstallEnd(info):
     AddImage(info, 'vendor_boot.img', '/dev/block/by-name/vendor_boot')
 
     android_info = info.input_zip.read('OTA/android-info-extra.txt')
-    firmware_skips, _ = _parse_android_info(android_info)
+    firmware_skips, _, _ = _parse_android_info(android_info)
 
     if firmware_skips:
         raw = firmware_skips[0]
