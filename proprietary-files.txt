@@ -142,6 +142,23 @@ vendor/etc/init/teegris_v4.rc
 vendor/lib64/libteecl.so
 vendor/lib64/libuuid.so;MODULE_SUFFIX=.samsung
 
+# Thermal - from a55x - A556BXXSGDZG2
+vendor/bin/hw/vendor.samsung.hardware.thermal-service|54b4e45fffd78c6105a9df129d98ee2f8189db41
+vendor/etc/init/vendor.samsung.hardware.thermal-default.rc|6be0232a24c97da0287aa407af9cbd2c9d9200a8
+vendor/etc/vintf/manifest/vendor.samsung.hardware.thermal-default.xml|2f7ee7bc44b29d8f85b5fdaae07abe8c1ea155f6
+vendor/lib64/vendor.samsung.hardware.thermal-V1-ndk.so|ae5c37eb5424715976230812b2e0f8fee86aac40
+
+# Thermal - Configuration
+vendor/etc/btcon.json
+vendor/etc/mercury.json
+vendor/etc/mercury_hv.json
+
+# Thermal - Dependencies
+vendor/lib64/vendor.samsung.hardware.audio@1.0.so
+
+# Thermal - Dependencies - from a55x - A556BXXSGDZG2
+vendor/lib64/service-listener-ext-aidl-V1-ndk.so|e28771502711416401bc4f21175384ab1502fe69
+
 # Wi-Fi - Configuration
 vendor/etc/wifi/p2p_supplicant_overlay.conf
 vendor/etc/wifi/wpa_supplicant_overlay.conf
