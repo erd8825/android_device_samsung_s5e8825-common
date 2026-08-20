@@ -21,6 +21,8 @@ namespace_imports = [
 ]
 
 blob_fixups: blob_fixups_user_type = {
+    # GNSS
+    'vendor/bin/hw/gpsd': blob_fixup().binary_regex_replace(b'libcrypto.so', b'libcryptx.so'),
     # RIL
     'vendor/etc/init/init.baseband.rc': blob_fixup().regex_replace('\n.*\n.*\n.*nic\n', ''),
     'vendor/etc/init/init.vendor.rilcommon.rc': blob_fixup().regex_replace('\n.*\n.*n}\n', ''),
