@@ -58,6 +58,11 @@ $(call soong_config_set_bool,frameworks_av,use_aosp_r_submix_audio_policy_config
 # Audio - Effects - Dolby
 PRODUCT_PACKAGES += SamsungDAP
 
+# Audio - Effects - SoundBooster
+PRODUCT_PACKAGES += \
+    libsamsungSoundbooster_plus \
+    SoundBoosterStage
+
 # Audio - FX
 TARGET_EXCLUDES_AUDIOFX := true
 
