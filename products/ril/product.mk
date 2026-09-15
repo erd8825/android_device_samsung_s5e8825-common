@@ -21,5 +21,8 @@ $(call soong_config_set,cbd,protocol,sipc)
 # RIL - Configuration
 PRODUCT_PACKAGES += sehradiomanager.conf
 
+# RIL - IMS
+$(call inherit-product, hardware/lineage/generic-ims/ims.mk)
+
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += hardware/samsung_slsi-linaro/exynos/cpboot_v3
