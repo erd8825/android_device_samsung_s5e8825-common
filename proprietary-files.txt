@@ -38,9 +38,6 @@ vendor/firmware/dolby.bin
 vendor/firmware/listenbackeffect.bin
 vendor/firmware/volumemonitor.bin
 
-# Bluetooth - Configuration
-vendor/etc/bluetooth/bt_did.conf
-
 # Camera - Dummy
 vendor/lib64/libexynoscamera3.so;DUMMY_SHARED_LIB
 

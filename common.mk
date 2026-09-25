@@ -74,6 +74,9 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-service \
     libbt-vendor
 
+# Bluetooth - Configuration
+PRODUCT_PACKAGES += bt_did.slsi.conf
+
 # Branding
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
