@@ -22,6 +22,40 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Inherit the common vendor configuration
 $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
+# Audio
+PRODUCT_PACKAGES += \
+    android.hardware.audio@7.1-impl \
+    android.hardware.audio.effect@7.0-impl \
+    android.hardware.audio.service \
+    android.hardware.bluetooth.audio-impl \
+    audio.bluetooth.default \
+    audio.primary.erd8825 \
+    audio.r_submix.default \
+    audio.usb.default
+
+$(call soong_config_set,exynos_audio,proxy_header,//device/samsung/s5e8825-common:audio_proxy_headers)
+$(call soong_config_set,exynos_audio,sec_resampler_library,//vendor/samsung/s5e8825-common:libSamsungPostProcessConvertor)
+$(call soong_config_set_bool,exynos_audio,support_direct_multi_channel_stream,true)
+$(call soong_config_set_bool,exynos_audio,use_offload_effect_library,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_dynamic_nrec,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_samsungrecord,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_support_gamechat_spk_aec,true)
+$(call soong_config_set_bool,exynos_audio,use_sec_audio_support_listenback_dspeffect,true)
+$(call soong_config_set_bool,exynos_audio,use_usb_offload,true)
+
+# Audio - Configuration
+PRODUCT_PACKAGES += \
+    audio_effects.xml \
+    audio_policy_configuration.xml
+
+PRODUCT_COPY_FILES += \
+    frameworks/av/services/audiopolicy/config/bluetooth_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml
+
+# Audio - Effects - FX
+TARGET_EXCLUDES_AUDIOFX := true
+
 # Bluetooth
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.1-service \
@@ -79,6 +113,10 @@ PRODUCT_PACKAGES += \
     android.software.ipsec_tunnels.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
 
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml \
+    frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
+
 # Properties
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
 TARGET_SYSTEM_EXT_PROP += device/samsung/s5e8825-common/configs/props/system_ext.prop
@@ -99,7 +137,9 @@ PRODUCT_SOONG_NAMESPACES += \
     device/samsung/s5e8825-common \
     hardware/samsung \
     hardware/samsung_slsi/libbt \
-    hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib
+    hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib \
+    hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \
+    hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1/proxy
 
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung
