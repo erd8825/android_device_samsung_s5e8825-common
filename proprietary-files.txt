@@ -45,6 +45,10 @@ vendor/etc/bluetooth/bt_did.conf
 vendor/firmware/default_configuration.flm.cfg.bin
 vendor/firmware/secure_configuration.flm.cfg.bin
 
+# Codec2 - Configuration
+vendor/etc/media_codecs_c2.xml
+vendor/etc/media_codecs_performance_c2.xml
+
 # Display - DQE
 vendor/etc/dqe/DQE_coef_data.xml
 vendor/etc/dqe/calib_data_atc.xml
