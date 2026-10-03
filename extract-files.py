@@ -14,7 +14,10 @@ from extract_utils.main import (
 )
 
 
-namespace_imports = ['hardware/samsung']
+namespace_imports = [
+    'device/samsung/s5e8825-common',
+    'hardware/samsung',
+]
 
 blob_fixups: blob_fixups_user_type = {
     # RIL
@@ -32,6 +35,21 @@ blob_fixups: blob_fixups_user_type = {
         # Before: [b.gt 0x00382398]
         # After: [b 0x00382398]
         .sig_replace('1f 00 08 6b 0c 01 00 54', '1f 00 08 6b 08 00 00 14'),
+    # Security - Keymint
+    (
+        'vendor/lib64/libskeymint10device.so',
+        'vendor/lib64/libskeymint_cli.so',
+    ): blob_fixup()
+        .add_needed('android.hardware.security.rkp-V1-ndk.so')
+        .add_needed('libbase_shim.so')
+        .add_needed('libshim_crypto.so')
+        .replace_needed('android.hardware.security.keymint-V1-ndk_platform.so', 'android.hardware.security.keymint-V1-ndk.so')
+        .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so', 'android.hardware.security.secureclock-V1-ndk.so')
+        .replace_needed('android.hardware.security.sharedsecret-V1-ndk_platform.so', 'android.hardware.security.sharedsecret-V1-ndk.so')
+        .replace_needed('libcrypto.so', 'libcrypto-v33.so'),
+    'vendor/lib64/vendor.samsung.hardware.keymint-V1-ndk_platform.so': blob_fixup()
+        .add_needed('android.hardware.security.rkp-V1-ndk.so')
+        .replace_needed('android.hardware.security.keymint-V1-ndk_platform.so', 'android.hardware.security.keymint-V1-ndk.so'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
