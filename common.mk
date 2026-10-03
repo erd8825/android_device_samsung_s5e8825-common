@@ -59,7 +59,10 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 AB_OTA_UPDATER := false
 
 # Permissions
-PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
+PRODUCT_PACKAGES += \
+    android.hardware.usb.accessory.prebuilt.xml \
+    android.hardware.usb.host.prebuilt.xml \
+    handheld_core_hardware.prebuilt.xml
 
 # Properties
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
@@ -80,6 +83,17 @@ PRODUCT_SOONG_NAMESPACES += \
     bootable/deprecated-ota \
     device/samsung/s5e8825-common \
     hardware/samsung
+
+# USB
+PRODUCT_PACKAGES += android.hardware.usb-service.samsung
+
+# USB - Gadget
+PRODUCT_PACKAGES += android.hardware.usb.gadget-service.samsung
+
+$(call soong_config_set,samsungUsbGadgetVars,gadget_name,13200000.dwc3)
+
+# USB - Gadget - Init
+PRODUCT_PACKAGES += init.s5e8825.usb.rc
 
 # VINTF
 DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml
