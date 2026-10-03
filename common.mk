@@ -76,6 +76,9 @@ PRODUCT_PACKAGES += bt_did.slsi.conf
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# Display - Touchscreen - Extra Features
+PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
+
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
