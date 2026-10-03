@@ -14,3 +14,6 @@ PRODUCT_CHARACTERISTICS := phone
 
 # Display
 TARGET_SCREEN_DENSITY := 450
+
+# Properties
+TARGET_VENDOR_PROP += device/samsung/s5e8825-common/products/phone/configs/props/vendor.prop

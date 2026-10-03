@@ -28,6 +28,14 @@ bluetooth.profile.pan.panu.enabled=1
 bluetooth.profile.pbap.server.enabled=1
 bluetooth.profile.sap.server.enabled=1
 
+# Display
+persist.sys.sf.color_saturation=1.0
+persist.sys.sf.native_mode=0
+ro.surface_flinger.enable_frame_rate_override=0
+ro.surface_flinger.has_HDR_display=1
+ro.surface_flinger.has_wide_color_display=1
+ro.surface_flinger.use_color_management=1
+
 # Graphics
 debug.renderengine.backend=skiavkthreaded
 debug.sf.latch_unsignaled=1
