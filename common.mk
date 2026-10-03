@@ -70,6 +70,9 @@ TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
 # Recovery - Init
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 
+# Security - Gatekeeper
+PRODUCT_PACKAGES += android.hardware.gatekeeper-service.teegris
+
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
