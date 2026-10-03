@@ -14,6 +14,9 @@ vendor/firmware/dolby.bin
 vendor/firmware/listenbackeffect.bin
 vendor/firmware/volumemonitor.bin
 
+# Bluetooth - Configuration
+vendor/etc/bluetooth/bt_did.conf
+
 # Camera - Firmware - Configuration
 vendor/firmware/default_configuration.flm.cfg.bin
 vendor/firmware/secure_configuration.flm.cfg.bin
