@@ -11,3 +11,6 @@ PRODUCT_CHARACTERISTICS := phone
 
 # Display
 TARGET_SCREEN_DENSITY := 450
+
+# RIL
+$(call inherit-product, device/samsung/s5e8825-common/products/ril/product.mk)
