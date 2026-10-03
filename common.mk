@@ -121,6 +121,9 @@ PRODUCT_PACKAGES += public.libraries.txt
 # Graphics - Render API
 TARGET_USES_VULKAN := true
 
+# Haptics
+PRODUCT_PACKAGES += android.hardware.vibrator-service.samsung
+
 # Health - Lineage
 PRODUCT_PACKAGES += vendor.lineage.health-service.default
 
