@@ -40,6 +40,7 @@ ro.vendor.gpu.dataspace=1
 
 # Display
 persist.sys.sf.color_saturation=1.0
+ro.surface_flinger.display_update_imminent_timeout_ms=50
 ro.surface_flinger.has_HDR_display=1
 ro.surface_flinger.has_wide_color_display=1
 ro.surface_flinger.use_color_management=1
@@ -65,6 +66,9 @@ ro.surface_flinger.protected_contents=1
 ro.surface_flinger.running_without_sync_framework=1
 ro.surface_flinger.supports_background_blur=1
 ro.vendor.ddk.set.afbc=1
+
+# Power
+vendor.powerhal.disp.idle_support=0
 
 # Partitions - GMS
 ro.frp.pst=/dev/block/by-name/persistent
