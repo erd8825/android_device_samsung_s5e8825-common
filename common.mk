@@ -22,5 +22,8 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Inherit proprietary blobs
 $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
+# Permissions
+PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
+
 # Soong - Namespaces
 PRODUCT_SOONG_NAMESPACES += device/samsung/s5e8825-common
