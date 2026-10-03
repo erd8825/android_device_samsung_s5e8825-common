@@ -76,6 +76,18 @@ PRODUCT_PACKAGES += bt_did.slsi.conf
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# Codec2
+PRODUCT_PACKAGES += samsung.hardware.media.c2-service
+
+# Codec2 - Codecs
+PRODUCT_PACKAGES += \
+    libExynosC2H264Dec \
+    libExynosC2H264Enc \
+    libExynosC2HevcDec \
+    libExynosC2HevcEnc \
+    libExynosC2Vp8Dec \
+    libExynosC2Vp8Enc
+
 # Display - Touchscreen - Extra Features
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
