@@ -91,6 +91,12 @@ PRODUCT_PACKAGES += \
 # Display - Touchscreen - Extra Features
 PRODUCT_PACKAGES += vendor.lineage.touch-service.samsung
 
+# DRM - Clearkey
+PRODUCT_PACKAGES += com.android.hardware.drm.clearkey
+
+# DRM - Widevine
+PRODUCT_PACKAGES += liboemcrypto
+
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
