@@ -9,6 +9,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_system.mk)
 
 # All components inherited here go to system_ext image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/handheld_system_ext.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_system_ext.mk)
 
 # All components inherited here go to product image
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_product.mk)
@@ -160,6 +161,7 @@ $(call soong_config_set,samsungUsbGadgetVars,gadget_name,13200000.dwc3)
 PRODUCT_PACKAGES += init.s5e8825.usb.rc
 
 # VINTF
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += hardware/samsung/vintf/samsung_framework_compatibility_matrix.xml
 DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml
 
 # Wi-Fi
