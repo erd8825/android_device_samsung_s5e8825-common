@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Inherit products from the common tree
+$(call inherit-product, device/samsung/s5e8825-common/products/ril/product.mk)
+
 # Inherit common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 

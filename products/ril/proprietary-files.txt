@@ -1,0 +1,42 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Product proprietary files - from the release mentioned in common proprietary-files.txt, unless pinned
+
+# RIL - from a55x - A556BXXSABYI1
+vendor/bin/hw/rild|e00d12047f9a3ce9eb75f38c6f43fa82564827f3
+vendor/etc/vintf/manifest/vendor.samsung.hardware.radio_manifest_2_34.xml|8a78a095378827de038b13e0470f6b43d60cf71a
+vendor/etc/vintf/manifest/vendor.samsung.hardware.sehradio_manifest_2_34.xml|ebbe359a9b2d78cb88debe79d9183c039afb7c01
+vendor/lib64/libVendorSemDataProps.so|68dae919cb8e4a36246fe6c3548fe7faf398bfcb
+vendor/lib64/libVendorSemTelephonyProps.so|684afb42daeec36fbb37987b06afb236df394a22
+vendor/lib64/libril_sem.so|489bdbfd9701e3b1979b8cc05133c733cc7f586b
+vendor/lib64/libsec-ril.so|b36460670b23a2d385123d5bb6b103691211d007
+vendor/lib64/libsemnativecarrierfeature.so|3a8102145028c96e7120ca5cb49b56b0f4b91f32
+vendor/lib64/vendor.samsung.hardware.radio-V1-ndk.so|05642682fee7b774b674bee8d5389e42919e2691
+vendor/lib64/vendor.samsung.hardware.radio.bridge-V1-ndk.so|7cea75e71274826e54c9ca5a3664e93d9ce42900
+vendor/lib64/vendor.samsung.hardware.radio.channel-V1-ndk.so|0c8caafffe1de898809ff33e5c3ef84a9149588d
+vendor/lib64/vendor.samsung.hardware.radio.data-V1-ndk.so|de741fe8c442fbf555020cbf01c5cdff2d93c58f
+vendor/lib64/vendor.samsung.hardware.radio.messaging-V1-ndk.so|253e1ee51bba7e8a61e93abc198c48cdfa21cf28
+vendor/lib64/vendor.samsung.hardware.radio.sim-V1-ndk.so|a2f0be5b802aa317d05f388b44a8b1917b02cfd7
+
+# RIL - Dependencies
+vendor/lib64/libengmode_client.so
+vendor/lib64/libvkmanager_vendor.so
+
+# RIL - Init
+vendor/etc/init/init.vendor.rilcommon.rc
+vendor/etc/init/vendor.samsung.rild.rc
+
+# RIL - Miscellaneous - from a55x - A556BXXSABYI1
+vendor/etc/locale/plmn_delta_eng.bin|5a1a2571ac703807da642d09c54a992244fa6654
+vendor/etc/locale/plmn_delta_zh-rCN.bin|b413cb77b463ccd496cfe5af4bdeb49ae8aff357
+vendor/etc/locale/plmn_delta_zh-rHK.bin|360f20bca041e121531118d96b8771e2dfc7ba98
+vendor/etc/locale/plmn_delta_zh-rTW.bin|034e834906858c1349f22eafbbd882b86dbce7d4
+vendor/etc/plmn_delta.bin|dbcc4d73dca31bd132b042e36be988701c42a552
+vendor/etc/plmn_delta_attaio.bin|751a1c7105f1c03fc196689c2a71e2c69aa14e1f
+vendor/etc/plmn_delta_hktw.bin|85e08766111c7fb6699b64784afbce2c9255c53b
+vendor/etc/plmn_delta_ltn.bin|4a6f44ae57e84394e6f31814f26fc4fcd7d41b62
+vendor/etc/plmn_delta_usagsm.bin|9a25ec9e9da16ed2f8a9db07f037fe08283b24e5
+vendor/etc/plmn_se13_prebuilt.bin|2584d935cca87e96ec7b200b391a1c829a5e7d29
