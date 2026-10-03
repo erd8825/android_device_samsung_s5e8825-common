@@ -1,0 +1,11 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_library_shared {
+    name: "libcrypto_shim.s5e8825",
+    srcs: ["crypto.c"],
+    shared_libs: ["libcrypto"],
+    vendor: true,
+}
