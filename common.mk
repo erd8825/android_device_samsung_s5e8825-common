@@ -22,6 +22,14 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Inherit the common vendor configuration
 $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
+# Bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.1-service \
+    libbt-vendor
+
+# Bluetooth - Configuration
+PRODUCT_PACKAGES += bt_did.slsi.conf
+
 # Branding
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
@@ -62,6 +70,7 @@ AB_OTA_UPDATER := false
 
 # Permissions
 PRODUCT_PACKAGES += \
+    android.hardware.bluetooth.prebuilt.xml \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
     android.hardware.wifi.direct.prebuilt.xml \
@@ -89,6 +98,7 @@ PRODUCT_SOONG_NAMESPACES += \
     bootable/deprecated-ota \
     device/samsung/s5e8825-common \
     hardware/samsung \
+    hardware/samsung_slsi/libbt \
     hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib
 
 # USB
