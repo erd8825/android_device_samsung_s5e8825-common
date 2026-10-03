@@ -1,0 +1,55 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+soong_namespace {}
+
+prebuilt_firmware {
+    name: "AP_AUDIO_SLSI.bin_placeholder",
+    src: ":empty_file",
+    filename: "AP_AUDIO_SLSI.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "APDV_AUDIO_SLSI.bin_placeholder",
+    src: ":empty_file",
+    filename: "APDV_AUDIO_SLSI.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "calliope_sram.bin_placeholder",
+    src: ":empty_file",
+    filename: "calliope_sram.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "mfc_fw.bin_placeholder",
+    src: ":empty_file",
+    filename: "mfc_fw.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "NPU.bin_placeholder",
+    src: ":empty_file",
+    filename: "NPU.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "os.checked.bin_placeholder",
+    src: ":empty_file",
+    filename: "os.checked.bin",
+    vendor: true,
+}
+
+prebuilt_firmware {
+    name: "vts.bin_placeholder",
+    src: ":empty_file",
+    filename: "vts.bin",
+    vendor: true,
+}
