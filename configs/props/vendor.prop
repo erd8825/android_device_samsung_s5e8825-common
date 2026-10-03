@@ -5,3 +5,6 @@
 
 # Partitions - GMS
 ro.frp.pst=/dev/block/by-name/persistent
+
+# Wi-Fi
+ro.boot.wificountrycode=00
