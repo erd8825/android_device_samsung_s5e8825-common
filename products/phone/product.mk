@@ -6,11 +6,17 @@
 # Inherit common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Camera
+$(call soong_config_set,samsungCameraVars,extra_ids,58)
+
 # Characteristics
 PRODUCT_CHARACTERISTICS := phone
 
 # Display
 TARGET_SCREEN_DENSITY := 450
+
+# Overlays
+PRODUCT_PACKAGES += ApertureOverlayPhone
 
 # Properties
 TARGET_VENDOR_PROP += device/samsung/s5e8825-common/products/phone/configs/props/vendor.prop
