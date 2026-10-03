@@ -176,6 +176,9 @@ PRODUCT_SOONG_NAMESPACES += \
 
 $(call inherit-product, hardware/samsung_slsi-linaro/config/config.mk)
 
+# Task Profiles
+PRODUCT_PACKAGES += task_profiles.json.s5e8825
+
 # USB
 PRODUCT_PACKAGES += android.hardware.usb-service.samsung
 
