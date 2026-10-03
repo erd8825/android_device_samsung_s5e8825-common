@@ -15,6 +15,12 @@ PRODUCT_CHARACTERISTICS := phone
 # Display
 TARGET_SCREEN_DENSITY := 450
 
+# Fingerprint
+PRODUCT_PACKAGES += android.hardware.biometrics.fingerprint-service.samsung
+
+# Fingerprint - Init
+PRODUCT_PACKAGES += init.fingerprint.rc
+
 # NFC - Init
 PRODUCT_PACKAGES += init.nfc.rc
 
@@ -25,6 +31,7 @@ PRODUCT_PACKAGES += \
 
 # Permissions
 PRODUCT_PACKAGES += \
+    android.hardware.fingerprint.prebuilt.xml \
     android.hardware.nfc.prebuilt.xml \
     android.hardware.nfc.hce.prebuilt.xml \
     android.hardware.nfc.hcef.prebuilt.xml \
