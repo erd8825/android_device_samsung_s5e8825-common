@@ -3,4 +3,13 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <manifest version="1.0" target-level="7" type="device">
+    <hal format="hidl">
+        <name>android.hardware.bluetooth</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IBluetoothHci</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
 </manifest>
