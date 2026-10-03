@@ -5,3 +5,6 @@
 
 # Inherit common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+
+# Characteristics
+PRODUCT_CHARACTERISTICS := phone
