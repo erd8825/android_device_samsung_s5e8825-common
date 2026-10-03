@@ -85,3 +85,6 @@ TARGET_SOC := s5e8825
 
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
+
+# VINTF
+DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml
