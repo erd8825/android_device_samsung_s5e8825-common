@@ -68,3 +68,6 @@ BOARD_SHIPPING_API_LEVEL := 31
 PRODUCT_SOONG_NAMESPACES += \
     bootable/deprecated-ota \
     device/samsung/s5e8825-common
+
+# VINTF
+DEVICE_MANIFEST_FILE := device/samsung/s5e8825-common/configs/vintf/manifest.xml
