@@ -22,6 +22,10 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 # Inherit proprietary blobs
 $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 
+# Branding
+PRODUCT_BRAND := samsung
+PRODUCT_MANUFACTURER := samsung
+
 # Permissions
 PRODUCT_PACKAGES += handheld_core_hardware.prebuilt.xml
 
