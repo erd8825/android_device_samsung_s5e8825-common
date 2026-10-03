@@ -15,10 +15,7 @@
 
 cc_library_shared {
     name: "libshim_camera",
-    srcs: [
-        "Fence.cpp",
-        "GraphicBufferMapper.cpp",
-    ],
+    srcs: ["Fence.cpp"],
     shared_libs: [
         "libcutils",
         "libsync",
