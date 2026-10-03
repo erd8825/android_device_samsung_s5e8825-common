@@ -1,0 +1,9 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+on boot
+    chown system system /sys/class/sec/tsp/scrub_pos
+
+    write /sys/class/sec/tsp/cmd "fod_enable,1,1,0"
