@@ -29,7 +29,9 @@ PRODUCT_MANUFACTURER := samsung
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e8825.vendor \
-    fstab.s5e8825.vendor_ramdisk
+    fstab.s5e8825.vendor_ramdisk \
+    init.s5e8825.rc \
+    ueventd.s5e8825.rc
 
 # Kernel - Modules
 PRODUCT_PACKAGES += toolbox.vendor_ramdisk
