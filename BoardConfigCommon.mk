@@ -86,6 +86,9 @@ TARGET_BOARD_PLATFORM := erd8825
 TARGET_BOOTLOADER_BOARD_NAME := s5e8825
 TARGET_SOC := s5e8825
 
+# Platform - Linaro
+include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
+
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
 

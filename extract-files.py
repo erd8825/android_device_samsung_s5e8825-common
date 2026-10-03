@@ -24,6 +24,7 @@ from extract_utils.tools import (
 namespace_imports = [
     'device/samsung/s5e8825-common',
     'hardware/samsung',
+    'hardware/samsung_slsi-linaro/graphics',
 ]
 
 
