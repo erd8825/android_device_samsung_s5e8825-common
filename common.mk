@@ -26,6 +26,9 @@ $(call inherit-product, vendor/samsung/s5e8825-common/s5e8825-common-vendor.mk)
 PRODUCT_BRAND := samsung
 PRODUCT_MANUFACTURER := samsung
 
+# GMS
+PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
+
 # Init
 PRODUCT_PACKAGES += \
     fstab.s5e8825.vendor \
