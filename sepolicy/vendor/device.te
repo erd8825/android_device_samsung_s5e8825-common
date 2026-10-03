@@ -1,0 +1,11 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Camera
+type dmabuf_camera_heap_device, dmabuf_heap_device_type, dev_type;
+
+# DRM - Widevine
+type dmabuf_crypto_heap_device, dmabuf_heap_device_type, dev_type;
+type vendor_secmem_device, dev_type;

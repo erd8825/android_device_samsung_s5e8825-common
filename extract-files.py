@@ -26,6 +26,7 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libsensorndkbridge_shim.samsung.so'),
     # GNSS
     'vendor/bin/hw/gpsd': blob_fixup().binary_regex_replace(b'libcrypto.so', b'libcryptx.so'),
+    'vendor/etc/init/init.gps.rc': blob_fixup().regex_replace(r'\n.*:[\s\S]*', ''),
     # Neural Networks
     'vendor/lib64/libeden_ud_gpu.so': blob_fixup()
         .add_needed('libeden_ud_cpu.so')
