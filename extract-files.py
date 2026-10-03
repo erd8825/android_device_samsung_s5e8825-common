@@ -52,7 +52,7 @@ def rename_dynamic_symbol(
 
 blob_fixups: blob_fixups_user_type = {
     # Camera - Dependecies
-    'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libshim_sensorndkbridge.so'),
+    'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libsensorndkbridge_shim.samsung.so'),
     # GPS
     'vendor/bin/hw/gpsd': blob_fixup().binary_regex_replace(b'libcrypto.so', b'libcryptx.so'),
     # Neural Networks
