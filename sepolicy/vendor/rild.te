@@ -1,0 +1,9 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+dontaudit rild default_prop:file r_file_perms;
+dontaudit rild default_prop:property_service set;
+dontaudit rild system_prop:file r_file_perms;
+get_prop(rild, vendor_radio_prop)
