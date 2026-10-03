@@ -4,3 +4,24 @@
 #
 
 # Common proprietary files - from A266MUBU9CZEA, unless pinned
+
+# Audio - Firmware
+vendor/firmware/APSV_AUDIO_SLSI.bin
+vendor/firmware/avsyncmix.bin
+vendor/firmware/bidirmic.bin
+vendor/firmware/dax_param.bin
+vendor/firmware/dolby.bin
+vendor/firmware/listenbackeffect.bin
+vendor/firmware/volumemonitor.bin
+
+# Camera - Firmware - Configuration
+vendor/firmware/default_configuration.flm.cfg.bin
+vendor/firmware/secure_configuration.flm.cfg.bin
+
+# Neural Networks - Firmware
+vendor/firmware/OD_V2.1.6_01_26_QVGA.nnc
+vendor/firmware/OD_V2.3.7_02_05_VGA.nnc
+
+# Wi-Fi - Firmware - from a53x - A536BXXSHFYI1
+vendor/firmware/wifi/mx140.bin|a2296e70ff2652ef1f02a5838a8708a60e9845f7
+vendor/firmware/wifi/mx140_t.bin|cd583f241fb0126f86b7bba05fd565801a117b47
