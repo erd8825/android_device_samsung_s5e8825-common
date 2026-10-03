@@ -1,0 +1,25 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "fstab.s5e8825",
+    src: "fstab.s5e8825",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "init.s5e8825.recovery.rc",
+    src: "init.s5e8825.recovery.rc",
+    sub_dir: "init",
+    recovery: true,
+}
+
+prebuilt_root {
+    name: "fstab.s5e8825.vendor_ramdisk",
+    src: "fstab.s5e8825",
+    filename_from_src: true,
+    vendor_ramdisk: true,
+    install_in_root: true,
+}

@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Partitions - GMS
+ro.frp.pst=/dev/block/by-name/persistent
