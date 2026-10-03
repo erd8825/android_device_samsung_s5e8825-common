@@ -1,0 +1,17 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+prebuilt_etc {
+    name: "libnfc-hal-st.conf",
+    src: "libnfc-hal-st.conf",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "st21nfc_conf.txt",
+    src: "st21nfc_conf.txt",
+    sub_dir: "nfc",
+    vendor: true,
+}
