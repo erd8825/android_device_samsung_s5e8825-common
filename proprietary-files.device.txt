@@ -33,6 +33,9 @@ vendor/firmware/is_rta.bin
 vendor/firmware/txse1.bin
 vendor/firmware/txse2.bin
 
+# Miscellaneous
+vendor/etc/floating_feature.xml
+
 # Wi-Fi - Firmware
 vendor/firmware/wifi/mx140_common.hcf
 vendor/firmware/wifi/mx140_wlan.hcf
