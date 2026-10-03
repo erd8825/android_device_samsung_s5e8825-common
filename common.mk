@@ -140,6 +140,11 @@ PRODUCT_ENABLE_UFFD_GC := true
 # Kernel - Modules
 PRODUCT_PACKAGES += toolbox.vendor_ramdisk
 
+# Neural Networks
+PRODUCT_PACKAGES += \
+    android.hardware.neuralnetworks@1.3-service.eden-drv \
+    vendor.samsung_slsi.hardware.eden_runtime@1.0-service
+
 # Overlays
 PRODUCT_PACKAGES += \
     FrameworkResOverlayCommon \
