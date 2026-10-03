@@ -8,6 +8,9 @@
 # Audio - Effects - Dolby - Dependencies
 vendor/lib64/soundfx/libswdap.so
 
+# Audio - Effects - SoundBooster - Configuration
+vendor/etc/SoundBoosterParam.txt
+
 # Audio - Effects - SoundBooster - Firmware
 vendor/firmware/SoundBoosterParam.bin
 
