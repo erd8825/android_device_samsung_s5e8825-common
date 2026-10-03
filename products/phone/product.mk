@@ -9,6 +9,9 @@ $(call inherit-product, device/samsung/s5e8825-common/products/ril/product.mk)
 # Inherit common Lineage stuff
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
+# Camera
+$(call soong_config_set,samsungCameraVars,extra_ids,58)
+
 # Characteristics
 PRODUCT_CHARACTERISTICS := phone
 
