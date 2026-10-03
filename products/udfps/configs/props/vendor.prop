@@ -1,0 +1,7 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+ro.vendor.fingerprint.type=udfps_optical
+ro.vendor.fingerprint.request_touch_event=1
