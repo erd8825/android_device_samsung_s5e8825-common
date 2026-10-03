@@ -4,6 +4,13 @@
 //
 
 prebuilt_etc {
+    name: "init.fingerprint.rc",
+    src: "init.fingerprint.rc",
+    sub_dir: "init",
+    vendor: true,
+}
+
+prebuilt_etc {
     name: "init.nfc.rc",
     src: "init.nfc.rc",
     sub_dir: "init",
