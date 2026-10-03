@@ -1,0 +1,14 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+allow gpsd hal_system_suspend_service:service_manager find;
+allow gpsd gps_device:chr_file rw_file_perms;
+allow gpsd gpsd_exec:file execute_no_trans;
+allow gpsd self:capability2 block_suspend;
+allow gpsd sysfs_sec_gps:file r_file_perms;
+binder_call(gpsd, servicemanager)
+dontaudit gpsd radio_prop:file { getattr map open read };
+get_prop(gpsd, bootanim_system_prop);
+wakelock_use(gpsd)

@@ -1,0 +1,15 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+# Camera
+persist.vendor.camera.                   u:object_r:vendor_camera_prop:s0
+persist.vendor.sys.camera.               u:object_r:vendor_camera_prop:s0
+
+# HWC
+vendor.hwc.                              u:object_r:vendor_hwc_prop:s0
+
+# RIL
+ro.vendor.multisim.simslotcount          u:object_r:vendor_radio_prop:s0
+ro.vendor.radio.default_network          u:object_r:vendor_radio_prop:s0
