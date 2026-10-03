@@ -48,7 +48,10 @@ PRODUCT_ENABLE_UFFD_GC := true
 PRODUCT_PACKAGES += toolbox.vendor_ramdisk
 
 # Overlays
-PRODUCT_PACKAGES += LineageSDKOverlayCommon
+PRODUCT_PACKAGES += \
+    FrameworkResOverlayCommon \
+    LineageSDKOverlayCommon \
+    WiFiOverlayCommon
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
@@ -65,10 +68,15 @@ AB_OTA_UPDATER := false
 PRODUCT_PACKAGES += \
     android.hardware.usb.accessory.prebuilt.xml \
     android.hardware.usb.host.prebuilt.xml \
+    android.hardware.wifi.direct.prebuilt.xml \
+    android.hardware.wifi.passpoint.prebuilt.xml \
+    android.hardware.wifi.prebuilt.xml \
+    android.software.ipsec_tunnels.prebuilt.xml \
     handheld_core_hardware.prebuilt.xml
 
 # Properties
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
+TARGET_VENDOR_PROP += device/samsung/s5e8825-common/configs/props/vendor.prop
 
 # Recovery - Fastboot
 PRODUCT_PACKAGES += fastbootd
@@ -98,3 +106,12 @@ $(call soong_config_set,samsungUsbGadgetVars,gadget_name,13200000.dwc3)
 
 # USB - Gadget - Init
 PRODUCT_PACKAGES += init.s5e8825.usb.rc
+
+# Wi-Fi
+PRODUCT_PACKAGES += \
+    android.hardware.wifi-service \
+    hostapd \
+    wpa_supplicant
+
+# Wi-Fi - Configuration
+PRODUCT_PACKAGES += wpa_supplicant.conf
