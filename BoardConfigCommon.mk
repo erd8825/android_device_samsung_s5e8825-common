@@ -92,6 +92,12 @@ include hardware/samsung_slsi-linaro/config/BoardConfig8825.mk
 # Releasetools - Extension
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/s5e8825-common
 
+# SELinux
+BOARD_SEPOLICY_TEE_FLAVOR := teegris
+BOARD_VENDOR_SEPOLICY_DIRS += device/samsung/s5e8825-common/sepolicy/vendor
+include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+include device/samsung_slsi/sepolicy/sepolicy.mk
+
 # Wi-Fi
 BOARD_WLAN_DEVICE := slsi
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
