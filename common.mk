@@ -165,6 +165,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+# Power
+PRODUCT_PACKAGES += android.hardware.power-service.pixel-libperfmgr
+
+# Power - Configuration
+PRODUCT_PACKAGES += powerhint.json
+
 # Properties
 TARGET_PRODUCT_PROP += device/samsung/s5e8825-common/configs/props/product.prop
 TARGET_SYSTEM_EXT_PROP += device/samsung/s5e8825-common/configs/props/system_ext.prop
@@ -189,6 +195,8 @@ BOARD_SHIPPING_API_LEVEL := 31
 PRODUCT_SOONG_NAMESPACES += \
     bootable/deprecated-ota \
     device/samsung/s5e8825-common \
+    hardware/google/interfaces \
+    hardware/google/pixel \
     hardware/samsung \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \

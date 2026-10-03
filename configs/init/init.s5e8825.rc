@@ -611,6 +611,9 @@ on boot
     chown system system /sys/class/sec/switch/uart_sel
     chmod 0660 /sys/class/sec/switch/uart_sel
 
+    # Power
+    setprop vendor.powerhal.init 1
+
     # Meta event
     chown system radio /sys/class/sensors/sensor_dev/flush
 
