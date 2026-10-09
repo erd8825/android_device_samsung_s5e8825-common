@@ -228,7 +228,7 @@ TARGET_VENDOR_PROP += device/samsung/s5e8825-common/configs/props/vendor.prop
 PRODUCT_PACKAGES += init.s5e8825.recovery.rc
 
 # Security - Gatekeeper
-PRODUCT_PACKAGES += android.hardware.gatekeeper-service.teegris
+PRODUCT_PACKAGES += android.hardware.gatekeeper-service.samsung
 
 # Security - Keymint
 PRODUCT_PACKAGES += android.hardware.security.keymint-service.samsung
