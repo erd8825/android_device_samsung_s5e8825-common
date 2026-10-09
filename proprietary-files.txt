@@ -153,6 +153,9 @@ vendor/lib64/libsecril-client.so|08be69e0a57e034f6b0b653aaff201509d7dfc5b
 # RIL - Init
 vendor/etc/init/init.baseband.rc
 
+# Security - Gatekeeper - from a53x - A536BXXU1AVBB
+vendor/lib64/hw/gatekeeper.s5e8825.so|6aaae73e98b8559b793b3a0620d8603120a44f16
+
 # Security - Keymint
 vendor/lib64/libskeymint10device.so
 vendor/lib64/libskeymint_cli.so
