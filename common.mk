@@ -69,10 +69,7 @@ PRODUCT_PACKAGES += \
 TARGET_EXCLUDES_AUDIOFX := true
 
 # Bluetooth
-PRODUCT_PACKAGES += \
-    android.hardware.bluetooth@1.0-impl \
-    android.hardware.bluetooth@1.0-service \
-    libbt-vendor
+PRODUCT_PACKAGES += android.hardware.bluetooth-service.samsung
 
 # Bluetooth - Configuration
 PRODUCT_PACKAGES += bt_did.slsi.conf
