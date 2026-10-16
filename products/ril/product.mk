@@ -4,7 +4,9 @@
 #
 
 # Overlays
-PRODUCT_PACKAGES += FrameworkResOverlayRIL
+PRODUCT_PACKAGES += \
+    CarrierSettingsOverlayRIL \
+    FrameworkResOverlayRIL
 
 # Permissions
 PRODUCT_PACKAGES += android.hardware.telephony.gsm.prebuilt.xml
