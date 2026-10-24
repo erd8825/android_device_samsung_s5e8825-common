@@ -89,8 +89,14 @@
             <devicePorts>
                 <devicePort tagName="Speaker" type="AUDIO_DEVICE_OUT_SPEAKER" role="sink"/>
                 <devicePort tagName="Earpiece" type="AUDIO_DEVICE_OUT_EARPIECE" role="sink"/>
-                <devicePort tagName="Wired Headset" type="AUDIO_DEVICE_OUT_WIRED_HEADSET" role="sink"/>
-                <devicePort tagName="Wired Headphones" type="AUDIO_DEVICE_OUT_WIRED_HEADPHONE" role="sink"/>
+                <devicePort tagName="Wired Headset" type="AUDIO_DEVICE_OUT_WIRED_HEADSET" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
+                <devicePort tagName="Wired Headphones" type="AUDIO_DEVICE_OUT_WIRED_HEADPHONE" role="sink">
+                    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+                             samplingRates="48000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+                </devicePort>
 
                 <devicePort tagName="BT SCO" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO" role="sink"/>
                 <devicePort tagName="BT SCO Car Kit" type="AUDIO_DEVICE_OUT_BLUETOOTH_SCO_CARKIT" role="sink"/>
