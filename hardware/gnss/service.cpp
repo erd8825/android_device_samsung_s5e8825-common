@@ -19,20 +19,14 @@
 #include <android-base/logging.h>
 #include <android/binder_manager.h>
 #include <android/binder_process.h>
-#include <hidl/HidlSupport.h>
-#include <hidl/HidlTransportSupport.h>
 #include <log/log.h>
 #include <pthread.h>
 #include "Gnss.h"
 
 using aidl::android::hardware::gnss::Gnss;
-using ::android::OK;
-using ::android::sp;
-using ::android::hardware::configureRpcThreadpool;
-using ::android::hardware::joinRpcThreadpool;
 
 int main() {
-    ABinderProcess_setThreadPoolMaxThreadCount(1);
+    ABinderProcess_setThreadPoolMaxThreadCount(0);
     ABinderProcess_startThreadPool();
 
     std::shared_ptr<Gnss> gnssAidl = ndk::SharedRefBase::make<Gnss>();

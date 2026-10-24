@@ -30,20 +30,20 @@ cc_binary {
         "libbase",
         "libcutils",
         "libbinder_ndk",
-        "libhidlbase",
+        "libdl",
+        "libcrypto",
+        "libz",
         "libutils",
         "liblog",
-        "android.hardware.gnss@2.1",
-        "android.hardware.gnss@2.0",
-        "android.hardware.gnss@1.0",
-        "android.hardware.gnss.measurement_corrections@1.1",
-        "android.hardware.gnss.measurement_corrections@1.0",
-        "android.hardware.gnss.visibility_control@1.0",
     ],
     srcs: [
         "AGnssRil.cpp",
         "AGnss.cpp",
         "Gnss.cpp",
+        "GnssBackend.cpp",
+        "GnssDiagnostics.cpp",
+        "GnssProtocol.cpp",
+        "GnssSensors.cpp",
         "GnssAntennaInfo.cpp",
         "GnssAssistanceInterface.cpp",
         "GnssBatching.cpp",
@@ -58,9 +58,13 @@ cc_binary {
         "MeasurementCorrectionsInterface.cpp",
         "service.cpp",
     ],
-    static_libs: [
-        "android.hardware.gnss@common-default-lib",
-    ],
+    header_libs: ["libandroid_sensor_headers"],
+}
+
+linker_config {
+    name: "gnss-samsung-linker-config",
+    src: "linker.config.json",
+    installable: false,
 }
 
 prebuilt_etc {
@@ -84,11 +88,13 @@ apex {
     certificate: ":com.android.hardware.certificate",
     updatable: false,
     vendor: true,
+    required: ["libsensorndkbridge"],
 
     binaries: [
         "android.hardware.gnss-service.samsung",
     ],
     prebuilts: [
+        "gnss-samsung-linker-config",
         "gnss-samsung.rc",
         "gnss-samsung.xml",
         "android.hardware.location.gps.prebuilt.xml", // permission
