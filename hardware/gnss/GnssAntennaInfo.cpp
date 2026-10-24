@@ -14,136 +14,79 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "GnssAntennaInfoAidl"
-
 #include "GnssAntennaInfo.h"
-#include <aidl/android/hardware/gnss/BnGnss.h>
-#include <log/log.h>
-#include "Utils.h"
-
+#include <aidl/android/hardware/gnss/IGnss.h>
+#include <cmath>
+#include <limits>
+#include "GnssBackend.h"
+#include "GnssProtocol.h"
 namespace aidl::android::hardware::gnss {
-
-using namespace ::android::hardware::gnss;
-using Row = IGnssAntennaInfoCallback::Row;
-using Coord = IGnssAntennaInfoCallback::Coord;
-
-std::shared_ptr<IGnssAntennaInfoCallback> GnssAntennaInfo::sCallback = nullptr;
-
-GnssAntennaInfo::GnssAntennaInfo() : mMinIntervalMs(1000) {}
-
-GnssAntennaInfo::~GnssAntennaInfo() {
-    stop();
+GnssAntennaInfo::GnssAntennaInfo() {
+    GnssBackend::get().setHandler(0x7a0a, [this](const std::vector<uint8_t>& data) {
+        protocol::Reader reader(data);
+        const auto count = reader.get<uint8_t>();
+        if (count > 16) return;
+        std::vector<IGnssAntennaInfoCallback::GnssAntennaInfo> infos;
+        for (unsigned i = 0; i < count; ++i) {
+            IGnssAntennaInfoCallback::GnssAntennaInfo info;
+            double frequency = reader.get<double>() * 1000000.0;
+            info.carrierFrequencyHz = std::isnan(frequency)  ? 0
+                                      : frequency >= 0x1p63  ? std::numeric_limits<int64_t>::max()
+                                      : frequency <= -0x1p63 ? std::numeric_limits<int64_t>::min()
+                                                             : static_cast<int64_t>(frequency);
+            auto& coord = info.phaseCenterOffsetCoordinateMillimeters;
+            coord.x = reader.get<double>();
+            coord.xUncertainty = reader.get<double>();
+            coord.y = reader.get<double>();
+            coord.yUncertainty = reader.get<double>();
+            coord.z = reader.get<double>();
+            coord.zUncertainty = reader.get<double>();
+            infos.push_back(std::move(info));
+        }
+        if (!reader.ok()) return;
+        GnssBackend::get().postCallback([this, infos = std::move(infos)] {
+            std::shared_ptr<IGnssAntennaInfoCallback> callback;
+            {
+                std::lock_guard lock(mMutex);
+                callback = mCallback;
+            }
+            if (callback) callback->gnssAntennaInfoCb(infos);
+        });
+    });
 }
 
-// Methods from ::android::hardware::gnss::V2_1::IGnssAntennaInfo follow.
+GnssAntennaInfo::~GnssAntennaInfo() {
+    GnssBackend::get().setHandler(0x7a0a, {});
+}
+
 ndk::ScopedAStatus GnssAntennaInfo::setCallback(
         const std::shared_ptr<IGnssAntennaInfoCallback>& callback) {
-    ALOGD("setCallback");
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = callback;
-
-    if (mIsActive) {
-        ALOGW("GnssAntennaInfo callback already set. Resetting the callback...");
-        stop();
+    if (!callback) return ndk::ScopedAStatus::fromExceptionCode(-38);
+    std::lock_guard lock(mMutex);
+    if (!mCallback) {
+        mCallback = callback;
+        mRequestSent = false;
     }
-    start();
-
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus GnssAntennaInfo::close() {
-    ALOGD("close");
-    stop();
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = nullptr;
+    std::lock_guard lock(mMutex);
+    mCallback = nullptr;
+    mRequestSent = false;
     return ndk::ScopedAStatus::ok();
 }
 
-void GnssAntennaInfo::start() {
-    ALOGD("start");
-    mIsActive = true;
-    mThread = std::thread([this]() {
-        while (mIsActive == true) {
-            if (sCallback != nullptr) {
-                IGnssAntennaInfoCallback::GnssAntennaInfo mockAntennaInfo_1 = {
-                        .carrierFrequencyHz = 1575420000,
-                        .phaseCenterOffsetCoordinateMillimeters = Coord{.x = 1,
-                                                                        .xUncertainty = 0.1,
-                                                                        .y = 2,
-                                                                        .yUncertainty = 0.1,
-                                                                        .z = 3,
-                                                                        .zUncertainty = 0.1},
-                        .phaseCenterVariationCorrectionMillimeters =
-                                {
-                                        Row{std::vector<double>{1, -1, 5, -2, 3, -1}},
-                                        Row{std::vector<double>{-2, 3, 2, 0, 1, 2}},
-                                        Row{std::vector<double>{1, 3, 2, -1, -3, 5}},
-                                },
-                        .phaseCenterVariationCorrectionUncertaintyMillimeters =
-                                {
-                                        Row{std::vector<double>{0.1, 0.2, 0.4, 0.1, 0.2, 0.3}},
-                                        Row{std::vector<double>{0.3, 0.2, 0.3, 0.6, 0.1, 0.1}},
-                                        Row{std::vector<double>{0.1, 0.1, 0.4, 0.2, 0.5, 0.3}},
-                                },
-                        .signalGainCorrectionDbi =
-                                {
-                                        Row{std::vector<double>{2, -3, 1, -3, 0, -4}},
-                                        Row{std::vector<double>{1, 0, -4, 1, 3, -2}},
-                                        Row{std::vector<double>{3, -2, 0, -2, 3, 0}},
-                                },
-                        .signalGainCorrectionUncertaintyDbi =
-                                {
-                                        Row{std::vector<double>{0.3, 0.1, 0.2, 0.6, 0.1, 0.3}},
-                                        Row{std::vector<double>{0.1, 0.1, 0.5, 0.2, 0.3, 0.1}},
-                                        Row{std::vector<double>{0.2, 0.4, 0.2, 0.1, 0.1, 0.2}},
-                                },
-                };
-
-                IGnssAntennaInfoCallback::GnssAntennaInfo mockAntennaInfo_2 = {
-                        .carrierFrequencyHz = 1176450000,
-                        .phaseCenterOffsetCoordinateMillimeters = Coord{.x = 5,
-                                                                        .xUncertainty = 0.1,
-                                                                        .y = 6,
-                                                                        .yUncertainty = 0.1,
-                                                                        .z = 7,
-                                                                        .zUncertainty = 0.1},
-                };
-
-                std::vector<IGnssAntennaInfoCallback::GnssAntennaInfo> mockAntennaInfos = {
-                        mockAntennaInfo_1,
-                        mockAntennaInfo_2,
-                };
-                this->reportAntennaInfo(mockAntennaInfos);
-            }
-
-            /** For mock implementation this is good. On real device, we should only report
-                antennaInfo at start and when there is a configuration change. **/
-            std::this_thread::sleep_for(std::chrono::milliseconds(mMinIntervalMs));
-        }
-    });
+void GnssAntennaInfo::clearCallback() {
+    std::lock_guard lock(mMutex);
+    mCallback = nullptr;
 }
 
-void GnssAntennaInfo::stop() {
-    ALOGD("stop");
-    mIsActive = false;
-    if (mThread.joinable()) {
-        mThread.join();
-    }
+void GnssAntennaInfo::onSvStatus() {
+    std::lock_guard lock(mMutex);
+    if (mRequestSent) return;
+    if (protocol::readConfigInt("GlueLayer_AntennaInfoCap", 0))
+        GnssBackend::get().send(0x8004, {static_cast<uint8_t>(mCallback != nullptr)});
+    mRequestSent = true;
 }
-
-void GnssAntennaInfo::reportAntennaInfo(
-        const std::vector<IGnssAntennaInfoCallback::GnssAntennaInfo>& antennaInfo) const {
-    std::unique_lock<std::mutex> lock(mMutex);
-
-    if (sCallback == nullptr) {
-        ALOGE("%s: No non-null callback", __func__);
-        return;
-    }
-
-    auto ret = sCallback->gnssAntennaInfoCb(antennaInfo);
-    if (!ret.isOk()) {
-        ALOGE("%s: Unable to invoke callback", __func__);
-    }
-}
-
 }  // namespace aidl::android::hardware::gnss

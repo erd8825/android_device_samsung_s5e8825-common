@@ -17,183 +17,365 @@
 #define LOG_TAG "GnssMeasIfaceAidl"
 
 #include "GnssMeasurementInterface.h"
-#include <aidl/android/hardware/gnss/BnGnss.h>
+
 #include <log/log.h>
-#include "DeviceFileReader.h"
-#include "Gnss.h"
-#include "GnssRawMeasurementParser.h"
-#include "GnssReplayUtils.h"
-#include "Utils.h"
+#include <time.h>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include "GnssBackend.h"
+#include "GnssProtocol.h"
 
 namespace aidl::android::hardware::gnss {
+namespace {
 
-using Utils = ::android::hardware::gnss::common::Utils;
-using ReplayUtils = ::android::hardware::gnss::common::ReplayUtils;
-using GnssRawMeasurementParser = ::android::hardware::gnss::common::GnssRawMeasurementParser;
-using DeviceFileReader = ::android::hardware::gnss::common::DeviceFileReader;
+int64_t elapsedRealtimeNs() {
+    timespec now{};
+    clock_gettime(CLOCK_BOOTTIME, &now);
+    return now.tv_sec * 1000000000LL + now.tv_nsec;
+}
 
-std::shared_ptr<IGnssMeasurementCallback> GnssMeasurementInterface::sCallback = nullptr;
+uint64_t readTime(protocol::Reader& reader) {
+    uint64_t high = reader.u32();
+    return (high << 32) | reader.u32();
+}
+
+int64_t truncateFrequency(float frequency) {
+    if (std::isnan(frequency)) return 0;
+    if (frequency >= 0x1p63f) return INT64_MAX;
+    if (frequency <= -0x1p63f) return INT64_MIN;
+    return static_cast<int64_t>(frequency);
+}
+
+uint64_t receivedTime(uint64_t time, uint32_t state, GnssConstellationType constellation) {
+    switch (constellation) {
+        case GnssConstellationType::GPS:
+        case GnssConstellationType::QZSS:
+        case GnssConstellationType::IRNSS:
+            if (state & (0x8 | 0x4000)) return time;
+            if (state & 0x4) return time % 6000000000ULL;
+            if (state & 0x2) return time % 20000000ULL;
+            if (state & 0x1) return time % 1000000ULL;
+            return 0;
+        case GnssConstellationType::GLONASS:
+            if (state & (0x80 | 0x8000)) return time;
+            if (state & 0x40) return time % 2000000000ULL;
+            if (state & 0x2) return time % 20000000ULL;
+            if (state & 0x20) return time % 10000000ULL;
+            if (state & 0x1) return time % 1000000ULL;
+            return 0;
+        case GnssConstellationType::BEIDOU:
+            if (state & (0x8 | 0x4000)) return time;
+            if (state & 0x4) return time % 6000000000ULL;
+            if (state & 0x200) return time % 600000000ULL;
+            if (state & 0x2) return time % 20000000ULL;
+            if (state & 0x100) return time % 2000000ULL;
+            if (state & 0x1) return time % 1000000ULL;
+            return 0;
+        case GnssConstellationType::GALILEO:
+            if (state & (0x8 | 0x4000)) return time;
+            if (state & 0x1000) return time % 2000000000ULL;
+            if (state & 0x800) return time % 100000000ULL;
+            if (state & 0x400) return time % 4000000ULL;
+            return time;
+        case GnssConstellationType::SBAS:
+            if (state & 0x2000) time %= 1000000000ULL;
+            if (state & 0x20) time %= 2000000ULL;
+            return state & 1 ? time % 1000000ULL : 0;
+        default:
+            return time;
+    }
+}
+
+void useDefaultFrequency(GnssMeasurement& measurement) {
+    if (measurement.flags & GnssMeasurement::HAS_CARRIER_FREQUENCY) return;
+    switch (measurement.signalType.constellation) {
+        case GnssConstellationType::GPS:
+        case GnssConstellationType::SBAS:
+        case GnssConstellationType::QZSS:
+        case GnssConstellationType::GALILEO:
+            measurement.signalType.carrierFrequencyHz = 1575420000;
+            break;
+        case GnssConstellationType::GLONASS:
+            measurement.signalType.carrierFrequencyHz = 1602000000;
+            break;
+        case GnssConstellationType::BEIDOU:
+            measurement.signalType.carrierFrequencyHz = 1561098000;
+            break;
+        case GnssConstellationType::IRNSS:
+            measurement.signalType.carrierFrequencyHz = 1176450000;
+            break;
+        default:
+            return;
+    }
+    measurement.flags |= GnssMeasurement::HAS_CARRIER_FREQUENCY;
+}
+
+}  // namespace
 
 GnssMeasurementInterface::GnssMeasurementInterface()
-    : mIntervalMs(1000), mLocationIntervalMs(1000) {
-    mThreads.reserve(2);
+    : mRfPathLossDb(protocol::readConfigInt("RfPathLossDb_Ap", 5)) {
+    auto& backend = GnssBackend::get();
+    backend.setHandler(0x790a, [this](const auto& payload) { readHeader(payload); });
+    backend.setHandler(0x720a, [this](const auto& payload) { readMeasurement(payload); });
 }
 
 GnssMeasurementInterface::~GnssMeasurementInterface() {
-    waitForStoppingThreads();
+    GnssBackend::get().setHandler(0x790a, {});
+    GnssBackend::get().setHandler(0x720a, {});
 }
 
 ndk::ScopedAStatus GnssMeasurementInterface::setCallback(
-        const std::shared_ptr<IGnssMeasurementCallback>& callback, const bool enableFullTracking,
-        const bool enableCorrVecOutputs) {
-    ALOGD("setCallback: enableFullTracking: %d enableCorrVecOutputs: %d", (int)enableFullTracking,
-          (int)enableCorrVecOutputs);
-    {
-        std::unique_lock<std::mutex> lock(mMutex);
-        sCallback = callback;
-    }
-
-    if (mIsActive) {
-        ALOGW("GnssMeasurement callback already set. Resetting the callback...");
-        stop();
-    }
-    start(enableCorrVecOutputs, enableFullTracking);
-
-    return ndk::ScopedAStatus::ok();
+        const std::shared_ptr<IGnssMeasurementCallback>& callback, bool enableFullTracking,
+        bool enableCorrVecOutputs) {
+    Options options;
+    options.enableFullTracking = enableFullTracking;
+    options.enableCorrVecOutputs = enableCorrVecOutputs;
+    options.intervalMs = 1000;
+    return setCallbackWithOptions(callback, options);
 }
 
 ndk::ScopedAStatus GnssMeasurementInterface::setCallbackWithOptions(
         const std::shared_ptr<IGnssMeasurementCallback>& callback, const Options& options) {
-    ALOGD("setCallbackWithOptions: fullTracking:%d, corrVec:%d, intervalMs:%d",
-          (int)options.enableFullTracking, (int)options.enableCorrVecOutputs, options.intervalMs);
-    {
-        std::unique_lock<std::mutex> lock(mMutex);
-        sCallback = callback;
-    }
-
-    if (mIsActive) {
-        ALOGW("GnssMeasurement callback already set. Resetting the callback...");
-        stop();
-    }
-    mIntervalMs = std::max(options.intervalMs, 1000);
-    mGnss->setGnssMeasurementInterval(mIntervalMs);
-    start(options.enableCorrVecOutputs, options.enableFullTracking);
-
+    if (callback == nullptr) return ndk::ScopedAStatus::fromExceptionCode(-38);
+    std::lock_guard lock(mMutex);
+    mFullTracking = options.enableFullTracking;
+    mIntervalMs = options.intervalMs > 0 ? options.intervalMs : 1000;
+    mReportedCount = 0;
+    if (mCallback != nullptr) return ndk::ScopedAStatus::ok();
+    mCallback = callback;
+    GnssBackend::get().send(0x6604, protocol::Writer().u8(1).u32(0).u8(0).data());
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus GnssMeasurementInterface::close() {
-    ALOGD("close");
-    if (mIsActive) {
-        stop();
-    }
-    {
-        std::unique_lock<std::mutex> lock(mMutex);
-        sCallback = nullptr;
-    }
-    mIntervalMs = 1000;
+    std::lock_guard lock(mMutex);
+    if (mCallback != nullptr) GnssBackend::get().send(0x6704, {1});
+    mCallback = nullptr;
     return ndk::ScopedAStatus::ok();
 }
 
-void GnssMeasurementInterface::start(const bool enableCorrVecOutputs,
-                                     const bool enableFullTracking) {
-    ALOGD("start");
-
-    if (mIsActive) {
-        ALOGD("restarting since measurement has started");
-        stop();
-    }
-
-    mIsActive = true;
-    mGnss->setGnssMeasurementEnabled(true);
-    mThreads.emplace_back(std::thread([this, enableCorrVecOutputs, enableFullTracking]() {
-        waitForStoppingThreads();
-        mThreadBlocker.reset();
-
-        int intervalMs;
-        do {
-            if (!mIsActive) {
-                break;
-            }
-            std::string rawMeasurementStr = "";
-            if (ReplayUtils::hasGnssDeviceFile() &&
-                ReplayUtils::isGnssRawMeasurement(
-                        rawMeasurementStr =
-                                DeviceFileReader::Instance().getGnssRawMeasurementData())) {
-                ALOGD("rawMeasurementStr(size: %zu) from device file: %s", rawMeasurementStr.size(),
-                      rawMeasurementStr.c_str());
-                auto measurement =
-                        GnssRawMeasurementParser::getMeasurementFromStrs(rawMeasurementStr);
-                if (measurement != nullptr) {
-                    this->reportMeasurement(*measurement);
-                }
-            } else {
-                auto measurement =
-                        Utils::getMockMeasurement(enableCorrVecOutputs, enableFullTracking);
-                this->reportMeasurement(measurement);
-                if (!mLocationEnabled || mLocationIntervalMs > mIntervalMs) {
-                    mGnss->reportSvStatus();
-                }
-            }
-            intervalMs =
-                    (mLocationEnabled) ? std::min(mLocationIntervalMs, mIntervalMs) : mIntervalMs;
-        } while (mIsActive && mThreadBlocker.wait_for(std::chrono::milliseconds(intervalMs)));
-    }));
+void GnssMeasurementInterface::setLocationInterval(int intervalMs) {
+    std::lock_guard lock(mMutex);
+    mLocationIntervalMs = intervalMs != 0 ? intervalMs : 1000;
 }
 
-void GnssMeasurementInterface::stop() {
-    ALOGD("stop");
-    mIsActive = false;
-    mGnss->setGnssMeasurementEnabled(false);
-    mThreadBlocker.notify();
-    for (auto iter = mThreads.begin(); iter != mThreads.end();) {
-        if (iter->joinable()) {
-            // Store the thread object by value
-            std::thread threadToMove = std::move(*iter);
-
-            mFutures.push_back(std::async(std::launch::async,
-                                          [threadToMove = std::move(threadToMove)]() mutable {
-                                              ALOGD("joining thread");
-                                              threadToMove.join();
-                                          }));
-        }
-        iter = mThreads.erase(iter);
-    }
-}
-
-void GnssMeasurementInterface::reportMeasurement(const GnssData& data) {
-    ALOGD("reportMeasurement()");
-    std::shared_ptr<IGnssMeasurementCallback> callbackCopy;
-    {
-        std::unique_lock<std::mutex> lock(mMutex);
-        if (sCallback == nullptr) {
-            ALOGE("%s: GnssMeasurement::sCallback is null.", __func__);
-            return;
-        }
-        callbackCopy = sCallback;
-    }
-    callbackCopy->gnssMeasurementCb(data);
-}
-
-void GnssMeasurementInterface::setLocationInterval(const int intervalMs) {
-    mLocationIntervalMs = intervalMs;
-}
-
-void GnssMeasurementInterface::setLocationEnabled(const bool enabled) {
+void GnssMeasurementInterface::setLocationEnabled(bool enabled) {
+    std::lock_guard lock(mMutex);
     mLocationEnabled = enabled;
+    if (enabled) mLocationReported = false;
 }
 
-void GnssMeasurementInterface::setGnssInterface(const std::shared_ptr<Gnss>& gnss) {
-    mGnss = gnss;
+void GnssMeasurementInterface::noteLocationReported() {
+    std::lock_guard lock(mMutex);
+    mLocationReported = true;
 }
 
-void GnssMeasurementInterface::waitForStoppingThreads() {
-    for (auto& future : mFutures) {
-        ALOGD("Stopping previous thread.");
-        future.wait();
-        ALOGD("Done stopping thread.");
+void GnssMeasurementInterface::setNavigationEnabled(bool enabled) {
+    std::lock_guard lock(mMutex);
+    mNavigationEnabled = enabled;
+    if (mCallback != nullptr) return;
+    if (enabled) {
+        GnssBackend::get().send(0x6604, protocol::Writer().u8(1).u32(0).u8(0).data());
+    } else {
+        GnssBackend::get().send(0x6704, {1});
     }
-    mFutures.clear();
+}
+
+void GnssMeasurementInterface::resetCallbacks() {
+    std::lock_guard lock(mMutex);
+    const bool enabled = mCallback != nullptr || mNavigationEnabled;
+    mCallback = nullptr;
+    mNavigationEnabled = false;
+    if (enabled) GnssBackend::get().send(0x6704, {1});
+}
+
+void GnssMeasurementInterface::onConnected() {
+    std::lock_guard lock(mMutex);
+    if (mCallback != nullptr || mNavigationEnabled) {
+        GnssBackend::get().send(0x6604, protocol::Writer().u8(1).u32(0).u8(0).data());
+    }
+}
+
+std::shared_ptr<GnssData> GnssMeasurementInterface::getLastData() const {
+    std::lock_guard lock(mMutex);
+    if (mLastData == nullptr ||
+        elapsedRealtimeNs() / 1000000 - mLastDataTimestampNs / 1000000 > 600000)
+        return nullptr;
+    return std::make_shared<GnssData>(*mLastData);
+}
+
+uint32_t GnssMeasurementInterface::getSvStatusSamplingRate() const {
+    std::lock_guard lock(mMutex);
+    int interval = mCallback != nullptr ? mIntervalMs : 1000;
+    if (mLocationEnabled) {
+        interval = mCallback != nullptr ? std::min(interval, mLocationIntervalMs)
+                                        : mLocationIntervalMs;
+    }
+    return std::max(1, interval / 1000);
+}
+
+bool GnssMeasurementInterface::isRawSessionEnabled() const {
+    std::lock_guard lock(mMutex);
+    return mCallback != nullptr || mNavigationEnabled;
+}
+
+void GnssMeasurementInterface::readHeader(const std::vector<uint8_t>& payload) {
+    protocol::Reader reader(payload);
+    uint8_t type = reader.u8();
+    reader.skip(3);
+    auto data = std::make_shared<GnssData>();
+    data->clock.gnssClockFlags = reader.u16();
+    data->clock.leapSecond = reader.get<int16_t>();
+    data->clock.timeNs = readTime(reader);
+    data->clock.timeUncertaintyNs = reader.f32();
+    data->clock.fullBiasNs = readTime(reader);
+    data->clock.biasNs = reader.f32();
+    data->clock.biasUncertaintyNs = reader.f32();
+    data->clock.driftNsps = reader.f32();
+    data->clock.driftUncertaintyNsps = reader.f32();
+    data->clock.hwClockDiscontinuityCount = reader.u16();
+    const size_t expected = reader.u8();
+    if (!reader.ok() || (type != 10 && type != 11)) return;
+    data->clock.referenceSignalTypeForIsb.constellation = GnssConstellationType::GPS;
+    data->clock.referenceSignalTypeForIsb.carrierFrequencyHz = 1575420000;
+    data->clock.referenceSignalTypeForIsb.codeType = "C";
+    const int64_t now = elapsedRealtimeNs();
+    if (type == 11) {
+        data->elapsedRealtime.flags = static_cast<int>(ElapsedRealtime::HAS_TIMESTAMP_NS) |
+                                      static_cast<int>(ElapsedRealtime::HAS_TIME_UNCERTAINTY_NS);
+        data->elapsedRealtime.timestampNs = now;
+        data->elapsedRealtime.timeUncertaintyNs = 100000;
+    }
+    std::shared_ptr<GnssData> previous;
+    {
+        std::lock_guard lock(mMutex);
+        if (type == 10) {
+            if (mCallback != nullptr) return;
+            mPendingMoData = std::move(data);
+            mExpectedMoMeasurements = expected;
+            mPendingMoData->measurements.reserve(expected);
+        } else {
+            if (mCallback == nullptr && !mNavigationEnabled) {
+                GnssBackend::get().send(0x6704, {1});
+                return;
+            }
+            previous = std::move(mPendingData);
+            mPendingData = std::move(data);
+            mPendingData->isFullTracking = mFullTracking;
+            mExpectedMeasurements = expected;
+            mPendingData->measurements.reserve(expected);
+            mPendingData->gnssAgcs.reserve(expected);
+        }
+        mLastDataTimestampNs = now;
+    }
+    if (previous != nullptr) reportMeasurement(std::move(previous));
+}
+
+void GnssMeasurementInterface::readMeasurement(const std::vector<uint8_t>& payload) {
+    static constexpr std::array<const char*, 29> codeTypes = {
+            "C", "L", "L", "Q", "C", "B", "C", "B", "I", "P", "I", "I", "P", "C", "Q",
+            "Q", "Q", "C", "Q", "C", "Z", "B", "L", "L", "X", "Q", "Z", "X", "A"};
+    protocol::Reader reader(payload);
+    GnssMeasurement measurement;
+    measurement.flags = reader.u32();
+    measurement.svid = reader.u8();
+    uint8_t codeType = reader.u8();
+    measurement.signalType.codeType = codeType < codeTypes.size() ? codeTypes[codeType] : "C";
+    measurement.signalType.constellation = static_cast<GnssConstellationType>(reader.u8());
+    measurement.multipathIndicator = static_cast<GnssMultipathIndicator>(reader.u8());
+    measurement.state = reader.u16();
+    measurement.receivedSvTimeInNs =
+            receivedTime(readTime(reader), measurement.state, measurement.signalType.constellation);
+    measurement.receivedSvTimeUncertaintyInNs = readTime(reader);
+    const float cn0DbHz = reader.f32();
+    measurement.basebandCN0DbHz = cn0DbHz;
+    measurement.antennaCN0DbHz = cn0DbHz + static_cast<float>(mRfPathLossDb);
+    measurement.pseudorangeRateMps = reader.f32();
+    measurement.pseudorangeRateUncertaintyMps = reader.f32();
+    measurement.accumulatedDeltaRangeState = reader.u16();
+    measurement.accumulatedDeltaRangeM = reader.f64();
+    measurement.accumulatedDeltaRangeUncertaintyM = measurement.pseudorangeRateMps * 0.7071;
+    const float frequency = reader.f32();
+    measurement.signalType.carrierFrequencyHz = truncateFrequency(frequency);
+    reader.skip(12);
+    measurement.snrDb = reader.f32();
+    measurement.agcLevelDb = reader.f32();
+    measurement.fullInterSignalBiasNs = reader.f64();
+    measurement.fullInterSignalBiasUncertaintyNs = reader.f64();
+    measurement.satelliteInterSignalBiasNs = reader.f64();
+    measurement.satelliteInterSignalBiasUncertaintyNs = reader.f64();
+    auto& pvt = measurement.satellitePvt;
+    pvt.flags = reader.u16();
+    pvt.tropoDelayMeters = reader.f32();
+    pvt.ionoDelayMeters = reader.f64();
+    pvt.satPosEcef.posXMeters = reader.f64();
+    pvt.satPosEcef.posYMeters = reader.f64();
+    pvt.satPosEcef.posZMeters = reader.f64();
+    reader.f32();
+    pvt.satPosEcef.ureMeters = 300;
+    pvt.satVelEcef.velXMps = reader.f64();
+    pvt.satVelEcef.velYMps = reader.f64();
+    pvt.satVelEcef.velZMps = reader.f64();
+    reader.f32();
+    pvt.satVelEcef.ureRateMps = 1;
+    pvt.satClockInfo.satHardwareCodeBiasMeters = reader.f64();
+    pvt.satClockInfo.satTimeCorrectionMeters = reader.f64();
+    pvt.satClockInfo.satClkDriftMps = reader.f32();
+    uint16_t remaining = reader.u16();
+    if (!reader.ok()) return;
+    useDefaultFrequency(measurement);
+    GnssData::GnssAgc agc;
+    agc.agcLevelDb = measurement.agcLevelDb;
+    agc.constellation = measurement.signalType.constellation;
+    agc.carrierFrequencyHz = truncateFrequency(frequency);
+    if (!(measurement.flags & GnssMeasurement::HAS_SATELLITE_PVT)) {
+        measurement.satellitePvt = {};
+    }
+    pvt.ephemerisSource = SatellitePvt::SatelliteEphemerisSource::DEMODULATED;
+    std::shared_ptr<GnssData> completed;
+    {
+        std::lock_guard lock(mMutex);
+        const bool mo = mCallback == nullptr;
+        auto& pending = mo ? mPendingMoData : mPendingData;
+        const auto expected = mo ? mExpectedMoMeasurements : mExpectedMeasurements;
+        if (pending == nullptr) return;
+        if (pending->measurements.size() < expected) {
+            pending->measurements.push_back(std::move(measurement));
+            if (!mo) pending->gnssAgcs.push_back(std::move(agc));
+        }
+        if (remaining == 0 || pending->measurements.size() == expected) {
+            mLastData = pending;
+            if (mo)
+                pending = nullptr;
+            else
+                completed = std::move(pending);
+        }
+    }
+    if (completed != nullptr) reportMeasurement(std::move(completed));
+}
+
+void GnssMeasurementInterface::reportMeasurement(std::shared_ptr<GnssData> data) {
+    GnssBackend::get().postCallback([this, data = std::move(data)] {
+        std::shared_ptr<IGnssMeasurementCallback> callback;
+        {
+            std::lock_guard lock(mMutex);
+            int interval = mIntervalMs;
+            if (mLocationEnabled) interval = std::min(interval, mLocationIntervalMs);
+            const int sampling = std::max(1, interval / 1000);
+            const bool locationReady =
+                    !mLocationEnabled || mIntervalMs != 2000 || mLocationReported;
+            if (static_cast<int32_t>(mReportedCount) % sampling == 0 && locationReady &&
+                !data->measurements.empty())
+                callback = mCallback;
+        }
+        if (callback != nullptr) {
+            auto status = callback->gnssMeasurementCb(*data);
+            if (!status.isOk()) ALOGE("gnssMeasurementCb failed");
+        }
+        std::lock_guard lock(mMutex);
+        ++mReportedCount;
+    });
 }
 
 }  // namespace aidl::android::hardware::gnss

@@ -15,25 +15,36 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnAGnssRil.h>
-
+#include <condition_variable>
+#include <mutex>
+#include <thread>
 namespace aidl::android::hardware::gnss {
-
 struct AGnssRil : public BnAGnssRil {
-  public:
+    AGnssRil();
+    ~AGnssRil();
     ndk::ScopedAStatus setCallback(const std::shared_ptr<IAGnssRilCallback>& callback) override;
-    ndk::ScopedAStatus setRefLocation(const AGnssRefLocation& agnssReflocation) override;
+    ndk::ScopedAStatus setRefLocation(const AGnssRefLocation& location) override;
     ndk::ScopedAStatus setSetId(SetIdType type, const std::string& setid) override;
     ndk::ScopedAStatus updateNetworkState(const NetworkAttributes& attributes) override;
-    ndk::ScopedAStatus injectNiSuplMessageData(const std::vector<uint8_t>& msgData,
+    ndk::ScopedAStatus injectNiSuplMessageData(const std::vector<uint8_t>& data,
                                                int slotIndex) override;
+    void clearCallback();
+    void onConnected();
+    void onStart();
+    void setDataConnectionOpen(bool open);
 
   private:
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-    // Guarded by mMutex
-    static std::shared_ptr<IAGnssRilCallback> sCallback;
+    void initializeNetworkState();
+    std::mutex mMutex;
+    std::condition_variable mInitCondition;
+    std::thread mInitThread;
+    bool mStopping = false;
+    std::shared_ptr<IAGnssRilCallback> mCallback;
+    bool mCellConnected = false;
+    bool mWifiConnected = false;
+    bool mHasNetworkState = false;
+    std::vector<uint8_t> mNetworkState;
+    std::vector<uint8_t> mNetworkAvailable;
 };
-
 }  // namespace aidl::android::hardware::gnss

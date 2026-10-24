@@ -15,27 +15,30 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssGeofence.h>
-
+#include <array>
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssGeofence : public BnGnssGeofence {
-  public:
+    GnssGeofence();
+    ~GnssGeofence();
     ndk::ScopedAStatus setCallback(const std::shared_ptr<IGnssGeofenceCallback>& callback) override;
-    ndk::ScopedAStatus addGeofence(int geofenceId, double latitudeDegrees, double longitudeDegrees,
-                                   double radiusMeters, int lastTransition, int monitorTransitions,
-                                   int notificationResponsivenessMs, int unknownTimerMs) override;
-    ndk::ScopedAStatus pauseGeofence(int geofenceId) override;
-    ndk::ScopedAStatus resumeGeofence(int geofenceId, int monitorTransitions) override;
-    ndk::ScopedAStatus removeGeofence(int geofenceId) override;
+    ndk::ScopedAStatus addGeofence(int id, double latitude, double longitude, double radius,
+                                   int lastTransition, int transitions, int responsiveness,
+                                   int unknownTimer) override;
+    ndk::ScopedAStatus pauseGeofence(int id) override;
+    ndk::ScopedAStatus resumeGeofence(int id, int transitions) override;
+    ndk::ScopedAStatus removeGeofence(int id) override;
+    void clearCallback();
 
   private:
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssGeofenceCallback> sCallback;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
+    ndk::ScopedAStatus command(uint16_t command, int id, int transitions = 0);
+    void reportError(uint16_t command, int id, int error);
+    void response(uint16_t id, const std::vector<uint8_t>& data);
+    std::mutex mMutex;
+    std::shared_ptr<IGnssGeofenceCallback> mCallback;
+    std::array<int, 512> mIds{};
+    int mHashCount = 0;
+    int64_t mLastInitMillis = 0;
 };
-
 }  // namespace aidl::android::hardware::gnss

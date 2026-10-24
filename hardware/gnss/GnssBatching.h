@@ -15,15 +15,10 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssBatching.h>
-#include <atomic>
-#include <thread>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssBatching : public BnGnssBatching {
-  public:
     GnssBatching();
     ~GnssBatching();
     ndk::ScopedAStatus init(const std::shared_ptr<IGnssBatchingCallback>& callback) override;
@@ -34,21 +29,9 @@ struct GnssBatching : public BnGnssBatching {
     ndk::ScopedAStatus cleanup() override;
 
   private:
-    void batchLocation(const GnssLocation&);
-
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssBatchingCallback> sCallback;
-
-    std::thread mThread;
-    std::atomic<bool> mIsActive;
-    std::atomic<long> mMinIntervalMs;
-    std::atomic<float> mMinDistanceMeters;
-    std::atomic<bool> mWakeUpOnFifoFull;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-
-    std::vector<GnssLocation> mBatchedLocations;
+    std::mutex mMutex;
+    std::shared_ptr<IGnssBatchingCallback> mCallback;
+    std::vector<GnssLocation> mLocations;
+    size_t mCallbackSize = 200;
 };
-
 }  // namespace aidl::android::hardware::gnss

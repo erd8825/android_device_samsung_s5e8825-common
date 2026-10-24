@@ -29,20 +29,25 @@
 #include <aidl/android/hardware/gnss/gnss_assistance/BnGnssAssistanceInterface.h>
 #include <aidl/android/hardware/gnss/measurement_corrections/BnMeasurementCorrectionsInterface.h>
 #include <aidl/android/hardware/gnss/visibility_control/BnGnssVisibilityControl.h>
-#include <atomic>
+#include <condition_variable>
 #include <mutex>
-#include <thread>
 #include "GnssConfiguration.h"
 #include "GnssMeasurementInterface.h"
 #include "GnssPowerIndication.h"
-#include "Utils.h"
+#include "GnssSensors.h"
 
 namespace aidl::android::hardware::gnss {
+namespace visibility_control {
+struct GnssVisibilityControl;
+}
+namespace measurement_corrections {
+struct MeasurementCorrectionsInterface;
+}
 
 class Gnss : public BnGnss {
   public:
     Gnss();
-    ~Gnss() { stop(); };
+    ~Gnss() override;
     ndk::ScopedAStatus setCallback(const std::shared_ptr<IGnssCallback>& callback) override;
     ndk::ScopedAStatus start() override;
     ndk::ScopedAStatus stop() override;
@@ -88,39 +93,63 @@ class Gnss : public BnGnss {
             std::shared_ptr<android::hardware::gnss::gnss_assistance::IGnssAssistanceInterface>*
                     iGnssAssistanceInterface) override;
 
-    void reportSvStatus() const;
-    void setGnssMeasurementEnabled(const bool enabled);
-    void setGnssMeasurementInterval(const long intervalMs);
     std::shared_ptr<GnssLocation> getLastLocation() const;
+    std::vector<IGnssCallback::GnssSvInfo> getLastSvStatus() const;
+
+  private:
+    friend struct GnssDebug;
+    void onConnected(bool fresh);
+    void acknowledge(uint8_t mask);
+    void processPendingCommands();
+    void onLocation(const std::vector<uint8_t>& payload);
+    void onSvStatus(const std::vector<uint8_t>& payload);
+    void onNmea(const std::vector<uint8_t>& payload);
+    void reportStatus(IGnssCallback::GnssStatusValue status);
+    void reportEngineStatus(bool active);
+    void sendPositionMode();
+    void ensureMeasurementInterface();
+    std::shared_ptr<IGnssCallback> getCallback() const;
+
+    std::shared_ptr<IGnssCallback> mCallback;
     std::shared_ptr<GnssConfiguration> mGnssConfiguration;
     std::shared_ptr<GnssPowerIndication> mGnssPowerIndication;
     std::shared_ptr<GnssMeasurementInterface> mGnssMeasurementInterface;
-
-  private:
-    void reportLocation(const GnssLocation&);
-    void reportSvStatus(const std::vector<IGnssCallback::GnssSvInfo>& svInfoList) const;
-    void reportGnssStatusValue(const IGnssCallback::GnssStatusValue gnssStatusValue) const;
-    void reportNmea() const;
-    std::vector<IGnssCallback::GnssSvInfo> filterBlocklistedSatellites(
-            std::vector<IGnssCallback::GnssSvInfo> gnssSvInfoList) const;
-    std::unique_ptr<GnssLocation> getLocationFromHW();
-
-    static std::shared_ptr<IGnssCallback> sGnssCallback;
-
-    std::atomic<long> mMinIntervalMs;
-    std::atomic<long> mGnssMeasurementIntervalMs;
-    std::atomic<bool> mIsActive;
-    std::atomic<bool> mIsInitialized;
-    std::atomic<bool> mIsSvStatusActive;
-    std::atomic<bool> mIsNmeaActive;
-    std::atomic<bool> mFirstFixReceived;
-    std::atomic<bool> mGnssMeasurementEnabled;
-    std::atomic<int> mReportedLocationCount;
+    std::shared_ptr<struct AGnss> mAGnss;
+    std::shared_ptr<struct AGnssRil> mAGnssRil;
+    std::shared_ptr<struct GnssPsds> mGnssPsds;
+    std::shared_ptr<struct GnssBatching> mGnssBatching;
+    std::shared_ptr<struct GnssGeofence> mGnssGeofence;
+    std::shared_ptr<struct GnssNavigationMessageInterface> mGnssNavigation;
+    std::shared_ptr<struct GnssDebug> mGnssDebug;
+    std::shared_ptr<struct GnssAntennaInfo> mGnssAntennaInfo;
+    std::shared_ptr<visibility_control::GnssVisibilityControl> mGnssVisibilityControl;
+    std::shared_ptr<measurement_corrections::MeasurementCorrectionsInterface> mCorrections;
+    bool mIsActive = false;
+    bool mEverConnected = false;
+    uint16_t mAidingData = 0;
+    uint32_t mSvReportCount = 0;
+    bool mSensorsPending = false;
+    bool mMemsEnabled = false;
+    GnssSensors mSensors;
+    bool mIsEngineOn = false;
+    bool mEngineStatusSet = false;
+    IGnssCallback::GnssStatusValue mGnssStatus = IGnssCallback::GnssStatusValue::NONE;
+    bool mIsSvStatusActive = true;
+    bool mIsNmeaActive = true;
+    bool mPositionModeSet = false;
+    PositionModeOptions mPositionMode;
+    uint32_t mLastInjectionSeconds = 0;
+    uint32_t mLastNmeaTime = 0;
+    uint32_t mLastTowMs = 0;
     std::shared_ptr<GnssLocation> mLastLocation;
-    std::thread mThread;
-    ::android::hardware::gnss::common::ThreadBlocker mThreadBlocker;
-
-    mutable std::mutex mMutex;
+    std::vector<IGnssCallback::GnssSvInfo> mLastSvStatus;
+    mutable std::recursive_mutex mMutex;
+    std::mutex mCommandMutex;
+    std::mutex mPendingMutex;
+    std::condition_variable mAckCondition;
+    bool mStartPending = false;
+    bool mStopPending = false;
+    bool mAckReceived = false;
 };
 
 }  // namespace aidl::android::hardware::gnss
