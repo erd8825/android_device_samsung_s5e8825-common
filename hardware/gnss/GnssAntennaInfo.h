@@ -15,37 +15,19 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssAntennaInfo.h>
-#include <atomic>
 #include <mutex>
-#include <thread>
-
 namespace aidl::android::hardware::gnss {
-
 struct GnssAntennaInfo : public BnGnssAntennaInfo {
-  public:
-    GnssAntennaInfo();
-    ~GnssAntennaInfo();
-    ndk::ScopedAStatus setCallback(
-            const std::shared_ptr<IGnssAntennaInfoCallback>& callback) override;
-    ndk::ScopedAStatus close() override;
+  GnssAntennaInfo();
+  ~GnssAntennaInfo();
+  ndk::ScopedAStatus setCallback(
+      const std::shared_ptr<IGnssAntennaInfoCallback> &callback) override;
+  ndk::ScopedAStatus close() override;
+  void onConnected();
 
-  private:
-    void start();
-    void stop();
-    void reportAntennaInfo(
-            const std::vector<IGnssAntennaInfoCallback::GnssAntennaInfo>& antennaInfo) const;
-
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssAntennaInfoCallback> sCallback;
-
-    std::atomic<bool> mIsActive;
-    std::atomic<long> mMinIntervalMs;
-    std::thread mThread;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssAntennaInfoCallback> mCallback;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

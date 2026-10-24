@@ -15,23 +15,12 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/gnss_assistance/BnGnssAssistanceInterface.h>
-
 namespace aidl::android::hardware::gnss::gnss_assistance {
-
 struct GnssAssistanceInterface : public BnGnssAssistanceInterface {
-  public:
-    ndk::ScopedAStatus setCallback(
-            const std::shared_ptr<IGnssAssistanceCallback>& callback) override;
-    ndk::ScopedAStatus injectGnssAssistance(const GnssAssistance& gnssAssistance) override;
-
-  private:
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssAssistanceCallback> sCallback;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
+  ndk::ScopedAStatus setCallback(
+      const std::shared_ptr<IGnssAssistanceCallback> &callback) override;
+  ndk::ScopedAStatus
+  injectGnssAssistance(const GnssAssistance &assistance) override;
 };
-
-}  // namespace aidl::android::hardware::gnss::gnss_assistance
+} // namespace aidl::android::hardware::gnss::gnss_assistance

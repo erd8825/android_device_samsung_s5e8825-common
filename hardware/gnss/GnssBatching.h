@@ -15,40 +15,25 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssBatching.h>
-#include <atomic>
-#include <thread>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssBatching : public BnGnssBatching {
-  public:
-    GnssBatching();
-    ~GnssBatching();
-    ndk::ScopedAStatus init(const std::shared_ptr<IGnssBatchingCallback>& callback) override;
-    ndk::ScopedAStatus getBatchSize(int* size) override;
-    ndk::ScopedAStatus start(const Options& options) override;
-    ndk::ScopedAStatus flush() override;
-    ndk::ScopedAStatus stop() override;
-    ndk::ScopedAStatus cleanup() override;
+  GnssBatching();
+  ~GnssBatching();
+  ndk::ScopedAStatus
+  init(const std::shared_ptr<IGnssBatchingCallback> &callback) override;
+  ndk::ScopedAStatus getBatchSize(int *size) override;
+  ndk::ScopedAStatus start(const Options &options) override;
+  ndk::ScopedAStatus flush() override;
+  ndk::ScopedAStatus stop() override;
+  ndk::ScopedAStatus cleanup() override;
+  void onConnected();
 
-  private:
-    void batchLocation(const GnssLocation&);
-
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssBatchingCallback> sCallback;
-
-    std::thread mThread;
-    std::atomic<bool> mIsActive;
-    std::atomic<long> mMinIntervalMs;
-    std::atomic<float> mMinDistanceMeters;
-    std::atomic<bool> mWakeUpOnFifoFull;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-
-    std::vector<GnssLocation> mBatchedLocations;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssBatchingCallback> mCallback;
+  std::vector<uint8_t> mRequest;
+  std::vector<GnssLocation> mLocations;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

@@ -15,25 +15,30 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnAGnssRil.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct AGnssRil : public BnAGnssRil {
-  public:
-    ndk::ScopedAStatus setCallback(const std::shared_ptr<IAGnssRilCallback>& callback) override;
-    ndk::ScopedAStatus setRefLocation(const AGnssRefLocation& agnssReflocation) override;
-    ndk::ScopedAStatus setSetId(SetIdType type, const std::string& setid) override;
-    ndk::ScopedAStatus updateNetworkState(const NetworkAttributes& attributes) override;
-    ndk::ScopedAStatus injectNiSuplMessageData(const std::vector<uint8_t>& msgData,
-                                               int slotIndex) override;
+  AGnssRil();
+  ~AGnssRil();
+  ndk::ScopedAStatus
+  setCallback(const std::shared_ptr<IAGnssRilCallback> &callback) override;
+  ndk::ScopedAStatus setRefLocation(const AGnssRefLocation &location) override;
+  ndk::ScopedAStatus setSetId(SetIdType type,
+                              const std::string &setid) override;
+  ndk::ScopedAStatus
+  updateNetworkState(const NetworkAttributes &attributes) override;
+  ndk::ScopedAStatus injectNiSuplMessageData(const std::vector<uint8_t> &data,
+                                             int slotIndex) override;
+  void clearCallback();
+  void onConnected();
 
-  private:
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-    // Guarded by mMutex
-    static std::shared_ptr<IAGnssRilCallback> sCallback;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IAGnssRilCallback> mCallback;
+  bool mCellConnected = false;
+  bool mWifiConnected = false;
+  std::vector<uint8_t> mNetworkState;
+  std::vector<uint8_t> mNetworkAvailable;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

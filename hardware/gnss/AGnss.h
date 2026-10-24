@@ -15,27 +15,27 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnAGnss.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 using AGnssType = IAGnssCallback::AGnssType;
-
 struct AGnss : public BnAGnss {
-  public:
-    ndk::ScopedAStatus setCallback(const std::shared_ptr<IAGnssCallback>& callback) override;
-    ndk::ScopedAStatus dataConnClosed() override { return ndk::ScopedAStatus::ok(); }
-    ndk::ScopedAStatus dataConnFailed() override { return ndk::ScopedAStatus::ok(); }
-    ndk::ScopedAStatus setServer(AGnssType type, const std::string& hostname, int port) override;
-    ndk::ScopedAStatus dataConnOpen(int64_t networkHandle, const std::string& apn,
-                                    ApnIpType apnIpType) override;
+  AGnss();
+  ~AGnss();
+  ndk::ScopedAStatus
+  setCallback(const std::shared_ptr<IAGnssCallback> &callback) override;
+  ndk::ScopedAStatus dataConnClosed() override;
+  ndk::ScopedAStatus dataConnFailed() override;
+  ndk::ScopedAStatus setServer(AGnssType type, const std::string &hostname,
+                               int port) override;
+  ndk::ScopedAStatus dataConnOpen(int64_t networkHandle, const std::string &apn,
+                                  ApnIpType apnIpType) override;
+  void clearCallback();
+  void onConnected();
 
-  private:
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-    // Guarded by mMutex
-    static std::shared_ptr<IAGnssCallback> sCallback;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IAGnssCallback> mCallback;
+  std::vector<uint8_t> mServer;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

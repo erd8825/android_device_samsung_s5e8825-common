@@ -15,27 +15,17 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssPowerIndication.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssPowerIndication : public BnGnssPowerIndication {
-  public:
-    ndk::ScopedAStatus setCallback(
-            const std::shared_ptr<IGnssPowerIndicationCallback>& callback) override;
-    ndk::ScopedAStatus requestGnssPowerStats() override;
+  ndk::ScopedAStatus setCallback(
+      const std::shared_ptr<IGnssPowerIndicationCallback> &callback) override;
+  ndk::ScopedAStatus requestGnssPowerStats() override;
+  void clearCallback();
 
-    void notePowerConsumption();
-
-  private:
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssPowerIndicationCallback> sCallback;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-
-    int numLocationReported;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssPowerIndicationCallback> mCallback;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

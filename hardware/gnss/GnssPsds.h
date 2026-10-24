@@ -15,23 +15,20 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssPsds.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssPsds : public BnGnssPsds {
-  public:
-    ndk::ScopedAStatus setCallback(const std::shared_ptr<IGnssPsdsCallback>& callback) override;
-    ndk::ScopedAStatus injectPsdsData(PsdsType psdsType,
-                                      const std::vector<uint8_t>& psdsData) override;
+  GnssPsds();
+  ~GnssPsds();
+  ndk::ScopedAStatus
+  setCallback(const std::shared_ptr<IGnssPsdsCallback> &callback) override;
+  ndk::ScopedAStatus injectPsdsData(PsdsType type,
+                                    const std::vector<uint8_t> &data) override;
+  void clearCallback();
 
-  private:
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssPsdsCallback> sCallback;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssPsdsCallback> mCallback;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

@@ -15,22 +15,23 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/measurement_corrections/BnMeasurementCorrectionsInterface.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss::measurement_corrections {
+struct MeasurementCorrectionsInterface
+    : public BnMeasurementCorrectionsInterface {
+  MeasurementCorrectionsInterface();
+  ~MeasurementCorrectionsInterface();
+  ndk::ScopedAStatus
+  setCorrections(const MeasurementCorrections &corrections) override;
+  ndk::ScopedAStatus
+  setCallback(const std::shared_ptr<IMeasurementCorrectionsCallback> &callback)
+      override;
+  void clearCallback();
+  void onConnected();
 
-struct MeasurementCorrectionsInterface : public BnMeasurementCorrectionsInterface {
-  public:
-    ndk::ScopedAStatus setCorrections(const MeasurementCorrections& corrections) override;
-    ndk::ScopedAStatus setCallback(
-            const std::shared_ptr<IMeasurementCorrectionsCallback>& callback) override;
-
-  private:
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-    // Guarded by mMutex
-    static std::shared_ptr<IMeasurementCorrectionsCallback> sCallback;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IMeasurementCorrectionsCallback> mCallback;
 };
-
-}  // namespace aidl::android::hardware::gnss::measurement_corrections
+} // namespace aidl::android::hardware::gnss::measurement_corrections

@@ -15,22 +15,22 @@
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/visibility_control/BnGnssVisibilityControl.h>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss::visibility_control {
-
 struct GnssVisibilityControl : public BnGnssVisibilityControl {
-  public:
-    ndk::ScopedAStatus enableNfwLocationAccess(const std::vector<std::string>& hostname) override;
-    ndk::ScopedAStatus setCallback(
-            const std::shared_ptr<IGnssVisibilityControlCallback>& callback) override;
+  GnssVisibilityControl();
+  ~GnssVisibilityControl();
+  ndk::ScopedAStatus
+  enableNfwLocationAccess(const std::vector<std::string> &packages) override;
+  ndk::ScopedAStatus setCallback(
+      const std::shared_ptr<IGnssVisibilityControlCallback> &callback) override;
+  void clearCallback();
+  void onConnected();
 
-  private:
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssVisibilityControlCallback> sCallback;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssVisibilityControlCallback> mCallback;
+  std::vector<uint8_t> mPackages;
 };
-
-}  // namespace aidl::android::hardware::gnss::visibility_control
+} // namespace aidl::android::hardware::gnss::visibility_control

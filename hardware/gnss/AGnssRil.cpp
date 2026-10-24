@@ -14,57 +14,130 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "AGnssRilAidl"
-
 #include "AGnssRil.h"
-#include <aidl/android/hardware/gnss/BnGnss.h>
-#include <inttypes.h>
-#include <log/log.h>
-
+#include "GnssBackend.h"
+#include "GnssProtocol.h"
+#include <aidl/android/hardware/gnss/IGnss.h>
+#include <algorithm>
 namespace aidl::android::hardware::gnss {
-
-std::shared_ptr<IAGnssRilCallback> AGnssRil::sCallback = nullptr;
-
-ndk::ScopedAStatus AGnssRil::setCallback(const std::shared_ptr<IAGnssRilCallback>& callback) {
-    ALOGD("AGnssRil::setCallback");
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = callback;
-    return ndk::ScopedAStatus::ok();
+namespace {
+ndk::ScopedAStatus send(uint16_t id, const std::vector<uint8_t> &data) {
+  return GnssBackend::get().send(id, data)
+             ? ndk::ScopedAStatus::ok()
+             : ndk::ScopedAStatus::fromServiceSpecificError(
+                   IGnss::ERROR_GENERIC);
 }
-
-ndk::ScopedAStatus AGnssRil::setRefLocation(const AGnssRefLocation& agnssReflocation) {
-    const AGnssRefLocationCellID& cellInfo = agnssReflocation.cellID;
-    ALOGD("AGnssRil::setRefLocation: type: %s, mcc: %d, mnc: %d, lac: %d, cid: %" PRId64
-          ", tac: %d, pcid: "
-          "%d, arfcn: %d",
-          toString(agnssReflocation.type).c_str(), cellInfo.mcc, cellInfo.mnc, cellInfo.lac,
-          cellInfo.cid, cellInfo.tac, cellInfo.pcid, cellInfo.arfcn);
-    return ndk::ScopedAStatus::ok();
-}
-
-ndk::ScopedAStatus AGnssRil::setSetId(SetIdType type, const std::string& setid) {
-    ALOGD("AGnssRil::setSetId: type:%s, setid: %s", toString(type).c_str(), setid.c_str());
-    return ndk::ScopedAStatus::ok();
-}
-
-ndk::ScopedAStatus AGnssRil::updateNetworkState(const NetworkAttributes& attributes) {
-    ALOGD("AGnssRil::updateNetworkState: networkHandle:%" PRId64
-          ", isConnected: %d, capabilities: %d, "
-          "apn: %s",
-          attributes.networkHandle, attributes.isConnected, attributes.capabilities,
-          attributes.apn.c_str());
-    return ndk::ScopedAStatus::ok();
-}
-
-ndk::ScopedAStatus AGnssRil::injectNiSuplMessageData(const std::vector<uint8_t>& msgData,
-                                                     int slotIndex) {
-    ALOGD("AGnssRil::injectNiSuplMessageData: msgData:%d bytes slotIndex:%d",
-          static_cast<int>(msgData.size()), slotIndex);
-    if (msgData.size() > 0) {
-        return ndk::ScopedAStatus::ok();
-    } else {
-        return ndk::ScopedAStatus::fromServiceSpecificError(IGnss::ERROR_INVALID_ARGUMENT);
+} // namespace
+AGnssRil::AGnssRil() : mNetworkState(11, 0), mNetworkAvailable(3, 0) {
+  GnssBackend::get().setHandler(0x690a, [this](const std::vector<uint8_t> &) {
+    std::shared_ptr<IAGnssRilCallback> callback;
+    {
+      std::lock_guard lock(mMutex);
+      callback = mCallback;
     }
+    if (callback)
+      callback->requestSetIdCb(1);
+  });
+  GnssBackend::get().setHandler(0x6a0a,
+                                [this](const std::vector<uint8_t> &data) {
+                                  std::shared_ptr<IAGnssRilCallback> callback;
+                                  {
+                                    std::lock_guard lock(mMutex);
+                                    callback = mCallback;
+                                  }
+                                  if (!data.empty() && data[0] == 0 && callback)
+                                    callback->requestRefLocCb();
+                                });
 }
-
-}  // namespace aidl::android::hardware::gnss
+AGnssRil::~AGnssRil() {
+  GnssBackend::get().setHandler(0x690a, {});
+  GnssBackend::get().setHandler(0x6a0a, {});
+}
+ndk::ScopedAStatus
+AGnssRil::setCallback(const std::shared_ptr<IAGnssRilCallback> &callback) {
+  if (!callback)
+    return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+  std::lock_guard lock(mMutex);
+  mCallback = callback;
+  return ndk::ScopedAStatus::ok();
+}
+ndk::ScopedAStatus AGnssRil::setRefLocation(const AGnssRefLocation &location) {
+  const auto &cell = location.cellID;
+  protocol::Writer data;
+  data.put<uint16_t>(static_cast<uint16_t>(location.type));
+  data.put<uint16_t>(cell.mcc);
+  data.put<uint16_t>(cell.mnc);
+  data.put<uint16_t>(0);
+  data.put<uint16_t>(cell.lac);
+  data.put<uint16_t>(cell.lac >> 16);
+  data.put<uint32_t>(static_cast<uint64_t>(cell.cid) >> 32);
+  data.put<uint8_t>(static_cast<uint32_t>(cell.cid));
+  data.put<uint8_t>(static_cast<uint32_t>(cell.cid) >> 8);
+  data.put<uint8_t>(static_cast<uint32_t>(cell.cid) >> 16);
+  data.put<uint8_t>(static_cast<uint32_t>(cell.cid) >> 24);
+  data.put<uint8_t>(cell.tac);
+  data.put<uint8_t>(cell.tac >> 8);
+  return send(0x6a03, data.data());
+}
+ndk::ScopedAStatus AGnssRil::setSetId(SetIdType type,
+                                      const std::string &setid) {
+  if (type != SetIdType::IMSI || setid.size() != 15)
+    return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+  protocol::Writer data;
+  data.put<uint16_t>(static_cast<uint16_t>(type));
+  data.string(setid, 16);
+  return send(0x6603, data.data());
+}
+ndk::ScopedAStatus
+AGnssRil::updateNetworkState(const NetworkAttributes &attributes) {
+  protocol::Writer state, available;
+  {
+    std::lock_guard lock(mMutex);
+    const bool wifi = (attributes.capabilities & 1) != 0;
+    (wifi ? mWifiConnected : mCellConnected) = attributes.isConnected;
+    const bool connected = mWifiConnected || mCellConnected;
+    const int type =
+        attributes.isConnected ? wifi : !mCellConnected && mWifiConnected;
+    state.put<int16_t>(connected);
+    state.put<int16_t>(type);
+    state.put<int16_t>((attributes.capabilities & 2) == 0);
+    state.put<uint32_t>(0);
+    state.string("", 1);
+    available.put<int16_t>(connected);
+    available.string("", 101);
+    mNetworkState = state.data();
+    mNetworkAvailable = available.data();
+  }
+  auto status = send(0x6803, state.data());
+  if (!status.isOk())
+    return status;
+  return send(0x6903, available.data());
+}
+ndk::ScopedAStatus
+AGnssRil::injectNiSuplMessageData(const std::vector<uint8_t> &message,
+                                  int slotIndex) {
+  if (message.empty() || slotIndex < 0)
+    return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+  protocol::Writer data;
+  auto size = std::min<size_t>(message.size(), 1535);
+  data.put<uint32_t>(size);
+  data.bytes(message.data(), size);
+  return send(0x6703, data.data());
+}
+void AGnssRil::clearCallback() {
+  std::lock_guard lock(mMutex);
+  mCallback = nullptr;
+}
+void AGnssRil::onConnected() {
+  std::vector<uint8_t> state, available;
+  {
+    std::lock_guard lock(mMutex);
+    state = mNetworkState;
+    available = mNetworkAvailable;
+  }
+  if (!state.empty())
+    GnssBackend::get().send(0x6803, state);
+  if (!available.empty())
+    GnssBackend::get().send(0x6903, available);
+}
+} // namespace aidl::android::hardware::gnss
