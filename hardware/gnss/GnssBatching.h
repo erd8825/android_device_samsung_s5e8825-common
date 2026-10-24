@@ -1,54 +1,28 @@
 /*
- * Copyright (C) 2021 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * SPDX-FileCopyrightText: The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #pragma once
-
 #include <aidl/android/hardware/gnss/BnGnssBatching.h>
-#include <atomic>
-#include <thread>
-
+#include <mutex>
 namespace aidl::android::hardware::gnss {
-
 struct GnssBatching : public BnGnssBatching {
-  public:
-    GnssBatching();
-    ~GnssBatching();
-    ndk::ScopedAStatus init(const std::shared_ptr<IGnssBatchingCallback>& callback) override;
-    ndk::ScopedAStatus getBatchSize(int* size) override;
-    ndk::ScopedAStatus start(const Options& options) override;
-    ndk::ScopedAStatus flush() override;
-    ndk::ScopedAStatus stop() override;
-    ndk::ScopedAStatus cleanup() override;
+  GnssBatching();
+  ~GnssBatching();
+  ndk::ScopedAStatus
+  init(const std::shared_ptr<IGnssBatchingCallback> &callback) override;
+  ndk::ScopedAStatus getBatchSize(int *size) override;
+  ndk::ScopedAStatus start(const Options &options) override;
+  ndk::ScopedAStatus flush() override;
+  ndk::ScopedAStatus stop() override;
+  ndk::ScopedAStatus cleanup() override;
+  void onConnected();
 
-  private:
-    void batchLocation(const GnssLocation&);
-
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssBatchingCallback> sCallback;
-
-    std::thread mThread;
-    std::atomic<bool> mIsActive;
-    std::atomic<long> mMinIntervalMs;
-    std::atomic<float> mMinDistanceMeters;
-    std::atomic<bool> mWakeUpOnFifoFull;
-
-    // Synchronization lock for sCallback
-    mutable std::mutex mMutex;
-
-    std::vector<GnssLocation> mBatchedLocations;
+private:
+  std::mutex mMutex;
+  std::shared_ptr<IGnssBatchingCallback> mCallback;
+  std::vector<uint8_t> mRequest;
+  std::vector<GnssLocation> mLocations;
 };
-
-}  // namespace aidl::android::hardware::gnss
+} // namespace aidl::android::hardware::gnss

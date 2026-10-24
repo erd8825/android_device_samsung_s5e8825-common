@@ -1,131 +1,74 @@
 /*
- * Copyright (C) 2021 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * SPDX-FileCopyrightText: The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
  */
 
-#define LOG_TAG "GnssNavigationMessageAidl"
-
 #include "GnssNavigationMessageInterface.h"
-#include <aidl/android/hardware/gnss/BnGnss.h>
-#include <log/log.h>
-#include "Utils.h"
-
+#include "GnssBackend.h"
+#include "GnssMeasurementInterface.h"
+#include "GnssProtocol.h"
 namespace aidl::android::hardware::gnss {
-
-using namespace ::android::hardware::gnss;
-using GnssNavigationMessage = IGnssNavigationMessageCallback::GnssNavigationMessage;
-using GnssNavigationMessageType = GnssNavigationMessage::GnssNavigationMessageType;
-
-std::shared_ptr<IGnssNavigationMessageCallback> GnssNavigationMessageInterface::sCallback = nullptr;
-
-GnssNavigationMessageInterface::GnssNavigationMessageInterface() : mMinIntervalMillis(1000) {
-    mThreads.reserve(2);
-}
-
-GnssNavigationMessageInterface::~GnssNavigationMessageInterface() {
-    waitForStoppingThreads();
-}
-
-ndk::ScopedAStatus GnssNavigationMessageInterface::setCallback(
-        const std::shared_ptr<IGnssNavigationMessageCallback>& callback) {
-    ALOGD("setCallback");
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = callback;
-    start();
-    return ndk::ScopedAStatus::ok();
-}
-
-ndk::ScopedAStatus GnssNavigationMessageInterface::close() {
-    ALOGD("close");
-    if (mIsActive) {
-        stop();
-    }
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = nullptr;
-    return ndk::ScopedAStatus::ok();
-}
-
-void GnssNavigationMessageInterface::start() {
-    ALOGD("start");
-
-    if (mIsActive) {
-        ALOGD("restarting since nav msg has started");
-        stop();
-    }
-
-    mIsActive = true;
-    mThreads.emplace_back(std::thread([this]() {
-        waitForStoppingThreads();
-        mThreadBlocker.reset();
-        do {
-            if (!mIsActive) {
-                break;
-            }
-            GnssNavigationMessage message = {
-                    .svid = 19,
-                    .type = GnssNavigationMessageType::GPS_L1CA,
-                    .status = GnssNavigationMessage::STATUS_PARITY_PASSED,
-                    .messageId = 2,
-                    .submessageId = 3,
-                    .data = std::vector<uint8_t>(40, 0xF9),
-            };
-            this->reportMessage(message);
-        } while (mIsActive &&
-                 mThreadBlocker.wait_for(std::chrono::milliseconds(mMinIntervalMillis)));
-    }));
-}
-
-void GnssNavigationMessageInterface::stop() {
-    ALOGD("stop");
-    mIsActive = false;
-    mThreadBlocker.notify();
-    for (auto iter = mThreads.begin(); iter != mThreads.end();) {
-        if (iter->joinable()) {
-            // Store the thread object by value
-            std::thread threadToMove = std::move(*iter);
-
-            mFutures.push_back(std::async(std::launch::async,
-                                          [threadToMove = std::move(threadToMove)]() mutable {
-                                              ALOGD("joining thread");
-                                              threadToMove.join();
-                                          }));
-        }
-        iter = mThreads.erase(iter);
-    }
-}
-
-void GnssNavigationMessageInterface::reportMessage(const GnssNavigationMessage& message) {
-    ALOGD("reportMessage()");
-    std::shared_ptr<IGnssNavigationMessageCallback> callbackCopy;
+GnssNavigationMessageInterface::GnssNavigationMessageInterface(
+    const std::shared_ptr<GnssMeasurementInterface> &measurement)
+    : mMeasurement(measurement) {
+  GnssBackend::get().setHandler(0x730a, [this](
+                                            const std::vector<uint8_t> &data) {
+    protocol::Reader reader(data);
+    auto id = reader.get<uint8_t>();
+    reader.get<uint8_t>();
+    reader.get<uint8_t>();
+    reader.get<uint8_t>();
+    IGnssNavigationMessageCallback::GnssNavigationMessage message;
+    message.svid = reader.get<uint8_t>();
+    message.type = static_cast<decltype(message.type)>(reader.get<uint16_t>());
+    message.status = reader.get<uint16_t>();
+    message.messageId = reader.get<int16_t>();
+    message.submessageId = reader.get<uint16_t>();
+    auto length = reader.get<uint8_t>();
+    if (length > 40)
+      return;
+    message.data = reader.bytes(length);
+    if (id != 11 || message.messageId == 0 ||
+        (message.submessageId == 0 && static_cast<int>(message.type) != 0x601))
+      return;
+    std::shared_ptr<IGnssNavigationMessageCallback> callback;
     {
-        std::unique_lock<std::mutex> lock(mMutex);
-        if (sCallback == nullptr) {
-            ALOGE("%s: GnssNavigationMessageInterface::sCallback is null.", __func__);
-            return;
-        }
-        callbackCopy = sCallback;
+      std::lock_guard lock(mMutex);
+      callback = mCallback;
     }
-    callbackCopy->gnssNavigationMessageCb(message);
+    if (reader.ok() && callback)
+      callback->gnssNavigationMessageCb(message);
+  });
 }
-
-void GnssNavigationMessageInterface::waitForStoppingThreads() {
-    for (auto& future : mFutures) {
-        ALOGD("Stopping previous thread.");
-        future.wait();
-        ALOGD("Done stopping thread.");
-    }
-    mFutures.clear();
+GnssNavigationMessageInterface::~GnssNavigationMessageInterface() {
+  GnssBackend::get().setHandler(0x730a, {});
 }
-
-}  // namespace aidl::android::hardware::gnss
+ndk::ScopedAStatus GnssNavigationMessageInterface::setCallback(
+    const std::shared_ptr<IGnssNavigationMessageCallback> &callback) {
+  if (!callback)
+    return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+  {
+    std::lock_guard lock(mMutex);
+    mCallback = callback;
+  }
+  mMeasurement->setNavigationEnabled(true);
+  return ndk::ScopedAStatus::ok();
+}
+ndk::ScopedAStatus GnssNavigationMessageInterface::close() {
+  {
+    std::lock_guard lock(mMutex);
+    mCallback = nullptr;
+  }
+  mMeasurement->setNavigationEnabled(false);
+  return ndk::ScopedAStatus::ok();
+}
+void GnssNavigationMessageInterface::onConnected() {
+  bool enabled;
+  {
+    std::lock_guard lock(mMutex);
+    enabled = mCallback != nullptr;
+  }
+  if (enabled)
+    mMeasurement->setNavigationEnabled(true);
+}
+} // namespace aidl::android::hardware::gnss
