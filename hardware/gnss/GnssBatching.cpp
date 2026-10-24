@@ -14,115 +14,120 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "GnssBatchingAidl"
-
 #include "GnssBatching.h"
-#include <aidl/android/hardware/gnss/BnGnss.h>
-#include <inttypes.h>
-#include <log/log.h>
+#include <aidl/android/hardware/gnss/IGnss.h>
 #include <utils/SystemClock.h>
-#include "Utils.h"
-
+#include <climits>
+#include "GnssBackend.h"
+#include "GnssProtocol.h"
 namespace aidl::android::hardware::gnss {
+namespace {
+ndk::ScopedAStatus send(uint16_t id, const std::vector<uint8_t>& data) {
+    return GnssBackend::get().send(id, data)
+                   ? ndk::ScopedAStatus::ok()
+                   : ndk::ScopedAStatus::fromServiceSpecificError(IGnss::ERROR_GENERIC);
+}
+}  // namespace
 
-using namespace ::android::hardware::gnss;
+GnssBatching::GnssBatching() {
+    GnssBackend::get().setHandler(0x7c0a, [this](const std::vector<uint8_t>& data) {
+        protocol::Reader reader(data);
+        reader.get<uint16_t>();
+        GnssLocation location;
+        location.latitudeDegrees = reader.get<double>();
+        location.longitudeDegrees = reader.get<double>();
+        location.altitudeMeters = reader.get<double>();
+        location.speedMetersPerSec = reader.get<float>();
+        location.bearingDegrees = reader.get<float>();
+        location.horizontalAccuracyMeters = reader.get<float>();
+        const uint64_t low = reader.get<uint32_t>();
+        const uint64_t high = reader.get<uint32_t>();
+        location.timestampMillis = low | (high << 32);
+        location.verticalAccuracyMeters = reader.get<float>();
+        location.speedAccuracyMetersPerSecond = reader.get<float>();
+        location.bearingAccuracyDegrees = reader.get<float>();
+        const auto remaining = reader.get<uint16_t>();
+        if (!reader.ok() || remaining > 200) return;
+        location.gnssLocationFlags = 0x77 | (location.speedMetersPerSec != 0 ? 0x88 : 0);
+        location.elapsedRealtime.flags =
+                ElapsedRealtime::HAS_TIMESTAMP_NS | ElapsedRealtime::HAS_TIME_UNCERTAINTY_NS;
+        location.elapsedRealtime.timestampNs = ::android::elapsedRealtimeNano();
+        location.elapsedRealtime.timeUncertaintyNs = 1000;
+        std::vector<GnssLocation> locations;
+        std::shared_ptr<IGnssBatchingCallback> callback;
+        {
+            std::lock_guard lock(mMutex);
+            if (!mCallback) return;
+            if (mLocations.empty()) {
+                const int size = protocol::readConfigInt("GlueLayer_BatchingCbSize", 200);
+                mCallbackSize = size > 0 && size <= 200 ? size : 200;
+            }
+            if (remaining == 200)
+                mLocations.clear();
+            else
+                mLocations.push_back(location);
+            if (remaining == 0 || remaining == 200 || mLocations.size() == mCallbackSize) {
+                locations.swap(mLocations);
+                callback = mCallback;
+            }
+        }
+        if (callback) callback->gnssLocationBatchCb(locations);
+    });
+}
 
-constexpr int BATCH_SIZE = 10;
-
-std::shared_ptr<IGnssBatchingCallback> GnssBatching::sCallback = nullptr;
-
-GnssBatching::GnssBatching()
-    : mMinIntervalMs(1000),
-      mWakeUpOnFifoFull(false),
-      mBatchedLocations(std::vector<GnssLocation>()) {}
 GnssBatching::~GnssBatching() {
-    cleanup();
+    GnssBackend::get().setHandler(0x7c0a, {});
 }
 
 ndk::ScopedAStatus GnssBatching::init(const std::shared_ptr<IGnssBatchingCallback>& callback) {
-    ALOGD("init");
-    std::unique_lock<std::mutex> lock(mMutex);
-    sCallback = callback;
+    if (!callback) return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+    std::lock_guard lock(mMutex);
+    mCallback = callback;
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus GnssBatching::getBatchSize(int* size) {
-    ALOGD("getBatchingSize");
-    *size = BATCH_SIZE;
+    *size = 200;
     return ndk::ScopedAStatus::ok();
 }
 
 ndk::ScopedAStatus GnssBatching::start(const Options& options) {
-    ALOGD("start: periodNanos=%" PRId64 ", minDistanceMeters=%f, flags=%d", options.periodNanos,
-          options.minDistanceMeters, options.flags);
-    if (mIsActive) {
-        ALOGW("Gnss has started. Restarting...");
-        stop();
+    const auto period = options.periodNanos / 1000000;
+    if (period <= 0 || period > INT_MAX)
+        return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_ARGUMENT);
+    protocol::Writer data;
+    data.put<uint8_t>(2);
+    data.put<uint32_t>(period);
+    data.put<uint8_t>((options.flags & 1) != 0);
+    {
+        std::lock_guard lock(mMutex);
+        if (!mCallback) return ndk::ScopedAStatus::fromExceptionCode(EX_ILLEGAL_STATE);
     }
-
-    // mMinIntervalMs is not smaller than 1 sec
-    long periodNanos = (options.periodNanos < 1e9) ? 1e9 : options.periodNanos;
-    mMinIntervalMs = periodNanos / 1e6;
-    mWakeUpOnFifoFull = (options.flags & IGnssBatching::WAKEUP_ON_FIFO_FULL) ? true : false;
-    mMinDistanceMeters = options.minDistanceMeters;
-
-    mIsActive = true;
-    mThread = std::thread([this]() {
-        while (mIsActive == true) {
-            const auto location = common::Utils::getMockLocation();
-            this->batchLocation(location);
-            std::this_thread::sleep_for(std::chrono::milliseconds(mMinIntervalMs));
-        }
-    });
-
-    return ndk::ScopedAStatus::ok();
+    return send(0x6604, data.data());
 }
 
 ndk::ScopedAStatus GnssBatching::flush() {
-    ALOGD("flush");
-    std::vector<GnssLocation> copy = std::vector<GnssLocation>(mBatchedLocations);
-    ndk::ScopedAStatus status;
-    if (sCallback != nullptr) {
-        sCallback->gnssLocationBatchCb(copy);
-        status = ndk::ScopedAStatus::ok();
-    } else {
-        ALOGE("GnssBatchingCallback is null. flush() failed.");
-        status = ndk::ScopedAStatus::fromServiceSpecificError(IGnss::ERROR_GENERIC);
+    {
+        std::lock_guard lock(mMutex);
+        if (!mCallback) return ndk::ScopedAStatus::ok();
     }
-    mBatchedLocations.clear();
-    return status;
+    return send(0x8204, {0});
 }
 
 ndk::ScopedAStatus GnssBatching::stop() {
-    ALOGD("stop");
-    // Do not call flush() at stop()
-    mIsActive = false;
-    if (mThread.joinable()) {
-        mThread.join();
+    {
+        std::lock_guard lock(mMutex);
+        if (!mCallback) return ndk::ScopedAStatus::ok();
     }
-    return ndk::ScopedAStatus::ok();
+    return send(0x6704, {2});
 }
 
 ndk::ScopedAStatus GnssBatching::cleanup() {
-    ALOGD("cleanup");
-    std::unique_lock<std::mutex> lock(mMutex);
-    if (mIsActive) {
-        stop();
-    }
-    flush();
-
-    sCallback = nullptr;
+    stop();
+    std::lock_guard lock(mMutex);
+    mCallback = nullptr;
+    mLocations.clear();
     return ndk::ScopedAStatus::ok();
-}
-
-void GnssBatching::batchLocation(const GnssLocation& location) {
-    if (mBatchedLocations.size() > BATCH_SIZE) {
-        mBatchedLocations.erase(mBatchedLocations.begin());
-    }
-    mBatchedLocations.push_back(location);
-    if (mWakeUpOnFifoFull && mBatchedLocations.size() == BATCH_SIZE) {
-        flush();
-    }
 }
 
 }  // namespace aidl::android::hardware::gnss
