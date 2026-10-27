@@ -1,7 +1,0 @@
-#
-# SPDX-FileCopyrightText: The LineageOS Project
-# SPDX-License-Identifier: Apache-2.0
-#
-
-dontaudit hal_sensors_default default_prop:property_service set;
-unix_socket_connect(hal_sensors_default, property, init)
