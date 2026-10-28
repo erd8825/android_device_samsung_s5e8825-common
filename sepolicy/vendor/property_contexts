@@ -7,7 +7,9 @@
 persist.vendor.camera.                   u:object_r:vendor_camera_prop:s0
 persist.vendor.sys.camera.               u:object_r:vendor_camera_prop:s0
 
-# HWC
+# Graphics
+ro.vendor.arm.egl.configs.               u:object_r:vendor_arm_graphics_prop:s0
+ro.vendor.arm.gralloc.                   u:object_r:vendor_arm_graphics_prop:s0
 vendor.hwc.                              u:object_r:vendor_hwc_prop:s0
 
 # RIL

@@ -3,4 +3,5 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+vendor_restricted_prop(vendor_arm_graphics_prop)
 vendor_restricted_prop(vendor_camera_prop)
