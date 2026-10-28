@@ -5,6 +5,6 @@
 
 # Product proprietary files - from the release mentioned in common proprietary-files.txt, unless pinned
 
-# Fingerprint - Dependencies
-vendor/lib64/libqfp_sensortest.so
-vendor/lib64/libsynaFpSensorTestNwd.so
+# Fingerprint - Dependencies - from a25x - A256BXXSEEZH9
+vendor/lib64/libqfp_sensortest.so|fda9dfa6359ca14d52a6ae6451f2568b23bac644
+vendor/lib64/libsynaFpSensorTestNwd.so|1e5b6eea23c7b6e3cb763ca86bda9b357c7ddd49
