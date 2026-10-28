@@ -45,7 +45,6 @@ blob_fixups: blob_fixups_user_type = {
         'vendor/lib64/libnpuc_template.so'
     ): blob_fixup().add_needed('liblog.so'),
     # RIL
-    'vendor/etc/init/init.baseband.rc': blob_fixup().regex_replace('\n.*\n.*\n.*nic\n', ''),
     'vendor/etc/init/init.vendor.rilcommon.rc': blob_fixup().regex_replace('\n.*\n.*n}\n', ''),
     'vendor/lib64/libsec-ril-impl.so': blob_fixup()
         # Always emit uiccApplicationsEnablementChanged
@@ -59,27 +58,11 @@ blob_fixups: blob_fixups_user_type = {
         # Before: [b.gt 0x00382398]
         # After: [b 0x00382398]
         .sig_replace('1f 00 08 6b 0c 01 00 54', '1f 00 08 6b 08 00 00 14'),
-    # Security - Keymint
-    (
-        'vendor/lib64/libskeymint10device.so',
-        'vendor/lib64/libskeymint_cli.so',
-    ): blob_fixup()
-        .add_needed('android.hardware.security.rkp-V1-ndk.so')
-        .add_needed('libbase_shim.so')
-        .add_needed('libcrypto_shim.s5e8825.so')
-        .replace_needed('android.hardware.security.keymint-V1-ndk_platform.so', 'android.hardware.security.keymint-V1-ndk.so')
-        .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so', 'android.hardware.security.secureclock-V1-ndk.so')
-        .replace_needed('android.hardware.security.sharedsecret-V1-ndk_platform.so', 'android.hardware.security.sharedsecret-V1-ndk.so')
-        .replace_needed('libcrypto.so', 'libcrypto-v33.so'),
     # Sensors
     (
-        'vendor/lib64/sensors.grip.so',
         'vendor/lib64/sensors.inputvirtual.so',
         'vendor/lib64/sensors.sensorhub.so',
-    ): blob_fixup()
-        .add_needed('libutils-v32.so')
-        .binary_regex_replace(b'_ZN7android6Thread3runEPKcim', b'_ZN7utils326Thread3runEPKcim')
-        .remove_needed('libhidltransport.so'),
+    ): blob_fixup().remove_needed('libhidltransport.so'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
