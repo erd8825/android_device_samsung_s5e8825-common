@@ -236,6 +236,9 @@ PRODUCT_PACKAGES += android.hardware.gatekeeper-service.teegris
 # Security - Keymint
 PRODUCT_PACKAGES += android.hardware.security.keymint-service.samsung
 
+$(call soong_config_set,samsungKeymintVars,target_keymint_version,1)
+$(call soong_config_set,samsungKeymintVars,samsung_keymint_library,//vendor/samsung/s5e8825-common:libskeymint10device)
+
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
@@ -252,6 +255,7 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/google/interfaces \
     hardware/google/pixel/power-libperfmgr \
     hardware/samsung \
+    hardware/samsung/aidl/keymint \
     hardware/samsung_slsi/libbt \
     hardware/samsung_slsi/scsc_wifibt/wpa_supplicant_lib \
     hardware/samsung_slsi-linaro/exynos/libaudio/audiohal_comv1 \
