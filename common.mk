@@ -236,6 +236,9 @@ PRODUCT_PACKAGES += android.hardware.gatekeeper-service.teegris
 # Security - Keymint
 PRODUCT_PACKAGES += android.hardware.security.keymint-service.samsung
 
+$(call soong_config_set,samsungKeymintVars,target_keymint_version,1)
+$(call soong_config_set,samsungKeymintVars,samsung_keymint_library,//vendor/samsung/s5e8825-common:libskeymint10device)
+
 # Shipping level
 BOARD_SHIPPING_API_LEVEL := 31
 
