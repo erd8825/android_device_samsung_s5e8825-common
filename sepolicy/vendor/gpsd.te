@@ -5,7 +5,6 @@
 
 allow gpsd hal_system_suspend_service:service_manager find;
 allow gpsd gnss_device:chr_file rw_file_perms;
-allow gpsd gpsd_exec:file execute_no_trans;
 allow gpsd self:capability2 block_suspend;
 allow gpsd sysfs_sec_gps:file r_file_perms;
 binder_call(gpsd, servicemanager)

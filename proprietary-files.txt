@@ -81,7 +81,6 @@ vendor/lib64/libhdr_plugin_exynos8825.so|74f4694838ffc4e43d9cf90fad7b41715b2b3b8
 vendor/apex/com.google.android.widevine.nonupdatable.apex
 
 # GNSS
-vendor/bin/hw/gps.sh
 vendor/bin/hw/gpsd
 vendor/etc/gnss/ca.pem
 vendor/etc/gnss/gps.cfg
