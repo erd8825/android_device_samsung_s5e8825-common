@@ -83,11 +83,9 @@ vendor/apex/com.google.android.widevine.nonupdatable.apex
 # GNSS
 vendor/bin/hw/gps.sh
 vendor/bin/hw/gpsd
-vendor/bin/hw/vendor.samsung.hardware.gnss-service
 vendor/etc/gnss/ca.pem
 vendor/etc/gnss/gps.cfg
 vendor/etc/init/init.gps.rc
-vendor/etc/init/vendor.samsung.hardware.gnss-service.rc
 vendor/lib64/libwrappergps.so
 
 # Graphics
