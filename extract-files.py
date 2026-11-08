@@ -30,25 +30,7 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib64/libsensorlistener.so': blob_fixup().add_needed('libsensorndkbridge_shim.samsung.so'),
     # GNSS
     'vendor/bin/hw/gpsd': blob_fixup().binary_regex_replace(b'libcrypto.so', b'libcryptx.so'),
-    'vendor/bin/hw/vendor.samsung.hardware.gnss-service': blob_fixup()
-        # Only require successful registration of the standard IGnss service
-        # Before: [cbnz w8, 0x0017fdac]
-        # After: [nop]
-        .sig_replace('a8 43 5f b8 48 01 00 35', 'a8 43 5f b8 1f 20 03 d5')
-        # Skip ISehGnss registration
-        # Before: [
-        #  sub x8, x29, #0x80
-        #  str x8, [sp, #0x38]
-        # ]
-        # After: [
-        #  stp xzr, xzr, [x29, #-0x80]
-        #  b 0x0017fd74
-        # ]
-        .sig_replace('a8 03 02 d1 e8 1f 00 f9 92 00 00 94', 'bf 7f 38 a9 48 00 00 14 92 00 00 94'),
-    (
-        'vendor/etc/init/init.gps.rc',
-        'vendor/etc/init/vendor.samsung.hardware.gnss-service.rc',
-    ): blob_fixup().regex_replace(r'\n.*:[\s\S]*', ''),
+    'vendor/etc/init/init.gps.rc': blob_fixup().regex_replace(r'\n.*:[\s\S]*', ''),
     # Neural Networks
     'vendor/lib64/libeden_ud_gpu.so': blob_fixup()
         .add_needed('libeden_ud_cpu.so')

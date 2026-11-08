@@ -110,6 +110,9 @@ PRODUCT_PACKAGES += liboemcrypto
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-samsung-ss
 
+# GNSS
+PRODUCT_PACKAGES += com.android.hardware.gnss.samsung
+
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.slsi \
