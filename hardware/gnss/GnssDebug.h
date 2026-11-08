@@ -17,6 +17,7 @@
 #pragma once
 
 #include <aidl/android/hardware/gnss/BnGnssDebug.h>
+#include <memory>
 
 namespace aidl::android::hardware::gnss {
 
@@ -24,7 +25,11 @@ class Gnss;
 
 struct GnssDebug : public BnGnssDebug {
   public:
+    explicit GnssDebug(const std::shared_ptr<Gnss>& gnss) : mGnss(gnss) {}
     ndk::ScopedAStatus getDebugData(DebugData* debugData) override;
+
+  private:
+    std::weak_ptr<Gnss> mGnss;
 };
 
 }  // namespace aidl::android::hardware::gnss

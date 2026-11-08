@@ -18,14 +18,11 @@
 
 #include <aidl/android/hardware/gnss/BnGnssMeasurementCallback.h>
 #include <aidl/android/hardware/gnss/BnGnssMeasurementInterface.h>
-#include <atomic>
-#include <future>
+#include <memory>
 #include <mutex>
-#include <thread>
-#include "Utils.h"
+#include <vector>
 
 namespace aidl::android::hardware::gnss {
-class Gnss;
 
 struct GnssMeasurementInterface : public BnGnssMeasurementInterface {
   public:
@@ -38,31 +35,43 @@ struct GnssMeasurementInterface : public BnGnssMeasurementInterface {
     ndk::ScopedAStatus setCallbackWithOptions(
             const std::shared_ptr<IGnssMeasurementCallback>& callback,
             const Options& options) override;
-    void setLocationInterval(const int intervalMs);
-    void setLocationEnabled(const bool enabled);
-    void setGnssInterface(const std::shared_ptr<Gnss>& gnss);
+    void setLocationInterval(int intervalMs);
+    void setLocationEnabled(bool enabled);
+    void noteLocationReported();
+    void setNavigationEnabled(bool enabled);
+    void resetCallbacks();
+    void onConnected();
+    std::shared_ptr<GnssData> getLastData() const;
+    uint32_t getSvStatusSamplingRate() const;
+    bool isRawSessionEnabled() const;
 
   private:
-    void start(const bool enableCorrVecOutputs, const bool enableFullTracking);
-    void stop();
-    void reportMeasurement(const GnssData&);
-    void waitForStoppingThreads();
+    void readRtc(const std::vector<uint8_t>& payload);
+    int64_t getTimestampNs(uint64_t rtcNs);
+    void readHeader(const std::vector<uint8_t>& payload);
+    void readMeasurement(const std::vector<uint8_t>& payload);
+    void reportMeasurement(std::shared_ptr<GnssData> data);
 
-    std::atomic<long> mIntervalMs;
-    std::atomic<long> mLocationIntervalMs;
-    std::atomic<bool> mIsActive;
-    std::atomic<bool> mLocationEnabled;
-    std::vector<std::thread> mThreads;
-    std::vector<std::future<void>> mFutures;
-    ::android::hardware::gnss::common::ThreadBlocker mThreadBlocker;
-
-    // Guarded by mMutex
-    static std::shared_ptr<IGnssMeasurementCallback> sCallback;
-
-    // Synchronization lock for sCallback
     mutable std::mutex mMutex;
-
-    std::shared_ptr<Gnss> mGnss;
+    std::shared_ptr<IGnssMeasurementCallback> mCallback;
+    std::shared_ptr<GnssData> mPendingData;
+    std::shared_ptr<GnssData> mPendingMoData;
+    std::shared_ptr<GnssData> mLastData;
+    int mIntervalMs = 1000;
+    int mLocationIntervalMs = 1000;
+    bool mLocationEnabled = false;
+    bool mLocationReported = false;
+    bool mNavigationEnabled = false;
+    bool mFullTracking = false;
+    size_t mExpectedMeasurements = 0;
+    size_t mExpectedMoMeasurements = 0;
+    int64_t mLastDataTimestampNs = 0;
+    uint32_t mReportedCount = 0;
+    int mRfPathLossDb;
+    uint32_t mRtcLow = 0;
+    uint32_t mRtcHigh = 0;
+    float mRtcFrequency = 0;
+    uint64_t mBootTimeNs = 0;
 };
 
 }  // namespace aidl::android::hardware::gnss
