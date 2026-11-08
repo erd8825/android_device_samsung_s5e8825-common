@@ -155,7 +155,6 @@ void Gnss::onLocation(const std::vector<uint8_t>& payload) {
     {
         std::lock_guard lock(mMutex);
         if (!mIsActive) return;
-        mLastLocation = std::make_shared<GnssLocation>(location);
     }
     GnssBackend::get().postCallback([this, location] {
         if (auto callback = getCallback()) {
@@ -370,11 +369,6 @@ ScopedAStatus Gnss::stopNmea() {
     return ScopedAStatus::ok();
 }
 
-std::shared_ptr<GnssLocation> Gnss::getLastLocation() const {
-    std::lock_guard lock(mMutex);
-    return mLastLocation;
-}
-
 ScopedAStatus Gnss::getExtensionAGnss(std::shared_ptr<IAGnss>* iAGnss) {
     *iAGnss = nullptr;
     return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
@@ -457,11 +451,5 @@ ndk::ScopedAStatus Gnss::getExtensionGnssAssistanceInterface(
     *iGnssAssistanceInterface = nullptr;
     return ScopedAStatus::fromExceptionCode(EX_UNSUPPORTED_OPERATION);
 }
-
-void Gnss::reportSvStatus() const {}
-
-void Gnss::setGnssMeasurementEnabled(bool) {}
-
-void Gnss::setGnssMeasurementInterval(long) {}
 
 }  // namespace aidl::android::hardware::gnss
