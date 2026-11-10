@@ -116,7 +116,7 @@ PRODUCT_PACKAGES += android.hardware.gnss@2.1-service.samsung
 # Graphics
 PRODUCT_PACKAGES += \
     android.hardware.composer.hwc3-service.slsi \
-    android.hardware.graphics.allocator@4.0-service \
+    android.hardware.graphics.allocator-V2-service \
     android.hardware.graphics.mapper@4.0-impl \
     android.hardware.memtrack-service.samsung-mali
 
